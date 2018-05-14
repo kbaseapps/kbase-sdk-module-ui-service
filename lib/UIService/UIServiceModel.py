@@ -14,7 +14,7 @@ def iso_to_sqlite_datetime(datetime_string):
 
 def sqlite_to_iso_datetime(sqlite_datetime):
     d = parse(sqlite_datetime)
-    return d.isoformat()
+    return d.isoformat() + 'Z'
 
 
 class UIServiceModel(object):
