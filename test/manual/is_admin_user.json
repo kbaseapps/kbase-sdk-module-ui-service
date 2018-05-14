@@ -1,0 +1,8 @@
+{
+    "params":[
+        "ui_service_admin"
+    ],
+    "method":"UIService.is_admin_user",
+    "version":"1.1",
+    "id":"3842725324374603"
+}

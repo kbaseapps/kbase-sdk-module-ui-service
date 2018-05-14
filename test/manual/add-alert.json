@@ -1,0 +1,18 @@
+{
+    "params":[
+        {
+            "start_at": "2018-05-14T11:00-07:00",
+            "end_at": "2018-05-14T11:15-07:00",
+            "title": "Standup",
+            "type": "maintenance",
+            "status": "released",
+            "message": [
+                "First standup of Q2S3", 
+                "BTW this is a demo of the system status and alert widget 😂 "
+            ]
+        }
+    ],
+    "method":"UIService.add_alert",
+    "version":"1.1",
+    "id":"3842725324374603"
+}
