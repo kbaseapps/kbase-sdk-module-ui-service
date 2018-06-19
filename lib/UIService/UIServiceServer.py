@@ -343,8 +343,12 @@ class Application(object):
         self.method_authentication['UIService.get_active_alerts'] = 'optional'  # noqa
         self.rpc_service.add(impl_UIService.search_alerts,
                              name='UIService.search_alerts',
-                             types=[object])
-        self.method_authentication['UIService.search_alerts'] = 'required'  # noqa
+                             types=[dict])
+        self.method_authentication['UIService.search_alerts'] = 'none'  # noqa
+        self.rpc_service.add(impl_UIService.search_alerts_summary,
+                             name='UIService.search_alerts_summary',
+                             types=[dict])
+        self.method_authentication['UIService.search_alerts_summary'] = 'none'  # noqa
         self.rpc_service.add(impl_UIService.am_admin_user,
                              name='UIService.am_admin_user',
                              types=[])

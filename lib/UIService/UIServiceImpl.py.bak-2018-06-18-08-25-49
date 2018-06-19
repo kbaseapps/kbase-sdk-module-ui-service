@@ -20,8 +20,8 @@ class UIService:
     # the latter method is running.
     ######################################### noqa
     VERSION = "0.0.1"
-    GIT_URL = "ssh://git@github.com/eapearson/kbase-sdk-module-ui-service"
-    GIT_COMMIT_HASH = "030e6dc9f298be637b6763a334612455a15c5b8f"
+    GIT_URL = ""
+    GIT_COMMIT_HASH = "HEAD"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -52,7 +52,7 @@ class UIService:
            type "AlertID", parameter "start_at" of type "Timestamp" (BASE
            Types), parameter "end_at" of type "Timestamp" (BASE Types),
            parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of String, parameter "status" of type
+           parameter "message" of list of String, parameter "status" of type
            "AlertStatus"
         """
         # ctx is the context object
@@ -76,7 +76,7 @@ class UIService:
            "id" of type "AlertID", parameter "start_at" of type "Timestamp"
            (BASE Types), parameter "end_at" of type "Timestamp" (BASE Types),
            parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of String, parameter "status" of type
+           parameter "message" of list of String, parameter "status" of type
            "AlertStatus"
         """
         # ctx is the context object
@@ -95,60 +95,28 @@ class UIService:
 
     def search_alerts(self, ctx, query):
         """
-        :param query: instance of type "AlertQuery" -> structure: parameter
-           "search" of type "SearchSpec" -> structure: parameter "field" of
-           String, parameter "operator" of String, parameter "page" of type
-           "PagingSpec" (typedef UnspecifiedObject Query;) -> structure:
-           parameter "start" of Long, parameter "limit" of Long, parameter
-           "sorting" of list of type "SortSpec" -> structure: parameter
-           "field" of String, parameter "is_descending" of type "Boolean"
-        :returns: instance of type "SearchAlertsResult" -> structure:
-           parameter "alerts" of list of type "Alert" -> structure: parameter
+        :param query: instance of type "Query" (search_alerts) -> unspecified
+           object
+        :returns: instance of list of type "Alert" -> structure: parameter
            "id" of type "AlertID", parameter "start_at" of type "Timestamp"
            (BASE Types), parameter "end_at" of type "Timestamp" (BASE Types),
            parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of String, parameter "status" of type
+           parameter "message" of list of String, parameter "status" of type
            "AlertStatus"
         """
         # ctx is the context object
-        # return variables are: result
+        # return variables are: alerts
         #BEGIN search_alerts
         model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
-        result = {
-            'alerts': model.search_alerts(query)
-        }
+        alerts = model.search_alerts()
         #END search_alerts
 
         # At some point might do deeper type checking...
-        if not isinstance(result, dict):
+        if not isinstance(alerts, list):
             raise ValueError('Method search_alerts return value ' +
-                             'result is not type dict as required.')
+                             'alerts is not type list as required.')
         # return the results
-        return [result]
-
-    def search_alerts_summary(self, ctx, query):
-        """
-        :param query: instance of type "AlertQuery" -> structure: parameter
-           "search" of type "SearchSpec" -> structure: parameter "field" of
-           String, parameter "operator" of String, parameter "page" of type
-           "PagingSpec" (typedef UnspecifiedObject Query;) -> structure:
-           parameter "start" of Long, parameter "limit" of Long, parameter
-           "sorting" of list of type "SortSpec" -> structure: parameter
-           "field" of String, parameter "is_descending" of type "Boolean"
-        :returns: instance of type "AlertQueryResult" -> structure: parameter
-           "statuses" of mapping from String to Long
-        """
-        # ctx is the context object
-        # return variables are: result
-        #BEGIN search_alerts_summary
-        #END search_alerts_summary
-
-        # At some point might do deeper type checking...
-        if not isinstance(result, dict):
-            raise ValueError('Method search_alerts_summary return value ' +
-                             'result is not type dict as required.')
-        # return the results
-        return [result]
+        return [alerts]
 
     def am_admin_user(self, ctx):
         """
@@ -169,33 +137,31 @@ class UIService:
         # return the results
         return [is_admin]
 
-    def add_alert(self, ctx, alert_param):
+    def add_alert(self, ctx, alert):
         """
-        :param alert_param: instance of type "AddAlertParams" (add_alert) ->
+        ADMIN
+        :param alert: instance of type "AddAlertParams" (add_alert) ->
            structure: parameter "alert" of type "Alert" -> structure:
            parameter "id" of type "AlertID", parameter "start_at" of type
            "Timestamp" (BASE Types), parameter "end_at" of type "Timestamp"
            (BASE Types), parameter "type" of type "AlertType", parameter
-           "title" of String, parameter "message" of String, parameter
-           "status" of type "AlertStatus"
-        :returns: instance of type "AddAlertResult" -> structure: parameter
-           "id" of type "AlertID"
+           "title" of String, parameter "message" of list of String,
+           parameter "status" of type "AlertStatus"
+        :returns: instance of type "AlertID"
         """
         # ctx is the context object
-        # return variables are: result
+        # return variables are: alert_id
         #BEGIN add_alert
         model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
-        result = {
-            'id': model.add_alert(alert_param['alert'])
-        }
+        alert_id = model.add_alert(alert)
         #END add_alert
 
         # At some point might do deeper type checking...
-        if not isinstance(result, dict):
+        if not isinstance(alert_id, int):
             raise ValueError('Method add_alert return value ' +
-                             'result is not type dict as required.')
+                             'alert_id is not type int as required.')
         # return the results
-        return [result]
+        return [alert_id]
 
     def delete_alert(self, ctx, id):
         """
@@ -205,7 +171,7 @@ class UIService:
         #BEGIN delete_alert
 
         model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
-        model.delete_alert(id)
+        model.delete_alert(id) 
         #END delete_alert
         pass
 
@@ -229,20 +195,18 @@ class UIService:
         # return the results
         return [is_admin]
 
-    def update_alert(self, ctx, alert_param):
+    def update_alert(self, ctx, alert):
         """
-        :param alert_param: instance of type "UpdateAlertParams" (update
-           alert) -> structure: parameter "alert" of type "Alert" ->
-           structure: parameter "id" of type "AlertID", parameter "start_at"
-           of type "Timestamp" (BASE Types), parameter "end_at" of type
-           "Timestamp" (BASE Types), parameter "type" of type "AlertType",
-           parameter "title" of String, parameter "message" of String,
+        :param alert: instance of type "AddAlertParams" (add_alert) ->
+           structure: parameter "alert" of type "Alert" -> structure:
+           parameter "id" of type "AlertID", parameter "start_at" of type
+           "Timestamp" (BASE Types), parameter "end_at" of type "Timestamp"
+           (BASE Types), parameter "type" of type "AlertType", parameter
+           "title" of String, parameter "message" of list of String,
            parameter "status" of type "AlertStatus"
         """
         # ctx is the context object
         #BEGIN update_alert
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
-        model.update_alert(alert_param['alert'])
         #END update_alert
         pass
 

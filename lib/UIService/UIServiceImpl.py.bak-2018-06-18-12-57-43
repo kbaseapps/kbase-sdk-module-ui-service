@@ -169,33 +169,32 @@ class UIService:
         # return the results
         return [is_admin]
 
-    def add_alert(self, ctx, alert_param):
+    def add_alert(self, ctx, alert):
         """
-        :param alert_param: instance of type "AddAlertParams" (add_alert) ->
+        :param alert: instance of type "AddAlertParams" (add_alert) ->
            structure: parameter "alert" of type "Alert" -> structure:
            parameter "id" of type "AlertID", parameter "start_at" of type
            "Timestamp" (BASE Types), parameter "end_at" of type "Timestamp"
            (BASE Types), parameter "type" of type "AlertType", parameter
            "title" of String, parameter "message" of String, parameter
            "status" of type "AlertStatus"
-        :returns: instance of type "AddAlertResult" -> structure: parameter
-           "id" of type "AlertID"
+        :returns: instance of type "AlertID"
         """
         # ctx is the context object
-        # return variables are: result
+        # return variables are: alert_id
         #BEGIN add_alert
         model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
         result = {
-            'id': model.add_alert(alert_param['alert'])
+            id: model.add_alert(alert_param['alert'])
         }
         #END add_alert
 
         # At some point might do deeper type checking...
-        if not isinstance(result, dict):
+        if not isinstance(alert_id, int):
             raise ValueError('Method add_alert return value ' +
-                             'result is not type dict as required.')
+                             'alert_id is not type int as required.')
         # return the results
-        return [result]
+        return [alert_id]
 
     def delete_alert(self, ctx, id):
         """
@@ -238,13 +237,22 @@ class UIService:
            "Timestamp" (BASE Types), parameter "type" of type "AlertType",
            parameter "title" of String, parameter "message" of String,
            parameter "status" of type "AlertStatus"
+        :returns: instance of type "UpdateAlertResult" -> structure:
+           parameter "id" of type "AlertID"
         """
         # ctx is the context object
+        # return variables are: result
         #BEGIN update_alert
         model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
-        model.update_alert(alert_param['alert'])
+
         #END update_alert
-        pass
+
+        # At some point might do deeper type checking...
+        if not isinstance(result, dict):
+            raise ValueError('Method update_alert return value ' +
+                             'result is not type dict as required.')
+        # return the results
+        return [result]
 
     def set_alert_status(self, ctx, id, status):
         """

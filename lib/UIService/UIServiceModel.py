@@ -37,18 +37,18 @@ class UIServiceModel(object):
         else:
             self.username = None
 
-    def start(self):
+    def connect(self):
         self.conn = sqlite3.connect(self.path, isolation_level=None)
         self.conn.execute('pragma journal_mode=wal;')
 
-    def stop(self):
+    def disconnect(self):
         self.conn.execute('pragma optimize')
         self.conn.close()
 
     def initialize(self):
-        self.start()
+        self.connect()
         self.create_schema()
-        self.stop()
+        self.disconnect()
  
     def create_schema(self):
         alerts_schema = '''
@@ -63,7 +63,7 @@ class UIServiceModel(object):
         insert into alert_status(status, description)
           values ('pending', 'Pending release');
         insert into alert_status(status, description)
-          values ('released', 'Alert is released to users');
+          values ('published', 'Alert is published to users');
         insert into alert_status(status, description)
           values ('canceled', 'Alert has been canceled');
         create table if not exists alerts (
@@ -108,16 +108,45 @@ class UIServiceModel(object):
             iso_to_sqlite_datetime(alert['start_at']),
             iso_to_sqlite_datetime(alert['end_at']),
             alert['title'],
-            json.dumps(alert['message'])
+            alert['message']
+            # json.dumps(alert['message'])
         ]
 
         # params = [alert.get(field) for field in fields]
-        self.start()
+        self.connect()
         cursor = self.conn.cursor()
         cursor.execute(sql, tuple(params))
         alert_id = cursor.lastrowid
         cursor.close()
-        self.stop()
+        self.disconnect()
+        return alert_id
+
+    def update_alert(self, alert):
+        self.ensure_admin_authorization()
+
+        fields = ['status', 'start_at', 'end_at', 'title', 'message']
+        updates = ','.join(list(map(lambda field: '%s = ?' % (field), fields)))
+        # for now we do a full update, not partial
+        sql = '''
+        update alerts
+        set {}
+        where id = ?
+        '''.format(updates)
+        params = [
+            alert['status'],
+            iso_to_sqlite_datetime(alert['start_at']),
+            iso_to_sqlite_datetime(alert['end_at']),
+            alert['title'],
+            alert['message'],
+            alert['id']
+        ]
+
+        self.connect()
+        cursor = self.conn.cursor()
+        cursor.execute(sql, tuple(params))
+        alert_id = cursor.lastrowid
+        cursor.close()
+        self.disconnect()
         return alert_id
 
     def get_active_alerts(self):
@@ -125,9 +154,9 @@ class UIServiceModel(object):
         sql = '''
         select alert_id, status, start_at, end_at, title, message
         from alerts
-        where status = 'released'
+        where status = 'published'
         '''
-        self.start()
+        self.connect()
         cursor = self.conn.cursor()
         cursor.execute(sql)
         result = []
@@ -138,19 +167,20 @@ class UIServiceModel(object):
                 'startAt': sqlite_to_iso_datetime(start_at),
                 'endAt': sqlite_to_iso_datetime(end_at),
                 'title': title,
-                'message': json.loads(message)
+                'message': message
+                # 'message': json.loads(message)
             })
         cursor.close()
-        self.stop()
+        self.disconnect()
         return result
 
-    def search_alerts(self):
+    def search_alerts(self, query):
         # todo add time comparison too
         sql = '''
         select alert_id, status, start_at, end_at, title, message
         from alerts
         '''
-        self.start()
+        self.connect()
         cursor = self.conn.cursor()
         cursor.execute(sql)
         result = []
@@ -161,10 +191,11 @@ class UIServiceModel(object):
                 'startAt': sqlite_to_iso_datetime(start_at),
                 'endAt': sqlite_to_iso_datetime(end_at),
                 'title': title,
-                'message': json.loads(message)
+                'message': message
+                # 'message': json.loads(message)
             })
         cursor.close()
-        self.stop()
+        self.disconnect()
         return result
 
     def get_alert(self, alert_id):
@@ -175,7 +206,7 @@ class UIServiceModel(object):
         where alert_id = ?
         '''
         params = [alert_id]
-        self.start()
+        self.connect()
         cursor = self.conn.cursor()
         cursor.execute(sql, params)
         result = []
@@ -186,10 +217,11 @@ class UIServiceModel(object):
                 'startAt': sqlite_to_iso_datetime(start_at),
                 'endAt': sqlite_to_iso_datetime(end_at),
                 'title': title,
-                'message': json.loads(message)
+                'message': message
+                # 'message': json.loads(message)
             })
-        cursor.close()
-        self.stop()
+        cursor.disconnect()
+        self.disconnect()
         if len(result) > 1:
             raise ValueError('Too manu results for get_alert for %s' % (alert_id))
         return result[0]
@@ -204,11 +236,11 @@ class UIServiceModel(object):
         where alert_id = ?
         '''
         params = [alert_id]
-        self.start()
+        self.connect()
         cursor = self.conn.cursor()
         cursor.execute(sql, params)
         cursor.close()
-        self.stop()
+        self.disconnect()
 
     def ensure_admin_authorization(self):
         if self.token is None:
@@ -224,12 +256,12 @@ class UIServiceModel(object):
         select exists(select 1 from admin_users where username = ?)
         '''
         params = [username]
-        self.start()
+        self.connect()
         cursor = self.conn.cursor()
         cursor.execute(sql, params)
         is_admin = cursor.fetchone()[0]
         cursor.close()
-        self.stop()
+        self.disconnect()
         if is_admin:
             return True
         else:

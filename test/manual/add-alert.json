@@ -1,14 +1,14 @@
 {
     "params":[
         {
-            "start_at": "2018-05-14T11:00-07:00",
-            "end_at": "2018-05-14T11:15-07:00",
-            "title": "Standup",
+            "start_at": "2018-05-19T11:00-07:00",
+            "end_at": "2018-05-19T11:15-07:00",
+            "title": "Implementation Team Standup",
             "type": "maintenance",
             "status": "released",
             "message": [
                 "First standup of Q2S3", 
-                "BTW this is a demo of the system status and alert widget 😂 "
+                "(BTW this is a test of the system status and alert widget 😂 )"
             ]
         }
     ],

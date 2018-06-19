@@ -41,7 +41,7 @@ class UIService(object):
            type "AlertID", parameter "start_at" of type "Timestamp" (BASE
            Types), parameter "end_at" of type "Timestamp" (BASE Types),
            parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of list of String, parameter "status" of type
+           parameter "message" of String, parameter "status" of type
            "AlertStatus"
         """
         return self._client.call_method(
@@ -55,7 +55,7 @@ class UIService(object):
            "id" of type "AlertID", parameter "start_at" of type "Timestamp"
            (BASE Types), parameter "end_at" of type "Timestamp" (BASE Types),
            parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of list of String, parameter "status" of type
+           parameter "message" of String, parameter "status" of type
            "AlertStatus"
         """
         return self._client.call_method(
@@ -64,17 +64,39 @@ class UIService(object):
 
     def search_alerts(self, query, context=None):
         """
-        :param query: instance of type "Query" (search_alerts) -> unspecified
-           object
-        :returns: instance of list of type "Alert" -> structure: parameter
+        :param query: instance of type "AlertQuery" -> structure: parameter
+           "search" of type "SearchSpec" -> structure: parameter "field" of
+           String, parameter "operator" of String, parameter "page" of type
+           "PagingSpec" (typedef UnspecifiedObject Query;) -> structure:
+           parameter "start" of Long, parameter "limit" of Long, parameter
+           "sorting" of list of type "SortSpec" -> structure: parameter
+           "field" of String, parameter "is_descending" of type "Boolean"
+        :returns: instance of type "SearchAlertsResult" -> structure:
+           parameter "alerts" of list of type "Alert" -> structure: parameter
            "id" of type "AlertID", parameter "start_at" of type "Timestamp"
            (BASE Types), parameter "end_at" of type "Timestamp" (BASE Types),
            parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of list of String, parameter "status" of type
+           parameter "message" of String, parameter "status" of type
            "AlertStatus"
         """
         return self._client.call_method(
             'UIService.search_alerts',
+            [query], self._service_ver, context)
+
+    def search_alerts_summary(self, query, context=None):
+        """
+        :param query: instance of type "AlertQuery" -> structure: parameter
+           "search" of type "SearchSpec" -> structure: parameter "field" of
+           String, parameter "operator" of String, parameter "page" of type
+           "PagingSpec" (typedef UnspecifiedObject Query;) -> structure:
+           parameter "start" of Long, parameter "limit" of Long, parameter
+           "sorting" of list of type "SortSpec" -> structure: parameter
+           "field" of String, parameter "is_descending" of type "Boolean"
+        :returns: instance of type "AlertQueryResult" -> structure: parameter
+           "statuses" of mapping from String to Long
+        """
+        return self._client.call_method(
+            'UIService.search_alerts_summary',
             [query], self._service_ver, context)
 
     def am_admin_user(self, context=None):
@@ -86,21 +108,21 @@ class UIService(object):
             'UIService.am_admin_user',
             [], self._service_ver, context)
 
-    def add_alert(self, alert, context=None):
+    def add_alert(self, alert_param, context=None):
         """
-        ADMIN
-        :param alert: instance of type "AddAlertParams" (add_alert) ->
+        :param alert_param: instance of type "AddAlertParams" (add_alert) ->
            structure: parameter "alert" of type "Alert" -> structure:
            parameter "id" of type "AlertID", parameter "start_at" of type
            "Timestamp" (BASE Types), parameter "end_at" of type "Timestamp"
            (BASE Types), parameter "type" of type "AlertType", parameter
-           "title" of String, parameter "message" of list of String,
-           parameter "status" of type "AlertStatus"
-        :returns: instance of type "AlertID"
+           "title" of String, parameter "message" of String, parameter
+           "status" of type "AlertStatus"
+        :returns: instance of type "AddAlertResult" -> structure: parameter
+           "id" of type "AlertID"
         """
         return self._client.call_method(
             'UIService.add_alert',
-            [alert], self._service_ver, context)
+            [alert_param], self._service_ver, context)
 
     def delete_alert(self, id, context=None):
         """
@@ -119,19 +141,19 @@ class UIService(object):
             'UIService.is_admin_user',
             [username], self._service_ver, context)
 
-    def update_alert(self, alert, context=None):
+    def update_alert(self, alert_param, context=None):
         """
-        :param alert: instance of type "AddAlertParams" (add_alert) ->
-           structure: parameter "alert" of type "Alert" -> structure:
-           parameter "id" of type "AlertID", parameter "start_at" of type
-           "Timestamp" (BASE Types), parameter "end_at" of type "Timestamp"
-           (BASE Types), parameter "type" of type "AlertType", parameter
-           "title" of String, parameter "message" of list of String,
+        :param alert_param: instance of type "UpdateAlertParams" (update
+           alert) -> structure: parameter "alert" of type "Alert" ->
+           structure: parameter "id" of type "AlertID", parameter "start_at"
+           of type "Timestamp" (BASE Types), parameter "end_at" of type
+           "Timestamp" (BASE Types), parameter "type" of type "AlertType",
+           parameter "title" of String, parameter "message" of String,
            parameter "status" of type "AlertStatus"
         """
         return self._client.call_method(
             'UIService.update_alert',
-            [alert], self._service_ver, context)
+            [alert_param], self._service_ver, context)
 
     def set_alert_status(self, id, status, context=None):
         """

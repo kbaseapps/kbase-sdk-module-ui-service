@@ -2,7 +2,6 @@
 package us.kbase.uiservice;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -37,14 +36,14 @@ public class Alert {
     @JsonProperty("end_at")
     private Long endAt;
     @JsonProperty("type")
-    private java.lang.String type;
+    private String type;
     @JsonProperty("title")
-    private java.lang.String title;
+    private String title;
     @JsonProperty("message")
-    private List<String> message;
+    private String message;
     @JsonProperty("status")
-    private java.lang.String status;
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private String status;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("id")
     public Long getId() {
@@ -92,77 +91,77 @@ public class Alert {
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public Alert withType(java.lang.String type) {
+    public Alert withType(String type) {
         this.type = type;
         return this;
     }
 
     @JsonProperty("title")
-    public java.lang.String getTitle() {
+    public String getTitle() {
         return title;
     }
 
     @JsonProperty("title")
-    public void setTitle(java.lang.String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public Alert withTitle(java.lang.String title) {
+    public Alert withTitle(String title) {
         this.title = title;
         return this;
     }
 
     @JsonProperty("message")
-    public List<String> getMessage() {
+    public String getMessage() {
         return message;
     }
 
     @JsonProperty("message")
-    public void setMessage(List<String> message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public Alert withMessage(List<String> message) {
+    public Alert withMessage(String message) {
         this.message = message;
         return this;
     }
 
     @JsonProperty("status")
-    public java.lang.String getStatus() {
+    public String getStatus() {
         return status;
     }
 
     @JsonProperty("status")
-    public void setStatus(java.lang.String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Alert withStatus(java.lang.String status) {
+    public Alert withStatus(String status) {
         this.status = status;
         return this;
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(java.lang.String name, Object value) {
+    public void setAdditionalProperties(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return ((((((((((((((((("Alert"+" [id=")+ id)+", startAt=")+ startAt)+", endAt=")+ endAt)+", type=")+ type)+", title=")+ title)+", message=")+ message)+", status=")+ status)+", additionalProperties=")+ additionalProperties)+"]");
     }
 

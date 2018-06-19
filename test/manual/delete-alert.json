@@ -1,6 +1,6 @@
 {
     "params":[
-        1
+        2
     ],
     "method":"UIService.delete_alert",
     "version":"1.1",
