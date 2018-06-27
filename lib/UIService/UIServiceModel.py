@@ -18,7 +18,7 @@ def sqlite_to_iso_datetime(sqlite_datetime):
 
 
 class UIServiceModel(object):
-    def __init__(self, path=None, auth_url=None, token=None):
+    def __init__(self, path=None, auth_url=None, token=None, username=None, admin_users=None):
         if path is None:
             raise ValueError('The "path" argument is required')
         if not isinstance(path, basestring):
@@ -26,16 +26,18 @@ class UIServiceModel(object):
         self.path = path
 
         self.token = token
-        print("auth,token: %s, %s" % (auth_url, token))
-        if auth_url is not None and token is not None:
-            client = RESTClient(url=auth_url, token=token)
-            result, error = client.get(path='api/V2/me')
-            if result is None:
-                raise ValueError('Token invalid')
-            print("got auth! %s %s" % (result, error))
-            self.username = result.get('user')
-        else:
-            self.username = None
+        self.username = username
+        self.admin_users = admin_users
+        # print("auth,token: %s, %s" % (auth_url, token))
+        # if auth_url is not None and token is not None:
+        #     client = RESTClient(url=auth_url, token=token)
+        #     result, error = client.get(path='api/V2/me')
+        #     if result is None:
+        #         raise ValueError('Token invalid')
+        #     # print("got auth! %s %s" % (result, error))
+        #     self.username = result.get('user')
+        # else:
+        #     self.username = None
 
     def connect(self):
         self.conn = sqlite3.connect(self.path, isolation_level=None)
@@ -82,11 +84,11 @@ class UIServiceModel(object):
             username text not null primary key,
             created_at timestamp not null
         );
-        insert into admin_users
-        (username, created_at)
-        values
-        ('kbase_ui_service_admin', CURRENT_TIMESTAMP)
         '''
+        # insert into admin_users
+        # (username, created_at)
+        # values
+        # ('kbase_ui_service_admin', CURRENT_TIMESTAMP)
         cursor = self.conn.cursor()
         cursor.executescript(alerts_schema)
         cursor.close()
@@ -130,7 +132,7 @@ class UIServiceModel(object):
         sql = '''
         update alerts
         set {}
-        where id = ?
+        where alert_id = ?
         '''.format(updates)
         params = [
             alert['status'],
@@ -246,26 +248,28 @@ class UIServiceModel(object):
         if self.token is None:
             raise ValueError('No authorization token')
 
-        if not self.is_admin_user(self.username):
+        if not self.username in self.admin_users:
             raise ValueError('Not admin user')
 
         pass
 
     def is_admin_user(self, username):
-        sql = '''
-        select exists(select 1 from admin_users where username = ?)
-        '''
-        params = [username]
-        self.connect()
-        cursor = self.conn.cursor()
-        cursor.execute(sql, params)
-        is_admin = cursor.fetchone()[0]
-        cursor.close()
-        self.disconnect()
-        if is_admin:
-            return True
-        else:
-            return False
+        self.ensure_admin_authorization()
+        return username in self.admin_users
+        # sql = '''
+        # select exists(select 1 from admin_users where username = ?)
+        # '''
+        # params = [username]
+        # self.connect()
+        # cursor = self.conn.cursor()
+        # cursor.execute(sql, params)
+        # is_admin = cursor.fetchone()[0]
+        # cursor.close()
+        # self.disconnect()
+        # if is_admin:
+        #     return True
+        # else:
+        #     return False
 
     def authorized_user_is_admin(self):
         if self.token is None:

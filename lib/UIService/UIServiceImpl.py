@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
 from UIService.UIServiceModel import UIServiceModel
+import os
+import string
 #END_HEADER
 
 
@@ -32,7 +34,9 @@ class UIService:
         #BEGIN_CONSTRUCTOR
         self.data_root = config['data-root']
         self.model_path = self.data_root + '/model.db'
-        print('auth config: %s, %s' % (config['auth-url'], config['auth-service-url']))
+        self.admin_users = string.split(os.environ.get('ADMIN_USERS', ''), ' ')
+        print('admin users', self.admin_users)
+        # print('auth config: %s, %s' % (config['auth-url'], config['auth-service-url']))
         model = UIServiceModel(path=self.model_path, auth_url=config['auth-url'])
         model.initialize()
 
@@ -58,7 +62,12 @@ class UIService:
         # ctx is the context object
         # return variables are: alert
         #BEGIN get_alert
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
+        model = UIServiceModel(
+            path=self.model_path, 
+            auth_url=self.auth_url, 
+            admin_users=self.admin_users,
+            token=ctx['token'], 
+            username=ctx['user_id'])
         alert = model.get_alert(id) 
         #END get_alert
 
@@ -82,7 +91,12 @@ class UIService:
         # ctx is the context object
         # return variables are: alerts
         #BEGIN get_active_alerts
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
+        model = UIServiceModel(
+            path=self.model_path, 
+            auth_url=self.auth_url, 
+            admin_users=self.admin_users,
+            token=ctx['token'], 
+            username=ctx['user_id'])
         alerts = model.get_active_alerts()
         #END get_active_alerts
 
@@ -113,7 +127,12 @@ class UIService:
         # ctx is the context object
         # return variables are: result
         #BEGIN search_alerts
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
+        model = UIServiceModel(
+            path=self.model_path, 
+            auth_url=self.auth_url, 
+            admin_users=self.admin_users,
+            token=ctx['token'],
+            username=ctx['user_id'])
         result = {
             'alerts': model.search_alerts(query)
         }
@@ -141,6 +160,7 @@ class UIService:
         # ctx is the context object
         # return variables are: result
         #BEGIN search_alerts_summary
+        result = {}
         #END search_alerts_summary
 
         # At some point might do deeper type checking...
@@ -158,8 +178,14 @@ class UIService:
         # ctx is the context object
         # return variables are: is_admin
         #BEGIN am_admin_user
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url,  token=ctx['token'])
-        is_admin = model.authorized_user_is_admin()
+        
+        # from model.
+        # model = UIServiceModel(path=self.model_path, auth_url=self.auth_url,  token=ctx['token'])        
+        # is_admin = model.authorized_user_is_admin()
+
+        # from runtime env variable.
+        is_admin = ctx['user_id'] in self.admin_users
+
         #END am_admin_user
 
         # At some point might do deeper type checking...
@@ -184,7 +210,12 @@ class UIService:
         # ctx is the context object
         # return variables are: result
         #BEGIN add_alert
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
+        model = UIServiceModel(
+            path=self.model_path, 
+            auth_url=self.auth_url, 
+            admin_users=self.admin_users,
+            token=ctx['token'], 
+            username=ctx['user_id'])
         result = {
             'id': model.add_alert(alert_param['alert'])
         }
@@ -204,7 +235,12 @@ class UIService:
         # ctx is the context object
         #BEGIN delete_alert
 
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
+        model = UIServiceModel(
+            path=self.model_path, 
+            auth_url=self.auth_url, 
+            admin_users=self.admin_users,
+            token=ctx['token'],
+            username=ctx['user_id'])
         model.delete_alert(id)
         #END delete_alert
         pass
@@ -217,9 +253,16 @@ class UIService:
         # ctx is the context object
         # return variables are: is_admin
         #BEGIN is_admin_user
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
-        model.ensure_admin_authorization()
+
+        # This uses the admin user stored in the model... 
+        model = UIServiceModel(
+            path=self.model_path, 
+            auth_url=self.auth_url, 
+            admin_users=self.admin_users,
+            token=ctx['token'],
+            username=ctx['username'])
         is_admin = model.is_admin_user(username)
+
         #END is_admin_user
 
         # At some point might do deeper type checking...
@@ -241,7 +284,12 @@ class UIService:
         """
         # ctx is the context object
         #BEGIN update_alert
-        model = UIServiceModel(path=self.model_path, auth_url=self.auth_url, token=ctx['token'])
+        model = UIServiceModel(
+            path=self.model_path, 
+            auth_url=self.auth_url, 
+            admin_users=self.admin_users,
+            token=ctx['token'], 
+            username=ctx['user_id'])
         model.update_alert(alert_param['alert'])
         #END update_alert
         pass
