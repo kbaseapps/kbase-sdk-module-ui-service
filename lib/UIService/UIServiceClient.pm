@@ -110,7 +110,7 @@ sub new
 
 =head2 get_alert
 
-  $alert = $obj->get_alert($id)
+  $alert, $error = $obj->get_alert($id)
 
 =over 4
 
@@ -121,7 +121,8 @@ sub new
 <pre>
 $id is an UIService.AlertID
 $alert is an UIService.Alert
-AlertID is an int
+$error is an UIService.Error
+AlertID is a string
 Alert is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
 	start_at has a value which is an UIService.Timestamp
@@ -130,9 +131,18 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -142,7 +152,8 @@ AlertStatus is a string
 
 $id is an UIService.AlertID
 $alert is an UIService.Alert
-AlertID is an int
+$error is an UIService.Error
+AlertID is a string
 Alert is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
 	start_at has a value which is an UIService.Timestamp
@@ -151,9 +162,18 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -216,7 +236,7 @@ get_alert
 
 =head2 get_active_alerts
 
-  $alerts = $obj->get_active_alerts()
+  $alerts, $error = $obj->get_active_alerts()
 
 =over 4
 
@@ -226,6 +246,7 @@ get_alert
 
 <pre>
 $alerts is a reference to a list where each element is an UIService.Alert
+$error is an UIService.Error
 Alert is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
 	start_at has a value which is an UIService.Timestamp
@@ -234,10 +255,19 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
-AlertID is an int
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
+AlertID is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -246,6 +276,7 @@ AlertStatus is a string
 =begin text
 
 $alerts is a reference to a list where each element is an UIService.Alert
+$error is an UIService.Error
 Alert is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
 	start_at has a value which is an UIService.Timestamp
@@ -254,10 +285,19 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
-AlertID is an int
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
+AlertID is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -309,7 +349,7 @@ get_active_alerts
 
 =head2 search_alerts
 
-  $result = $obj->search_alerts($query)
+  $result, $error = $obj->search_alerts($query)
 
 =over 4
 
@@ -320,13 +360,18 @@ get_active_alerts
 <pre>
 $query is an UIService.AlertQuery
 $result is an UIService.SearchAlertsResult
+$error is an UIService.Error
 AlertQuery is a reference to a hash where the following keys are defined:
-	search has a value which is an UIService.SearchSpec
+	query has a value which is an UIService.SearchExpression
 	page has a value which is an UIService.PagingSpec
 	sorting has a value which is a reference to a list where each element is an UIService.SortSpec
-SearchSpec is a reference to a hash where the following keys are defined:
-	field has a value which is a string
-	operator has a value which is a string
+SearchExpression is a reference to a hash where the following keys are defined:
+	op has a value which is a string
+	args has a value which is a reference to a list where each element is an UIService.SearchField
+SearchField is a reference to a hash where the following keys are defined:
+	path has a value which is a string
+	op has a value which is a string
+	value has a value which is a string
 PagingSpec is a reference to a hash where the following keys are defined:
 	start has a value which is an int
 	limit has a value which is an int
@@ -344,10 +389,19 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
-AlertID is an int
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
+AlertID is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -357,13 +411,18 @@ AlertStatus is a string
 
 $query is an UIService.AlertQuery
 $result is an UIService.SearchAlertsResult
+$error is an UIService.Error
 AlertQuery is a reference to a hash where the following keys are defined:
-	search has a value which is an UIService.SearchSpec
+	query has a value which is an UIService.SearchExpression
 	page has a value which is an UIService.PagingSpec
 	sorting has a value which is a reference to a list where each element is an UIService.SortSpec
-SearchSpec is a reference to a hash where the following keys are defined:
-	field has a value which is a string
-	operator has a value which is a string
+SearchExpression is a reference to a hash where the following keys are defined:
+	op has a value which is a string
+	args has a value which is a reference to a list where each element is an UIService.SearchField
+SearchField is a reference to a hash where the following keys are defined:
+	path has a value which is a string
+	op has a value which is a string
+	value has a value which is a string
 PagingSpec is a reference to a hash where the following keys are defined:
 	start has a value which is an int
 	limit has a value which is an int
@@ -381,10 +440,19 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
-AlertID is an int
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
+AlertID is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -447,7 +515,7 @@ AlertStatus is a string
 
 =head2 search_alerts_summary
 
-  $result = $obj->search_alerts_summary($query)
+  $result, $error = $obj->search_alerts_summary($query)
 
 =over 4
 
@@ -458,13 +526,18 @@ AlertStatus is a string
 <pre>
 $query is an UIService.AlertQuery
 $result is an UIService.AlertQueryResult
+$error is an UIService.Error
 AlertQuery is a reference to a hash where the following keys are defined:
-	search has a value which is an UIService.SearchSpec
+	query has a value which is an UIService.SearchExpression
 	page has a value which is an UIService.PagingSpec
 	sorting has a value which is a reference to a list where each element is an UIService.SortSpec
-SearchSpec is a reference to a hash where the following keys are defined:
-	field has a value which is a string
-	operator has a value which is a string
+SearchExpression is a reference to a hash where the following keys are defined:
+	op has a value which is a string
+	args has a value which is a reference to a list where each element is an UIService.SearchField
+SearchField is a reference to a hash where the following keys are defined:
+	path has a value which is a string
+	op has a value which is a string
+	value has a value which is a string
 PagingSpec is a reference to a hash where the following keys are defined:
 	start has a value which is an int
 	limit has a value which is an int
@@ -474,6 +547,11 @@ SortSpec is a reference to a hash where the following keys are defined:
 Boolean is an int
 AlertQueryResult is a reference to a hash where the following keys are defined:
 	statuses has a value which is a reference to a hash where the key is a string and the value is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -483,13 +561,18 @@ AlertQueryResult is a reference to a hash where the following keys are defined:
 
 $query is an UIService.AlertQuery
 $result is an UIService.AlertQueryResult
+$error is an UIService.Error
 AlertQuery is a reference to a hash where the following keys are defined:
-	search has a value which is an UIService.SearchSpec
+	query has a value which is an UIService.SearchExpression
 	page has a value which is an UIService.PagingSpec
 	sorting has a value which is a reference to a list where each element is an UIService.SortSpec
-SearchSpec is a reference to a hash where the following keys are defined:
-	field has a value which is a string
-	operator has a value which is a string
+SearchExpression is a reference to a hash where the following keys are defined:
+	op has a value which is a string
+	args has a value which is a reference to a list where each element is an UIService.SearchField
+SearchField is a reference to a hash where the following keys are defined:
+	path has a value which is a string
+	op has a value which is a string
+	value has a value which is a string
 PagingSpec is a reference to a hash where the following keys are defined:
 	start has a value which is an int
 	limit has a value which is an int
@@ -499,6 +582,11 @@ SortSpec is a reference to a hash where the following keys are defined:
 Boolean is an int
 AlertQueryResult is a reference to a hash where the following keys are defined:
 	statuses has a value which is a reference to a hash where the key is a string and the value is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -561,7 +649,7 @@ AlertQueryResult is a reference to a hash where the following keys are defined:
 
 =head2 am_admin_user
 
-  $is_admin = $obj->am_admin_user()
+  $is_admin, $error = $obj->am_admin_user()
 
 =over 4
 
@@ -571,7 +659,13 @@ AlertQueryResult is a reference to a hash where the following keys are defined:
 
 <pre>
 $is_admin is an UIService.Boolean
+$error is an UIService.Error
 Boolean is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -580,7 +674,13 @@ Boolean is an int
 =begin text
 
 $is_admin is an UIService.Boolean
+$error is an UIService.Error
 Boolean is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -632,7 +732,7 @@ am_admin_user
 
 =head2 add_alert
 
-  $result = $obj->add_alert($alert_param)
+  $result, $error = $obj->add_alert($alert_param)
 
 =over 4
 
@@ -643,6 +743,7 @@ am_admin_user
 <pre>
 $alert_param is an UIService.AddAlertParams
 $result is an UIService.AddAlertResult
+$error is an UIService.Error
 AddAlertParams is a reference to a hash where the following keys are defined:
 	alert has a value which is an UIService.Alert
 Alert is a reference to a hash where the following keys are defined:
@@ -653,12 +754,21 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
-AlertID is an int
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
+AlertID is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
 AddAlertResult is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -668,6 +778,7 @@ AddAlertResult is a reference to a hash where the following keys are defined:
 
 $alert_param is an UIService.AddAlertParams
 $result is an UIService.AddAlertResult
+$error is an UIService.Error
 AddAlertParams is a reference to a hash where the following keys are defined:
 	alert has a value which is an UIService.Alert
 Alert is a reference to a hash where the following keys are defined:
@@ -678,12 +789,21 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
-AlertID is an int
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
+AlertID is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
 AddAlertResult is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -746,7 +866,7 @@ AddAlertResult is a reference to a hash where the following keys are defined:
 
 =head2 delete_alert
 
-  $obj->delete_alert($id)
+  $result, $error = $obj->delete_alert($id)
 
 =over 4
 
@@ -756,7 +876,16 @@ AddAlertResult is a reference to a hash where the following keys are defined:
 
 <pre>
 $id is an UIService.AlertID
-AlertID is an int
+$result is an UIService.DeleteAlertResult
+$error is an UIService.Error
+AlertID is a string
+DeleteAlertResult is a reference to a hash where the following keys are defined:
+	id has a value which is an UIService.AlertID
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -765,7 +894,16 @@ AlertID is an int
 =begin text
 
 $id is an UIService.AlertID
-AlertID is an int
+$result is an UIService.DeleteAlertResult
+$error is an UIService.Error
+AlertID is a string
+DeleteAlertResult is a reference to a hash where the following keys are defined:
+	id has a value which is an UIService.AlertID
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -814,7 +952,7 @@ AlertID is an int
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
-	    return;
+	    return wantarray ? @{$result->result} : $result->result->[0];
 	}
     } else {
         Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method delete_alert",
@@ -828,7 +966,7 @@ AlertID is an int
 
 =head2 is_admin_user
 
-  $is_admin = $obj->is_admin_user($username)
+  $is_admin, $error = $obj->is_admin_user($username)
 
 =over 4
 
@@ -839,8 +977,14 @@ AlertID is an int
 <pre>
 $username is an UIService.Username
 $is_admin is an UIService.Boolean
+$error is an UIService.Error
 Username is a string
 Boolean is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -850,8 +994,14 @@ Boolean is an int
 
 $username is an UIService.Username
 $is_admin is an UIService.Boolean
+$error is an UIService.Error
 Username is a string
 Boolean is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -914,7 +1064,7 @@ Boolean is an int
 
 =head2 update_alert
 
-  $obj->update_alert($alert_param)
+  $success, $error = $obj->update_alert($alert_param)
 
 =over 4
 
@@ -924,6 +1074,8 @@ Boolean is an int
 
 <pre>
 $alert_param is an UIService.UpdateAlertParams
+$success is an UIService.Boolean
+$error is an UIService.Error
 UpdateAlertParams is a reference to a hash where the following keys are defined:
 	alert has a value which is an UIService.Alert
 Alert is a reference to a hash where the following keys are defined:
@@ -934,10 +1086,20 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
-AlertID is an int
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
+AlertID is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
+Boolean is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -946,6 +1108,8 @@ AlertStatus is a string
 =begin text
 
 $alert_param is an UIService.UpdateAlertParams
+$success is an UIService.Boolean
+$error is an UIService.Error
 UpdateAlertParams is a reference to a hash where the following keys are defined:
 	alert has a value which is an UIService.Alert
 Alert is a reference to a hash where the following keys are defined:
@@ -956,10 +1120,20 @@ Alert is a reference to a hash where the following keys are defined:
 	title has a value which is a string
 	message has a value which is a string
 	status has a value which is an UIService.AlertStatus
-AlertID is an int
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
+AlertID is a string
 Timestamp is an int
 AlertType is a string
 AlertStatus is a string
+Boolean is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -1008,7 +1182,7 @@ AlertStatus is a string
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
-	    return;
+	    return wantarray ? @{$result->result} : $result->result->[0];
 	}
     } else {
         Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method update_alert",
@@ -1022,7 +1196,7 @@ AlertStatus is a string
 
 =head2 set_alert_status
 
-  $obj->set_alert_status($id, $status)
+  $success, $error = $obj->set_alert_status($id, $status)
 
 =over 4
 
@@ -1033,8 +1207,16 @@ AlertStatus is a string
 <pre>
 $id is an UIService.AlertID
 $status is an UIService.AlertStatus
-AlertID is an int
+$success is an UIService.Boolean
+$error is an UIService.Error
+AlertID is a string
 AlertStatus is a string
+Boolean is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 </pre>
 
@@ -1044,8 +1226,16 @@ AlertStatus is a string
 
 $id is an UIService.AlertID
 $status is an UIService.AlertStatus
-AlertID is an int
+$success is an UIService.Boolean
+$error is an UIService.Error
+AlertID is a string
 AlertStatus is a string
+Boolean is an int
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -1095,7 +1285,7 @@ set_alert_status
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
-	    return;
+	    return wantarray ? @{$result->result} : $result->result->[0];
 	}
     } else {
         Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method set_alert_status",
@@ -1288,14 +1478,14 @@ a string
 =begin html
 
 <pre>
-an int
+a string
 </pre>
 
 =end html
 
 =begin text
 
-an int
+a string
 
 =end text
 
@@ -1374,6 +1564,10 @@ type has a value which is an UIService.AlertType
 title has a value which is a string
 message has a value which is a string
 status has a value which is an UIService.AlertStatus
+created_at has a value which is an UIService.Timestamp
+created_by has a value which is a string
+updated_at has a value which is an UIService.Timestamp
+updated_by has a value which is a string
 
 </pre>
 
@@ -1389,6 +1583,46 @@ type has a value which is an UIService.AlertType
 title has a value which is a string
 message has a value which is a string
 status has a value which is an UIService.AlertStatus
+created_at has a value which is an UIService.Timestamp
+created_by has a value which is a string
+updated_at has a value which is an UIService.Timestamp
+updated_by has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 Error
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+message has a value which is a string
+type has a value which is a string
+code has a value which is a string
+info has a value which is an UnspecifiedObject, which can hold any non-null object
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+message has a value which is a string
+type has a value which is a string
+code has a value which is a string
+info has a value which is an UnspecifiedObject, which can hold any non-null object
 
 
 =end text
@@ -1466,7 +1700,7 @@ is_descending has a value which is an UIService.Boolean
 
 
 
-=head2 SearchSpec
+=head2 SearchField
 
 =over 4
 
@@ -1478,8 +1712,9 @@ is_descending has a value which is an UIService.Boolean
 
 <pre>
 a reference to a hash where the following keys are defined:
-field has a value which is a string
-operator has a value which is a string
+path has a value which is a string
+op has a value which is a string
+value has a value which is a string
 
 </pre>
 
@@ -1488,8 +1723,49 @@ operator has a value which is a string
 =begin text
 
 a reference to a hash where the following keys are defined:
-field has a value which is a string
-operator has a value which is a string
+path has a value which is a string
+op has a value which is a string
+value has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 SearchExpression
+
+=over 4
+
+
+
+=item Description
+
+typedef structure {
+    SearchField field;
+    SearchSubExpression expression;
+} SearchArg;
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+op has a value which is a string
+args has a value which is a reference to a list where each element is an UIService.SearchField
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+op has a value which is a string
+args has a value which is a reference to a list where each element is an UIService.SearchField
 
 
 =end text
@@ -1510,7 +1786,7 @@ operator has a value which is a string
 
 <pre>
 a reference to a hash where the following keys are defined:
-search has a value which is an UIService.SearchSpec
+query has a value which is an UIService.SearchExpression
 page has a value which is an UIService.PagingSpec
 sorting has a value which is a reference to a list where each element is an UIService.SortSpec
 
@@ -1521,7 +1797,7 @@ sorting has a value which is a reference to a list where each element is an UISe
 =begin text
 
 a reference to a hash where the following keys are defined:
-search has a value which is an UIService.SearchSpec
+query has a value which is an UIService.SearchExpression
 page has a value which is an UIService.PagingSpec
 sorting has a value which is a reference to a list where each element is an UIService.SortSpec
 
@@ -1628,6 +1904,36 @@ alert has a value which is an UIService.Alert
 
 
 =head2 AddAlertResult
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+id has a value which is an UIService.AlertID
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+id has a value which is an UIService.AlertID
+
+
+=end text
+
+=back
+
+
+
+=head2 DeleteAlertResult
 
 =over 4
 

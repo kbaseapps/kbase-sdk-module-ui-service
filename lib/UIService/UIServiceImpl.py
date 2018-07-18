@@ -23,7 +23,7 @@ class UIService:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "ssh://git@github.com/eapearson/kbase-sdk-module-ui-service"
-    GIT_COMMIT_HASH = "030e6dc9f298be637b6763a334612455a15c5b8f"
+    GIT_COMMIT_HASH = "5a57c3e1aedb4385dad0b7964ab0d2fef582413a"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -32,16 +32,17 @@ class UIService:
     # be found
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
-        self.data_root = config['data-root']
-        self.model_path = self.data_root + '/model.db'
-        self.admin_users = string.split(os.environ.get('ADMIN_USERS', ''), ' ')
+        # self.admin_users = string.split(os.environ.get('ADMIN_USERS', ''), ' ')
+        self.admin_users = string.split(config['admin-users'], ' ')
         print('admin users', self.admin_users)
-        # print('auth config: %s, %s' % (config['auth-url'], config['auth-service-url']))
-        model = UIServiceModel(path=self.model_path, auth_url=config['auth-url'])
-        model.initialize()
+        self.db_config = {
+            'host': config['mongo-host'],
+            'port': int(config['mongo-port']),
+            'db': config['mongo-db'],
+            'user': config['mongo-user'],
+            'password': config['mongo-pwd']
+        }
 
-        # self.authUrl = config['auth-service-url']
-        # self.authUrl = 'https://ci.kbase.us/services/auth'
         self.auth_url = config['auth-url']
 
         #END_CONSTRUCTOR
@@ -52,132 +53,187 @@ class UIService:
         """
         get_alert
         :param id: instance of type "AlertID"
-        :returns: instance of type "Alert" -> structure: parameter "id" of
-           type "AlertID", parameter "start_at" of type "Timestamp" (BASE
-           Types), parameter "end_at" of type "Timestamp" (BASE Types),
-           parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of String, parameter "status" of type
-           "AlertStatus"
+        :returns: multiple set - (1) parameter "alert" of type "Alert" ->
+           structure: parameter "id" of type "AlertID", parameter "start_at"
+           of type "Timestamp" (BASE Types), parameter "end_at" of type
+           "Timestamp" (BASE Types), parameter "type" of type "AlertType",
+           parameter "title" of String, parameter "message" of String,
+           parameter "status" of type "AlertStatus", parameter "created_at"
+           of type "Timestamp" (BASE Types), parameter "created_by" of
+           String, parameter "updated_at" of type "Timestamp" (BASE Types),
+           parameter "updated_by" of String, (2) parameter "error" of type
+           "Error" -> structure: parameter "message" of String, parameter
+           "type" of String, parameter "code" of String, parameter "info" of
+           unspecified object
         """
         # ctx is the context object
-        # return variables are: alert
+        # return variables are: alert, error
         #BEGIN get_alert
         model = UIServiceModel(
-            path=self.model_path, 
             auth_url=self.auth_url, 
             admin_users=self.admin_users,
             token=ctx['token'], 
-            username=ctx['user_id'])
-        alert = model.get_alert(id) 
+            username=ctx['user_id'],
+            db_config=self.db_config)
+        alert, error = model.get_alert(id)
+        return [alert, error]
         #END get_alert
 
         # At some point might do deeper type checking...
         if not isinstance(alert, dict):
             raise ValueError('Method get_alert return value ' +
                              'alert is not type dict as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method get_alert return value ' +
+                             'error is not type dict as required.')
         # return the results
-        return [alert]
+        return [alert, error]
 
     def get_active_alerts(self, ctx):
         """
         get_active_alerts
-        :returns: instance of list of type "Alert" -> structure: parameter
-           "id" of type "AlertID", parameter "start_at" of type "Timestamp"
-           (BASE Types), parameter "end_at" of type "Timestamp" (BASE Types),
-           parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of String, parameter "status" of type
-           "AlertStatus"
+        :returns: multiple set - (1) parameter "alerts" of list of type
+           "Alert" -> structure: parameter "id" of type "AlertID", parameter
+           "start_at" of type "Timestamp" (BASE Types), parameter "end_at" of
+           type "Timestamp" (BASE Types), parameter "type" of type
+           "AlertType", parameter "title" of String, parameter "message" of
+           String, parameter "status" of type "AlertStatus", parameter
+           "created_at" of type "Timestamp" (BASE Types), parameter
+           "created_by" of String, parameter "updated_at" of type "Timestamp"
+           (BASE Types), parameter "updated_by" of String, (2) parameter
+           "error" of type "Error" -> structure: parameter "message" of
+           String, parameter "type" of String, parameter "code" of String,
+           parameter "info" of unspecified object
         """
         # ctx is the context object
-        # return variables are: alerts
+        # return variables are: alerts, error
         #BEGIN get_active_alerts
+        error = None
         model = UIServiceModel(
-            path=self.model_path, 
             auth_url=self.auth_url, 
             admin_users=self.admin_users,
             token=ctx['token'], 
-            username=ctx['user_id'])
+            username=ctx['user_id'],
+            db_config=self.db_config)
         alerts = model.get_active_alerts()
+        return [alerts, None]
         #END get_active_alerts
 
         # At some point might do deeper type checking...
         if not isinstance(alerts, list):
             raise ValueError('Method get_active_alerts return value ' +
                              'alerts is not type list as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method get_active_alerts return value ' +
+                             'error is not type dict as required.')
         # return the results
-        return [alerts]
+        return [alerts, error]
 
     def search_alerts(self, ctx, query):
         """
         :param query: instance of type "AlertQuery" -> structure: parameter
-           "search" of type "SearchSpec" -> structure: parameter "field" of
-           String, parameter "operator" of String, parameter "page" of type
-           "PagingSpec" (typedef UnspecifiedObject Query;) -> structure:
-           parameter "start" of Long, parameter "limit" of Long, parameter
-           "sorting" of list of type "SortSpec" -> structure: parameter
-           "field" of String, parameter "is_descending" of type "Boolean"
-        :returns: instance of type "SearchAlertsResult" -> structure:
-           parameter "alerts" of list of type "Alert" -> structure: parameter
-           "id" of type "AlertID", parameter "start_at" of type "Timestamp"
-           (BASE Types), parameter "end_at" of type "Timestamp" (BASE Types),
-           parameter "type" of type "AlertType", parameter "title" of String,
-           parameter "message" of String, parameter "status" of type
-           "AlertStatus"
+           "query" of type "SearchExpression" (typedef structure {
+           SearchField field; SearchSubExpression expression; } SearchArg;)
+           -> structure: parameter "op" of String, parameter "args" of list
+           of type "SearchField" -> structure: parameter "path" of String,
+           parameter "op" of String, parameter "value" of String, parameter
+           "page" of type "PagingSpec" (typedef UnspecifiedObject Query;) ->
+           structure: parameter "start" of Long, parameter "limit" of Long,
+           parameter "sorting" of list of type "SortSpec" -> structure:
+           parameter "field" of String, parameter "is_descending" of type
+           "Boolean"
+        :returns: multiple set - (1) parameter "result" of type
+           "SearchAlertsResult" -> structure: parameter "alerts" of list of
+           type "Alert" -> structure: parameter "id" of type "AlertID",
+           parameter "start_at" of type "Timestamp" (BASE Types), parameter
+           "end_at" of type "Timestamp" (BASE Types), parameter "type" of
+           type "AlertType", parameter "title" of String, parameter "message"
+           of String, parameter "status" of type "AlertStatus", parameter
+           "created_at" of type "Timestamp" (BASE Types), parameter
+           "created_by" of String, parameter "updated_at" of type "Timestamp"
+           (BASE Types), parameter "updated_by" of String, (2) parameter
+           "error" of type "Error" -> structure: parameter "message" of
+           String, parameter "type" of String, parameter "code" of String,
+           parameter "info" of unspecified object
         """
         # ctx is the context object
-        # return variables are: result
+        # return variables are: result, error
         #BEGIN search_alerts
+        error = None
         model = UIServiceModel(
-            path=self.model_path, 
             auth_url=self.auth_url, 
             admin_users=self.admin_users,
             token=ctx['token'],
-            username=ctx['user_id'])
+            username=ctx['user_id'],
+            db_config=self.db_config)
+
         result = {
             'alerts': model.search_alerts(query)
         }
+
+        return [result, None]
         #END search_alerts
 
         # At some point might do deeper type checking...
         if not isinstance(result, dict):
             raise ValueError('Method search_alerts return value ' +
                              'result is not type dict as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method search_alerts return value ' +
+                             'error is not type dict as required.')
         # return the results
-        return [result]
+        return [result, error]
 
     def search_alerts_summary(self, ctx, query):
         """
         :param query: instance of type "AlertQuery" -> structure: parameter
-           "search" of type "SearchSpec" -> structure: parameter "field" of
-           String, parameter "operator" of String, parameter "page" of type
-           "PagingSpec" (typedef UnspecifiedObject Query;) -> structure:
-           parameter "start" of Long, parameter "limit" of Long, parameter
-           "sorting" of list of type "SortSpec" -> structure: parameter
-           "field" of String, parameter "is_descending" of type "Boolean"
-        :returns: instance of type "AlertQueryResult" -> structure: parameter
-           "statuses" of mapping from String to Long
+           "query" of type "SearchExpression" (typedef structure {
+           SearchField field; SearchSubExpression expression; } SearchArg;)
+           -> structure: parameter "op" of String, parameter "args" of list
+           of type "SearchField" -> structure: parameter "path" of String,
+           parameter "op" of String, parameter "value" of String, parameter
+           "page" of type "PagingSpec" (typedef UnspecifiedObject Query;) ->
+           structure: parameter "start" of Long, parameter "limit" of Long,
+           parameter "sorting" of list of type "SortSpec" -> structure:
+           parameter "field" of String, parameter "is_descending" of type
+           "Boolean"
+        :returns: multiple set - (1) parameter "result" of type
+           "AlertQueryResult" -> structure: parameter "statuses" of mapping
+           from String to Long, (2) parameter "error" of type "Error" ->
+           structure: parameter "message" of String, parameter "type" of
+           String, parameter "code" of String, parameter "info" of
+           unspecified object
         """
         # ctx is the context object
-        # return variables are: result
+        # return variables are: result, error
         #BEGIN search_alerts_summary
+        error = None
         result = {}
+        return [result, None]
         #END search_alerts_summary
 
         # At some point might do deeper type checking...
         if not isinstance(result, dict):
             raise ValueError('Method search_alerts_summary return value ' +
                              'result is not type dict as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method search_alerts_summary return value ' +
+                             'error is not type dict as required.')
         # return the results
-        return [result]
+        return [result, error]
 
     def am_admin_user(self, ctx):
         """
         am_admin_user
-        :returns: instance of type "Boolean"
+        :returns: multiple set - (1) parameter "is_admin" of type "Boolean",
+           (2) parameter "error" of type "Error" -> structure: parameter
+           "message" of String, parameter "type" of String, parameter "code"
+           of String, parameter "info" of unspecified object
         """
         # ctx is the context object
-        # return variables are: is_admin
+        # return variables are: is_admin, error
         #BEGIN am_admin_user
+        error = None
         
         # from model.
         # model = UIServiceModel(path=self.model_path, auth_url=self.auth_url,  token=ctx['token'])        
@@ -185,6 +241,7 @@ class UIService:
 
         # from runtime env variable.
         is_admin = ctx['user_id'] in self.admin_users
+        return [is_admin, None]
 
         #END am_admin_user
 
@@ -192,8 +249,11 @@ class UIService:
         if not isinstance(is_admin, int):
             raise ValueError('Method am_admin_user return value ' +
                              'is_admin is not type int as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method am_admin_user return value ' +
+                             'error is not type dict as required.')
         # return the results
-        return [is_admin]
+        return [is_admin, error]
 
     def add_alert(self, ctx, alert_param):
         """
@@ -203,74 +263,108 @@ class UIService:
            "Timestamp" (BASE Types), parameter "end_at" of type "Timestamp"
            (BASE Types), parameter "type" of type "AlertType", parameter
            "title" of String, parameter "message" of String, parameter
-           "status" of type "AlertStatus"
-        :returns: instance of type "AddAlertResult" -> structure: parameter
-           "id" of type "AlertID"
+           "status" of type "AlertStatus", parameter "created_at" of type
+           "Timestamp" (BASE Types), parameter "created_by" of String,
+           parameter "updated_at" of type "Timestamp" (BASE Types), parameter
+           "updated_by" of String
+        :returns: multiple set - (1) parameter "result" of type
+           "AddAlertResult" -> structure: parameter "id" of type "AlertID",
+           (2) parameter "error" of type "Error" -> structure: parameter
+           "message" of String, parameter "type" of String, parameter "code"
+           of String, parameter "info" of unspecified object
         """
         # ctx is the context object
-        # return variables are: result
+        # return variables are: result, error
         #BEGIN add_alert
+        error = None
         model = UIServiceModel(
-            path=self.model_path, 
             auth_url=self.auth_url, 
             admin_users=self.admin_users,
             token=ctx['token'], 
-            username=ctx['user_id'])
+            username=ctx['user_id'],
+            db_config=self.db_config)
         result = {
             'id': model.add_alert(alert_param['alert'])
         }
+        return [result, None]
         #END add_alert
 
         # At some point might do deeper type checking...
         if not isinstance(result, dict):
             raise ValueError('Method add_alert return value ' +
                              'result is not type dict as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method add_alert return value ' +
+                             'error is not type dict as required.')
         # return the results
-        return [result]
+        return [result, error]
 
     def delete_alert(self, ctx, id):
         """
         :param id: instance of type "AlertID"
+        :returns: multiple set - (1) parameter "result" of type
+           "DeleteAlertResult" -> structure: parameter "id" of type
+           "AlertID", (2) parameter "error" of type "Error" -> structure:
+           parameter "message" of String, parameter "type" of String,
+           parameter "code" of String, parameter "info" of unspecified object
         """
         # ctx is the context object
+        # return variables are: result, error
         #BEGIN delete_alert
-
+        error = None
         model = UIServiceModel(
-            path=self.model_path, 
             auth_url=self.auth_url, 
             admin_users=self.admin_users,
             token=ctx['token'],
-            username=ctx['user_id'])
+            username=ctx['user_id'],
+            db_config=self.db_config)
         model.delete_alert(id)
+        result = {'id': id}
+        return [result, None]
         #END delete_alert
-        pass
+
+        # At some point might do deeper type checking...
+        if not isinstance(result, dict):
+            raise ValueError('Method delete_alert return value ' +
+                             'result is not type dict as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method delete_alert return value ' +
+                             'error is not type dict as required.')
+        # return the results
+        return [result, error]
 
     def is_admin_user(self, ctx, username):
         """
         :param username: instance of type "Username"
-        :returns: instance of type "Boolean"
+        :returns: multiple set - (1) parameter "is_admin" of type "Boolean",
+           (2) parameter "error" of type "Error" -> structure: parameter
+           "message" of String, parameter "type" of String, parameter "code"
+           of String, parameter "info" of unspecified object
         """
         # ctx is the context object
-        # return variables are: is_admin
+        # return variables are: is_admin, error
         #BEGIN is_admin_user
-
+        error = None;
         # This uses the admin user stored in the model... 
         model = UIServiceModel(
-            path=self.model_path, 
             auth_url=self.auth_url, 
             admin_users=self.admin_users,
             token=ctx['token'],
-            username=ctx['username'])
+            username=ctx['username'],
+            db_config=self.db_config)
         is_admin = model.is_admin_user(username)
-
+        return [is_admin, error]
         #END is_admin_user
 
         # At some point might do deeper type checking...
         if not isinstance(is_admin, int):
             raise ValueError('Method is_admin_user return value ' +
                              'is_admin is not type int as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method is_admin_user return value ' +
+                             'error is not type dict as required.')
         # return the results
-        return [is_admin]
+        return [is_admin, error]
 
     def update_alert(self, ctx, alert_param):
         """
@@ -280,30 +374,67 @@ class UIService:
            of type "Timestamp" (BASE Types), parameter "end_at" of type
            "Timestamp" (BASE Types), parameter "type" of type "AlertType",
            parameter "title" of String, parameter "message" of String,
-           parameter "status" of type "AlertStatus"
+           parameter "status" of type "AlertStatus", parameter "created_at"
+           of type "Timestamp" (BASE Types), parameter "created_by" of
+           String, parameter "updated_at" of type "Timestamp" (BASE Types),
+           parameter "updated_by" of String
+        :returns: multiple set - (1) parameter "success" of type "Boolean",
+           (2) parameter "error" of type "Error" -> structure: parameter
+           "message" of String, parameter "type" of String, parameter "code"
+           of String, parameter "info" of unspecified object
         """
         # ctx is the context object
+        # return variables are: success, error
         #BEGIN update_alert
+        error = None
         model = UIServiceModel(
-            path=self.model_path, 
             auth_url=self.auth_url, 
             admin_users=self.admin_users,
             token=ctx['token'], 
-            username=ctx['user_id'])
+            username=ctx['user_id'],
+            db_config=self.db_config)
         model.update_alert(alert_param['alert'])
+        success = True
+        return [success, error]
         #END update_alert
-        pass
+
+        # At some point might do deeper type checking...
+        if not isinstance(success, int):
+            raise ValueError('Method update_alert return value ' +
+                             'success is not type int as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method update_alert return value ' +
+                             'error is not type dict as required.')
+        # return the results
+        return [success, error]
 
     def set_alert_status(self, ctx, id, status):
         """
         set_alert_status
         :param id: instance of type "AlertID"
         :param status: instance of type "AlertStatus"
+        :returns: multiple set - (1) parameter "success" of type "Boolean",
+           (2) parameter "error" of type "Error" -> structure: parameter
+           "message" of String, parameter "type" of String, parameter "code"
+           of String, parameter "info" of unspecified object
         """
         # ctx is the context object
+        # return variables are: success, error
         #BEGIN set_alert_status
+        error = None
+        success = None
+        return [success, error]
         #END set_alert_status
-        pass
+
+        # At some point might do deeper type checking...
+        if not isinstance(success, int):
+            raise ValueError('Method set_alert_status return value ' +
+                             'success is not type int as required.')
+        if not isinstance(error, dict):
+            raise ValueError('Method set_alert_status return value ' +
+                             'error is not type dict as required.')
+        # return the results
+        return [success, error]
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

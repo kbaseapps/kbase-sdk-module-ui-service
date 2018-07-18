@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: AddAlertResult</p>
+ * <p>Original spec-file type: DeleteAlertResult</p>
  * 
  * 
  */
@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "id"
 })
-public class AddAlertResult {
+public class DeleteAlertResult {
 
     @JsonProperty("id")
     private String id;
@@ -37,7 +37,7 @@ public class AddAlertResult {
         this.id = id;
     }
 
-    public AddAlertResult withId(String id) {
+    public DeleteAlertResult withId(String id) {
         this.id = id;
         return this;
     }
@@ -54,7 +54,7 @@ public class AddAlertResult {
 
     @Override
     public String toString() {
-        return ((((("AddAlertResult"+" [id=")+ id)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((("DeleteAlertResult"+" [id=")+ id)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

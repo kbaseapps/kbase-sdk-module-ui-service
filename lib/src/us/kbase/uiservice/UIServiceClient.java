@@ -11,6 +11,7 @@ import us.kbase.auth.AuthToken;
 import us.kbase.common.service.JsonClientCaller;
 import us.kbase.common.service.JsonClientException;
 import us.kbase.common.service.RpcContext;
+import us.kbase.common.service.Tuple2;
 import us.kbase.common.service.UnauthorizedException;
 
 /**
@@ -168,16 +169,16 @@ public class UIServiceClient {
      * get_alert
      * </pre>
      * @param   id   instance of original type "AlertID"
-     * @return   parameter "alert" of type {@link us.kbase.uiservice.Alert Alert}
+     * @return   multiple set: (1) parameter "alert" of type {@link us.kbase.uiservice.Alert Alert}, (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public Alert getAlert(Long id, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<Alert, Error> getAlert(String id, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(id);
-        TypeReference<List<Alert>> retType = new TypeReference<List<Alert>>() {};
-        List<Alert> res = caller.jsonrpcCall("UIService.get_alert", args, retType, true, true, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
+        TypeReference<Tuple2<Alert, Error>> retType = new TypeReference<Tuple2<Alert, Error>>() {};
+        Tuple2<Alert, Error> res = caller.jsonrpcCall("UIService.get_alert", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -185,15 +186,15 @@ public class UIServiceClient {
      * <pre>
      * get_active_alerts
      * </pre>
-     * @return   parameter "alerts" of list of type {@link us.kbase.uiservice.Alert Alert}
+     * @return   multiple set: (1) parameter "alerts" of list of type {@link us.kbase.uiservice.Alert Alert}, (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public List<Alert> getActiveAlerts(RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<List<Alert>, Error> getActiveAlerts(RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
-        TypeReference<List<List<Alert>>> retType = new TypeReference<List<List<Alert>>>() {};
-        List<List<Alert>> res = caller.jsonrpcCall("UIService.get_active_alerts", args, retType, true, false, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
+        TypeReference<Tuple2<List<Alert>, Error>> retType = new TypeReference<Tuple2<List<Alert>, Error>>() {};
+        Tuple2<List<Alert>, Error> res = caller.jsonrpcCall("UIService.get_active_alerts", args, retType, true, false, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -201,16 +202,16 @@ public class UIServiceClient {
      * <pre>
      * </pre>
      * @param   query   instance of type {@link us.kbase.uiservice.AlertQuery AlertQuery}
-     * @return   parameter "result" of type {@link us.kbase.uiservice.SearchAlertsResult SearchAlertsResult}
+     * @return   multiple set: (1) parameter "result" of type {@link us.kbase.uiservice.SearchAlertsResult SearchAlertsResult}, (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public SearchAlertsResult searchAlerts(AlertQuery query, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<SearchAlertsResult, Error> searchAlerts(AlertQuery query, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(query);
-        TypeReference<List<SearchAlertsResult>> retType = new TypeReference<List<SearchAlertsResult>>() {};
-        List<SearchAlertsResult> res = caller.jsonrpcCall("UIService.search_alerts", args, retType, true, false, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
+        TypeReference<Tuple2<SearchAlertsResult, Error>> retType = new TypeReference<Tuple2<SearchAlertsResult, Error>>() {};
+        Tuple2<SearchAlertsResult, Error> res = caller.jsonrpcCall("UIService.search_alerts", args, retType, true, false, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -218,16 +219,16 @@ public class UIServiceClient {
      * <pre>
      * </pre>
      * @param   query   instance of type {@link us.kbase.uiservice.AlertQuery AlertQuery}
-     * @return   parameter "result" of type {@link us.kbase.uiservice.AlertQueryResult AlertQueryResult}
+     * @return   multiple set: (1) parameter "result" of type {@link us.kbase.uiservice.AlertQueryResult AlertQueryResult}, (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public AlertQueryResult searchAlertsSummary(AlertQuery query, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<AlertQueryResult, Error> searchAlertsSummary(AlertQuery query, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(query);
-        TypeReference<List<AlertQueryResult>> retType = new TypeReference<List<AlertQueryResult>>() {};
-        List<AlertQueryResult> res = caller.jsonrpcCall("UIService.search_alerts_summary", args, retType, true, false, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
+        TypeReference<Tuple2<AlertQueryResult, Error>> retType = new TypeReference<Tuple2<AlertQueryResult, Error>>() {};
+        Tuple2<AlertQueryResult, Error> res = caller.jsonrpcCall("UIService.search_alerts_summary", args, retType, true, false, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -235,15 +236,15 @@ public class UIServiceClient {
      * <pre>
      * am_admin_user
      * </pre>
-     * @return   parameter "is_admin" of original type "Boolean"
+     * @return   multiple set: (1) parameter "is_admin" of original type "Boolean", (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public Long amAdminUser(RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<Long, Error> amAdminUser(RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
-        TypeReference<List<Long>> retType = new TypeReference<List<Long>>() {};
-        List<Long> res = caller.jsonrpcCall("UIService.am_admin_user", args, retType, true, true, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
+        TypeReference<Tuple2<Long, Error>> retType = new TypeReference<Tuple2<Long, Error>>() {};
+        Tuple2<Long, Error> res = caller.jsonrpcCall("UIService.am_admin_user", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -251,16 +252,16 @@ public class UIServiceClient {
      * <pre>
      * </pre>
      * @param   alertParam   instance of type {@link us.kbase.uiservice.AddAlertParams AddAlertParams}
-     * @return   parameter "result" of type {@link us.kbase.uiservice.AddAlertResult AddAlertResult}
+     * @return   multiple set: (1) parameter "result" of type {@link us.kbase.uiservice.AddAlertResult AddAlertResult}, (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public AddAlertResult addAlert(AddAlertParams alertParam, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<AddAlertResult, Error> addAlert(AddAlertParams alertParam, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(alertParam);
-        TypeReference<List<AddAlertResult>> retType = new TypeReference<List<AddAlertResult>>() {};
-        List<AddAlertResult> res = caller.jsonrpcCall("UIService.add_alert", args, retType, true, true, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
+        TypeReference<Tuple2<AddAlertResult, Error>> retType = new TypeReference<Tuple2<AddAlertResult, Error>>() {};
+        Tuple2<AddAlertResult, Error> res = caller.jsonrpcCall("UIService.add_alert", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -268,14 +269,16 @@ public class UIServiceClient {
      * <pre>
      * </pre>
      * @param   id   instance of original type "AlertID"
+     * @return   multiple set: (1) parameter "result" of type {@link us.kbase.uiservice.DeleteAlertResult DeleteAlertResult}, (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public void deleteAlert(Long id, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<DeleteAlertResult, Error> deleteAlert(String id, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(id);
-        TypeReference<Object> retType = new TypeReference<Object>() {};
-        caller.jsonrpcCall("UIService.delete_alert", args, retType, false, true, jsonRpcContext, this.serviceVersion);
+        TypeReference<Tuple2<DeleteAlertResult, Error>> retType = new TypeReference<Tuple2<DeleteAlertResult, Error>>() {};
+        Tuple2<DeleteAlertResult, Error> res = caller.jsonrpcCall("UIService.delete_alert", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -283,16 +286,16 @@ public class UIServiceClient {
      * <pre>
      * </pre>
      * @param   username   instance of original type "Username"
-     * @return   parameter "is_admin" of original type "Boolean"
+     * @return   multiple set: (1) parameter "is_admin" of original type "Boolean", (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public Long isAdminUser(String username, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<Long, Error> isAdminUser(String username, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(username);
-        TypeReference<List<Long>> retType = new TypeReference<List<Long>>() {};
-        List<Long> res = caller.jsonrpcCall("UIService.is_admin_user", args, retType, true, true, jsonRpcContext, this.serviceVersion);
-        return res.get(0);
+        TypeReference<Tuple2<Long, Error>> retType = new TypeReference<Tuple2<Long, Error>>() {};
+        Tuple2<Long, Error> res = caller.jsonrpcCall("UIService.is_admin_user", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -300,14 +303,16 @@ public class UIServiceClient {
      * <pre>
      * </pre>
      * @param   alertParam   instance of type {@link us.kbase.uiservice.UpdateAlertParams UpdateAlertParams}
+     * @return   multiple set: (1) parameter "success" of original type "Boolean", (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public void updateAlert(UpdateAlertParams alertParam, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<Long, Error> updateAlert(UpdateAlertParams alertParam, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(alertParam);
-        TypeReference<Object> retType = new TypeReference<Object>() {};
-        caller.jsonrpcCall("UIService.update_alert", args, retType, false, true, jsonRpcContext, this.serviceVersion);
+        TypeReference<Tuple2<Long, Error>> retType = new TypeReference<Tuple2<Long, Error>>() {};
+        Tuple2<Long, Error> res = caller.jsonrpcCall("UIService.update_alert", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     /**
@@ -317,15 +322,17 @@ public class UIServiceClient {
      * </pre>
      * @param   id   instance of original type "AlertID"
      * @param   status   instance of original type "AlertStatus"
+     * @return   multiple set: (1) parameter "success" of original type "Boolean", (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public void setAlertStatus(Long id, String status, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public Tuple2<Long, Error> setAlertStatus(String id, String status, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(id);
         args.add(status);
-        TypeReference<Object> retType = new TypeReference<Object>() {};
-        caller.jsonrpcCall("UIService.set_alert_status", args, retType, false, true, jsonRpcContext, this.serviceVersion);
+        TypeReference<Tuple2<Long, Error>> retType = new TypeReference<Tuple2<Long, Error>>() {};
+        Tuple2<Long, Error> res = caller.jsonrpcCall("UIService.set_alert_status", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
     }
 
     public Map<String, Object> status(RpcContext... jsonRpcContext) throws IOException, JsonClientException {

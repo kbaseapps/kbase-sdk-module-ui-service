@@ -26,7 +26,12 @@ docker run -i -t \
   -e "KBASE_ENDPOINT=https://ci.kbase.us/services" \
   -e "AUTH_SERVICE_URL=https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login" \
   -e "AUTH_SERVICE_URL_ALLOW_INSECURE=true" \
-  -e "ADMIN_USERS=eapearson" \
+  -e "KBASE_SECURE_CONFIG_PARAM_admin_users=eapearson" \
+  -e "KBASE_SECURE_CONFIG_PARAM_mongo_db=ui_service" \
+  -e "KBASE_SECURE_CONFIG_PARAM_mongo_host=mongodb" \
+  -e "KBASE_SECURE_CONFIG_PARAM_mongo_port=27017" \
+  -e "KBASE_SECURE_CONFIG_PARAM_mongo_user=ui_service" \
+  -e "KBASE_SECURE_CONFIG_PARAM_mongo_pwd=ui_service" \
   --mount type=bind,src=${root}/test_local/workdir,dst=${container_root}/work \
   --mount type=bind,src=${root}/${source_dir},dst=${container_root}/${source_dir} \
   --rm  test/ui-service:dev 

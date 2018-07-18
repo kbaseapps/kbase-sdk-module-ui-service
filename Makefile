@@ -63,7 +63,7 @@ docker-image-dev:
 	bash scripts/build-docker-image-dev.sh	
 
 run-docker-image-dev:
-	echo "Running the already-build docker image"
+	echo "Running the already-built docker image"
 	bash scripts/run-docker-image-dev.sh	
 
 test:

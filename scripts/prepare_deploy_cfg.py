@@ -34,6 +34,7 @@ if __name__ == "__main__":
         for key in os.environ:
             if key.startswith('KBASE_SECURE_CONFIG_PARAM_'):
                 param_name = key[len('KBASE_SECURE_CONFIG_PARAM_'):]
+                print("PARAM", key, param_name, os.environ.get(key))
                 props += param_name + " = " + os.environ.get(key) + "\n"
         config.readfp(StringIO.StringIO(props))
     else:

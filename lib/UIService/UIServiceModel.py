@@ -1,248 +1,183 @@
-import sqlite3
+# import sqlite3
 from dateutil.parser import parse
-# import datetime
+import datetime
 import pytz
 import json
+# mongodb
+import pymongo
+import urllib
+import uuid
+import calendar
+import time
+from bson import json_util
 from UIService.RESTClient import RESTClient
 
+def now_to_iso():
+    d = datetime.datetime.utcnow()
+    tz = pytz.timezone('UTC')
+    return d.replace(microsecond=0).replace(tzinfo=tz).isoformat()
 
-def iso_to_sqlite_datetime(datetime_string):
-    d = parse(datetime_string)
-    t = d.astimezone(pytz.timezone('UTC'))
-    return t.strftime('%Y-%m-%d %H:%M:%S')
-
-
-def sqlite_to_iso_datetime(sqlite_datetime):
-    d = parse(sqlite_datetime)
-    return d.isoformat() + 'Z'
-
+def iso_to_iso(datetime_string):
+    if datetime_string is None:
+        return None;
+    d = parse(datetime_string, ignoretz=False)
+    d_utc = d.astimezone(pytz.timezone('UTC'))
+    return d_utc.replace(microsecond=0).isoformat()
 
 class UIServiceModel(object):
-    def __init__(self, path=None, auth_url=None, token=None, username=None, admin_users=None):
-        if path is None:
-            raise ValueError('The "path" argument is required')
-        if not isinstance(path, basestring):
-            raise ValueError('The "path" argument must be a string')
-        self.path = path
+    def __init__(self, auth_url=None, token=None, username=None, admin_users=None, db_config=None):
 
         self.token = token
         self.username = username
         self.admin_users = admin_users
-        # print("auth,token: %s, %s" % (auth_url, token))
-        # if auth_url is not None and token is not None:
-        #     client = RESTClient(url=auth_url, token=token)
-        #     result, error = client.get(path='api/V2/me')
-        #     if result is None:
-        #         raise ValueError('Token invalid')
-        #     # print("got auth! %s %s" % (result, error))
-        #     self.username = result.get('user')
-        # else:
-        #     self.username = None
 
-    def connect(self):
-        self.conn = sqlite3.connect(self.path, isolation_level=None)
-        self.conn.execute('pragma journal_mode=wal;')
-
-    def disconnect(self):
-        self.conn.execute('pragma optimize')
-        self.conn.close()
-
-    def initialize(self):
-        self.connect()
-        self.create_schema()
-        self.disconnect()
- 
-    def create_schema(self):
-        alerts_schema = '''
-        drop table if exists admin_users;
-        drop table if exists alerts;
-        drop table if exists alert_status;
-        create table if not exists alert_status (
-            status text not null primary key,
-
-            description text null
-        );
-        insert into alert_status(status, description)
-          values ('pending', 'Pending release');
-        insert into alert_status(status, description)
-          values ('published', 'Alert is published to users');
-        insert into alert_status(status, description)
-          values ('canceled', 'Alert has been canceled');
-        create table if not exists alerts (
-            alert_id integer not null primary key autoincrement,
-
-            status text not null,
-            start_at timestamp null,
-            end_at timestamp null,
-            title text null,
-            message text null,
-
-            foreign key (status)
-              references alert_status(status)
-        );
-        create table admin_users (
-            username text not null primary key,
-            created_at timestamp not null
-        );
-        '''
-        # insert into admin_users
-        # (username, created_at)
-        # values
-        # ('kbase_ui_service_admin', CURRENT_TIMESTAMP)
-        cursor = self.conn.cursor()
-        cursor.executescript(alerts_schema)
-        cursor.close()
+        # Mongo boilerplate
+        if db_config is None:
+            raise ValueError('The database configuration was not provided')
+    
+        self.mongo_host = db_config['host']
+        self.mongo_port = int(db_config['port'])
+        self.mongo_db = db_config['db']
+        self.mongo_user = db_config['user']
+        self.mongo_pwd = db_config['password']
+        self.mongo = pymongo.MongoClient(self.mongo_host, self.mongo_port)
+        self.db = self.mongo[self.mongo_db]
+        self.db.authenticate(self.mongo_user, urllib.quote_plus(self.mongo_pwd))
 
     def add_alert(self, alert):
-        self.ensure_admin_authorization()
+        admin_user = self.ensure_admin_authorization()
 
-        fields = ['status', 'start_at', 'end_at', 'title', 'message']
-        placeholders = ','.join(['?' for _ in fields])
-        columns = ','.join(fields)
-        sql = '''
-        insert into alerts
-          ({})
-        values
-          ({})
-        '''.format(columns, placeholders)
-        params = [
-            alert['status'],
-            iso_to_sqlite_datetime(alert['start_at']),
-            iso_to_sqlite_datetime(alert['end_at']),
-            alert['title'],
-            alert['message']
-            # json.dumps(alert['message'])
-        ]
+        collection = self.db.alerts
 
-        # params = [alert.get(field) for field in fields]
-        self.connect()
-        cursor = self.conn.cursor()
-        cursor.execute(sql, tuple(params))
-        alert_id = cursor.lastrowid
-        cursor.close()
-        self.disconnect()
+        # TODO: validate alert
+        alert_id = str(uuid.uuid4())
+
+        alert_doc = {
+            'id': alert_id,
+            'title': alert['title'],
+            'message': alert['message'],
+            'start_at': iso_to_iso(alert['start_at']),
+            'end_at': iso_to_iso(alert['end_at']),
+            'status': alert['status'],
+            'created_at': now_to_iso(),
+            'created_by': admin_user
+        }
+
+        collection.insert(alert_doc)
+
         return alert_id
 
     def update_alert(self, alert):
-        self.ensure_admin_authorization()
+        admin_user = self.ensure_admin_authorization()
 
-        fields = ['status', 'start_at', 'end_at', 'title', 'message']
-        updates = ','.join(list(map(lambda field: '%s = ?' % (field), fields)))
-        # for now we do a full update, not partial
-        sql = '''
-        update alerts
-        set {}
-        where alert_id = ?
-        '''.format(updates)
-        params = [
-            alert['status'],
-            iso_to_sqlite_datetime(alert['start_at']),
-            iso_to_sqlite_datetime(alert['end_at']),
-            alert['title'],
-            alert['message'],
-            alert['id']
-        ]
+        collection = self.db.alerts
 
-        self.connect()
-        cursor = self.conn.cursor()
-        cursor.execute(sql, tuple(params))
-        alert_id = cursor.lastrowid
-        cursor.close()
-        self.disconnect()
-        return alert_id
+        collection.update(
+            {
+                'id': {'$eq': alert['id']}
+            },
+            {'$set': {
+                'title': alert['title'],
+                'message': alert['message'],
+                'end_at': iso_to_iso(alert['end_at']),
+                'status': alert['status'],
+                'updated_at': now_to_iso(),
+                'updated_by': admin_user
+            }}
+        )
+
+        return alert['id']
 
     def get_active_alerts(self):
-        # todo add time comparison too
-        sql = '''
-        select alert_id, status, start_at, end_at, title, message
-        from alerts
-        where status = 'published'
-        '''
-        self.connect()
-        cursor = self.conn.cursor()
-        cursor.execute(sql)
-        result = []
-        for (alert_id, status, start_at, end_at, title, message) in cursor:
-            result.append({
-                'id': alert_id,
-                'status': status,
-                'startAt': sqlite_to_iso_datetime(start_at),
-                'endAt': sqlite_to_iso_datetime(end_at),
-                'title': title,
-                'message': message
-                # 'message': json.loads(message)
-            })
-        cursor.close()
-        self.disconnect()
-        return result
+        collection = self.db.alerts
+        now = now_to_iso()
+        alerts = collection.find({
+            '$and': [
+                {'status': {'$eq': 'published'}},
+                {'$or': [
+                    {'end_at': {'$gte': now}},
+                    {'$and': [
+                        {'start_at': {'$lte': now}},
+                        {'end_at': {'$eq': None}}
+                    ]}
+                ]}
+            ]
+        })
 
-    def search_alerts(self, query):
-        # todo add time comparison too
-        sql = '''
-        select alert_id, status, start_at, end_at, title, message
-        from alerts
-        '''
-        self.connect()
-        cursor = self.conn.cursor()
-        cursor.execute(sql)
-        result = []
-        for (alert_id, status, start_at, end_at, title, message) in cursor:
-            result.append({
-                'id': alert_id,
-                'status': status,
-                'startAt': sqlite_to_iso_datetime(start_at),
-                'endAt': sqlite_to_iso_datetime(end_at),
-                'title': title,
-                'message': message
-                # 'message': json.loads(message)
-            })
-        cursor.close()
-        self.disconnect()
-        return result
+        alerts_json = []
+        for alert in alerts:
+            alert_json = json.loads(json_util.dumps(alert))
+            alerts_json.append(alert_json)
+
+        return alerts_json
+
+    def search_alerts(self, search_query):
+        # todo: support query!
+        collection = self.db.alerts
+
+        find_expression = {}
+
+        if search_query['query'] and len(search_query['query']['args']) > 0:
+            exprs = []
+            query = search_query['query']
+            for arg in query['args']:
+                expr = {}
+
+                if arg['op'] in ['eq', 'gt', 'lt', 'gte', 'lte', 'ne']:
+                    op = '$' + arg['op']
+                else:
+                    raise ValueError('Invalid search argument comparison operator: ' + arg['op'])
+
+                expr_value = {}
+                expr_value[op] = arg['value']
+                expr[arg['path']] = expr_value
+                exprs.append(expr)
+
+
+            if query['op'] in ['and', 'or', 'nor', 'not']:
+                query_op = '$' + query['op']
+            else:
+                raise ValueError('Invalid query operator: ' + query['op'])
+
+            find_expression[query_op] = exprs
+
+        # print(str(find_expression))
+
+        alerts = collection.find(find_expression)
+        alerts_json = []
+        for alert in alerts:
+            alert_json = json.loads(json_util.dumps(alert))
+            alerts_json.append(alert_json)
+        return alerts_json
 
     def get_alert(self, alert_id):
-        # todo add time comparison too
-        sql = '''
-        select alert_id, status, start_at, end_at, title, message
-        from alerts
-        where alert_id = ?
-        '''
-        params = [alert_id]
-        self.connect()
-        cursor = self.conn.cursor()
-        cursor.execute(sql, params)
-        result = []
-        for (alert_id, status, start_at, end_at, title, message) in cursor:
-            result.append({
-                'id': alert_id,
-                'status': status,
-                'startAt': sqlite_to_iso_datetime(start_at),
-                'endAt': sqlite_to_iso_datetime(end_at),
-                'title': title,
-                'message': message
-                # 'message': json.loads(message)
-            })
-        cursor.disconnect()
-        self.disconnect()
-        if len(result) > 1:
-            raise ValueError('Too manu results for get_alert for %s' % (alert_id))
-        return result[0]
+        collection = self.db.alerts
+
+        alert = collection.find_one({
+            'id': {'$eq': alert_id}
+        })
+
+        if alert is None:
+            return None, {
+                'message': 'An alert was not found',
+                'type': 'data',
+                'code': 'notfound',
+                'info': {
+                    'id': alert_id
+                }
+            }
+
+        alert_json = json.loads(json_util.dumps(alert))
+        return alert_json, None
 
     def delete_alert(self, alert_id):
         self.ensure_admin_authorization()
 
-        # todo add time comparison too
-        sql = '''
-        delete
-        from alerts
-        where alert_id = ?
-        '''
-        params = [alert_id]
-        self.connect()
-        cursor = self.conn.cursor()
-        cursor.execute(sql, params)
-        cursor.close()
-        self.disconnect()
+        collection = self.db.alerts
+
+        collection.remove({
+            'id': {'$eq': alert_id}
+        })
 
     def ensure_admin_authorization(self):
         if self.token is None:
@@ -251,31 +186,8 @@ class UIServiceModel(object):
         if not self.username in self.admin_users:
             raise ValueError('Not admin user')
 
-        pass
+        return self.username
 
     def is_admin_user(self, username):
         self.ensure_admin_authorization()
         return username in self.admin_users
-        # sql = '''
-        # select exists(select 1 from admin_users where username = ?)
-        # '''
-        # params = [username]
-        # self.connect()
-        # cursor = self.conn.cursor()
-        # cursor.execute(sql, params)
-        # is_admin = cursor.fetchone()[0]
-        # cursor.close()
-        # self.disconnect()
-        # if is_admin:
-        #     return True
-        # else:
-        #     return False
-
-    def authorized_user_is_admin(self):
-        if self.token is None:
-            raise ValueError('No authorization token')
-
-        if self.username is None:
-            raise ValueError('No authorized user')
-
-        return self.is_admin_user(self.username)

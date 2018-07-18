@@ -40,6 +40,22 @@ docker build --rm -t test/ui-service:dev
 
 If you are starting from a cold docker cache the initial build may take several minutes: the kbase base image is rather huge.
 
+## Actually...
+
+To make the image locally: 
+
+```
+make docker-image-dev
+```
+
+Then to run it:
+
+```
+make run-docker-image-dev
+```
+
+This will start the container attached to the Docker custom network 
+
 ## Work in Progress Instructions
 
 In the current incarnation, when the service starts it creates the sqlite database schema, and populates initial data therein. This includes the admin user, ui_service_admin. A token for this user may be used to add alerts.

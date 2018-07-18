@@ -20,19 +20,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
-    "search",
+    "query",
     "page",
     "sorting"
 })
 public class AlertQuery {
 
     /**
-     * <p>Original spec-file type: SearchSpec</p>
-     * 
+     * <p>Original spec-file type: SearchExpression</p>
+     * <pre>
+     * typedef structure {
+     *     SearchField field;
+     *     SearchSubExpression expression;
+     * } SearchArg;
+     * </pre>
      * 
      */
-    @JsonProperty("search")
-    private SearchSpec search;
+    @JsonProperty("query")
+    private SearchExpression query;
     /**
      * <p>Original spec-file type: PagingSpec</p>
      * <pre>
@@ -47,27 +52,37 @@ public class AlertQuery {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     * <p>Original spec-file type: SearchSpec</p>
-     * 
+     * <p>Original spec-file type: SearchExpression</p>
+     * <pre>
+     * typedef structure {
+     *     SearchField field;
+     *     SearchSubExpression expression;
+     * } SearchArg;
+     * </pre>
      * 
      */
-    @JsonProperty("search")
-    public SearchSpec getSearch() {
-        return search;
+    @JsonProperty("query")
+    public SearchExpression getQuery() {
+        return query;
     }
 
     /**
-     * <p>Original spec-file type: SearchSpec</p>
-     * 
+     * <p>Original spec-file type: SearchExpression</p>
+     * <pre>
+     * typedef structure {
+     *     SearchField field;
+     *     SearchSubExpression expression;
+     * } SearchArg;
+     * </pre>
      * 
      */
-    @JsonProperty("search")
-    public void setSearch(SearchSpec search) {
-        this.search = search;
+    @JsonProperty("query")
+    public void setQuery(SearchExpression query) {
+        this.query = query;
     }
 
-    public AlertQuery withSearch(SearchSpec search) {
-        this.search = search;
+    public AlertQuery withQuery(SearchExpression query) {
+        this.query = query;
         return this;
     }
 
@@ -127,7 +142,7 @@ public class AlertQuery {
 
     @Override
     public String toString() {
-        return ((((((((("AlertQuery"+" [search=")+ search)+", page=")+ page)+", sorting=")+ sorting)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("AlertQuery"+" [query=")+ query)+", page=")+ page)+", sorting=")+ sorting)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

@@ -11,7 +11,7 @@ module UIService {
 
     typedef string AlertType;
 
-    typedef int AlertID;
+    typedef string AlertID;
 
     typedef string Username;
 
@@ -25,7 +25,18 @@ module UIService {
         string title;
         string message;
         AlertStatus status;
+        Timestamp created_at;
+        string created_by;
+        Timestamp updated_at;
+        string updated_by;
     } Alert;
+
+    typedef structure {
+        string message;
+        string type;
+        string code;
+        UnspecifiedObject info;
+    } Error;
 
 
     /* METHODS and their in/out types */
@@ -35,14 +46,14 @@ module UIService {
         get_alert 
     */
     funcdef get_alert(AlertID id) 
-        returns (Alert alert) authentication required;
+        returns (Alert alert, Error error) authentication required;
 
     /*
         get_active_alerts
     */
 
     funcdef get_active_alerts()
-        returns (list<Alert> alerts) authentication optional;
+        returns (list<Alert> alerts, Error error) authentication optional;
 
     /*
         search_alerts
@@ -61,12 +72,34 @@ module UIService {
     } SortSpec;
 
     typedef structure {
-        string field;
-        string operator;
-    } SearchSpec;
+        string path;        
+        string op; 
+        string value;
+    } SearchField;
+
+
+    /*
+    typedef structure {
+        string op;
+        list<SearchArg> args;
+    } SearchSubExpression;
+    */
+
+    /* union type: either field or field_set */
+    /*
+    typedef structure {
+        SearchField field;
+        SearchSubExpression expression;
+    } SearchArg;
+    */
 
     typedef structure {
-        SearchSpec search;
+        string op;
+        list<SearchField> args;
+    } SearchExpression;
+
+    typedef structure {
+        SearchExpression query;
         PagingSpec page;
         list<SortSpec> sorting;
     } AlertQuery;
@@ -76,14 +109,14 @@ module UIService {
     } SearchAlertsResult;
 
     funcdef search_alerts(AlertQuery query)
-        returns (SearchAlertsResult result);
+        returns (SearchAlertsResult result, Error error);
 
     typedef  structure {
         mapping<string,int> statuses;
     } AlertQueryResult;
 
     funcdef search_alerts_summary(AlertQuery query)
-        returns (AlertQueryResult result);
+        returns (AlertQueryResult result, Error error);
 
 
     /*
@@ -91,7 +124,7 @@ module UIService {
     */
 
     funcdef am_admin_user()
-        returns (Boolean is_admin) authentication required;
+        returns (Boolean is_admin, Error error) authentication required;
 
 
     /* ADMIN */
@@ -109,13 +142,17 @@ module UIService {
     } AddAlertResult;
 
     funcdef add_alert(AddAlertParams alert_param)
-        returns (AddAlertResult result) authentication required;
+        returns (AddAlertResult result, Error error) authentication required;
+
+    typedef structure {
+        AlertID id;
+    } DeleteAlertResult;
 
     funcdef delete_alert(AlertID id)
-        returns () authentication required;
+        returns (DeleteAlertResult result, Error error) authentication required;
 
     funcdef is_admin_user(Username username)
-        returns (Boolean is_admin) authentication required;
+        returns (Boolean is_admin, Error error) authentication required;
 
      /* 
         update alert 
@@ -125,14 +162,14 @@ module UIService {
     } UpdateAlertParams;
 
     funcdef update_alert(UpdateAlertParams alert_param)
-        returns () authentication required;
+        returns (Boolean success, Error error) authentication required;
 
     /*
         set_alert_status
     */
 
     funcdef set_alert_status(AlertID id, AlertStatus status)
-        returns () authentication required;
+        returns (Boolean success, Error error) authentication required;
 
 
 };

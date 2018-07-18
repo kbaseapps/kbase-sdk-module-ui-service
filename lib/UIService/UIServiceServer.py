@@ -335,7 +335,7 @@ class Application(object):
         self.method_authentication = dict()
         self.rpc_service.add(impl_UIService.get_alert,
                              name='UIService.get_alert',
-                             types=[int])
+                             types=[basestring])
         self.method_authentication['UIService.get_alert'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.get_active_alerts,
                              name='UIService.get_active_alerts',
@@ -359,7 +359,7 @@ class Application(object):
         self.method_authentication['UIService.add_alert'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.delete_alert,
                              name='UIService.delete_alert',
-                             types=[int])
+                             types=[basestring])
         self.method_authentication['UIService.delete_alert'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.is_admin_user,
                              name='UIService.is_admin_user',
@@ -371,7 +371,7 @@ class Application(object):
         self.method_authentication['UIService.update_alert'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.set_alert_status,
                              name='UIService.set_alert_status',
-                             types=[int, basestring])
+                             types=[basestring, basestring])
         self.method_authentication['UIService.set_alert_status'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.status,
                              name='UIService.status',

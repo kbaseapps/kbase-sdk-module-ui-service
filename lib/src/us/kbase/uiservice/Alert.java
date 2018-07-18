@@ -25,12 +25,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "type",
     "title",
     "message",
-    "status"
+    "status",
+    "created_at",
+    "created_by",
+    "updated_at",
+    "updated_by"
 })
 public class Alert {
 
     @JsonProperty("id")
-    private Long id;
+    private String id;
     @JsonProperty("start_at")
     private Long startAt;
     @JsonProperty("end_at")
@@ -43,19 +47,27 @@ public class Alert {
     private String message;
     @JsonProperty("status")
     private String status;
+    @JsonProperty("created_at")
+    private Long createdAt;
+    @JsonProperty("created_by")
+    private String createdBy;
+    @JsonProperty("updated_at")
+    private Long updatedAt;
+    @JsonProperty("updated_by")
+    private String updatedBy;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("id")
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Alert withId(Long id) {
+    public Alert withId(String id) {
         this.id = id;
         return this;
     }
@@ -150,6 +162,66 @@ public class Alert {
         return this;
     }
 
+    @JsonProperty("created_at")
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    @JsonProperty("created_at")
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Alert withCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    @JsonProperty("created_by")
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    @JsonProperty("created_by")
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Alert withCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    @JsonProperty("updated_at")
+    public Long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    @JsonProperty("updated_at")
+    public void setUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Alert withUpdatedAt(Long updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
+    @JsonProperty("updated_by")
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    @JsonProperty("updated_by")
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Alert withUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -162,7 +234,7 @@ public class Alert {
 
     @Override
     public String toString() {
-        return ((((((((((((((((("Alert"+" [id=")+ id)+", startAt=")+ startAt)+", endAt=")+ endAt)+", type=")+ type)+", title=")+ title)+", message=")+ message)+", status=")+ status)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((("Alert"+" [id=")+ id)+", startAt=")+ startAt)+", endAt=")+ endAt)+", type=")+ type)+", title=")+ title)+", message=")+ message)+", status=")+ status)+", createdAt=")+ createdAt)+", createdBy=")+ createdBy)+", updatedAt=")+ updatedAt)+", updatedBy=")+ updatedBy)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
