@@ -34,7 +34,7 @@ class UIService:
         #BEGIN_CONSTRUCTOR
         # self.admin_users = string.split(os.environ.get('ADMIN_USERS', ''), ' ')
         self.admin_users = string.split(config['admin-users'], ' ')
-        print('admin users', self.admin_users)
+
         self.db_config = {
             'host': config['mongo-host'],
             'port': int(config['mongo-port']),
