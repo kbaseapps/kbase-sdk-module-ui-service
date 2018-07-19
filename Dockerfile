@@ -12,7 +12,7 @@ RUN apt-get update \
   && apt-get -y autoremove \
   && apt-get -y install sqlite3
 
-RUN pip install --upgrade pip && pip install python-dateutil
+RUN pip install --upgrade pip && pip install python-dateutil && pip install --upgrade pymongo 
 
 
 # -----------------------------------------

@@ -28,7 +28,7 @@ docker run -i -t \
   -e "AUTH_SERVICE_URL_ALLOW_INSECURE=true" \
   -e "KBASE_SECURE_CONFIG_PARAM_admin_users=eapearson" \
   -e "KBASE_SECURE_CONFIG_PARAM_mongo_db=ui_service" \
-  -e "KBASE_SECURE_CONFIG_PARAM_mongo_host=mongodb" \
+  -e "KBASE_SECURE_CONFIG_PARAM_mongo_host=mongo" \
   -e "KBASE_SECURE_CONFIG_PARAM_mongo_port=27017" \
   -e "KBASE_SECURE_CONFIG_PARAM_mongo_user=ui_service" \
   -e "KBASE_SECURE_CONFIG_PARAM_mongo_pwd=ui_service" \

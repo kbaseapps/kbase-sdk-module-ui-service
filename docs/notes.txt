@@ -1,0 +1,26 @@
+mongo:
+
+using kitematic
+
+install new mongo container, 3.6.6
+
+add authentication
+
+MONGO_INITDB_ROOT_USERNAME=dev_root
+MONGO_INITDB_ROOT_PASSWORD=dev_r00t
+
+map data directories to host file system
+
+you may need to stop, clear the database (remove all files in the data directories) and restart in order for the root user and pwd to be installed
+
+start the mongo instance
+
+use compass to create the database and collection 
+
+now log in from the command line (host) as the root user
+
+now create a user with read/write permissions
+
+db.createUser({user: "ui_service", pwd: "ui_service", roles: [{role: "readWrite", db: "ui_service"}]})
+
+back in the ui service, you will need to set the host to mongo.
