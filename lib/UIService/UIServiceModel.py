@@ -79,6 +79,7 @@ class UIServiceModel(object):
             {'$set': {
                 'title': alert['title'],
                 'message': alert['message'],
+                'start_at': iso_to_iso(alert['start_at']),
                 'end_at': iso_to_iso(alert['end_at']),
                 'status': alert['status'],
                 'updated_at': now_to_iso(),
