@@ -2,7 +2,6 @@
 package us.kbase.uiservice;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,51 +12,50 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: SearchExpression</p>
- * 
+ * <p>Original spec-file type: AddAlertParam</p>
+ * <pre>
+ * add_alert
+ * </pre>
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
-    "op",
-    "args"
+    "alert"
 })
-public class SearchExpression {
+public class AddAlertParam {
 
-    @JsonProperty("op")
-    private String op;
-    @JsonProperty("args")
-    private List<SearchArg> args;
+    /**
+     * <p>Original spec-file type: Alert</p>
+     * 
+     * 
+     */
+    @JsonProperty("alert")
+    private Alert alert;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("op")
-    public String getOp() {
-        return op;
+    /**
+     * <p>Original spec-file type: Alert</p>
+     * 
+     * 
+     */
+    @JsonProperty("alert")
+    public Alert getAlert() {
+        return alert;
     }
 
-    @JsonProperty("op")
-    public void setOp(String op) {
-        this.op = op;
+    /**
+     * <p>Original spec-file type: Alert</p>
+     * 
+     * 
+     */
+    @JsonProperty("alert")
+    public void setAlert(Alert alert) {
+        this.alert = alert;
     }
 
-    public SearchExpression withOp(String op) {
-        this.op = op;
-        return this;
-    }
-
-    @JsonProperty("args")
-    public List<SearchArg> getArgs() {
-        return args;
-    }
-
-    @JsonProperty("args")
-    public void setArgs(List<SearchArg> args) {
-        this.args = args;
-    }
-
-    public SearchExpression withArgs(List<SearchArg> args) {
-        this.args = args;
+    public AddAlertParam withAlert(Alert alert) {
+        this.alert = alert;
         return this;
     }
 
@@ -73,7 +71,7 @@ public class SearchExpression {
 
     @Override
     public String toString() {
-        return ((((((("SearchExpression"+" [op=")+ op)+", args=")+ args)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((("AddAlertParam"+" [alert=")+ alert)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

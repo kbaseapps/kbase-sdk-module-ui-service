@@ -45,7 +45,11 @@ module UIService {
     /* 
         get_alert 
     */
-    funcdef get_alert(AlertID id) 
+    typedef structure {
+        AlertID id;
+    } GetAlertParam;
+
+    funcdef get_alert(GetAlertParam param) 
         returns (Alert alert, Error error) authentication required;
 
     /*
@@ -59,7 +63,7 @@ module UIService {
         search_alerts
     */
 
-    /* typedef UnspecifiedObject Query; */
+  
 
     typedef structure {
         int start;
@@ -71,6 +75,13 @@ module UIService {
         Boolean is_descending;
     } SortSpec;
 
+    /* union type: either field or field_set */
+
+    /* I give up ... */
+
+    typedef UnspecifiedObject SearchExpression;
+
+    /*
     typedef structure {
         string path;        
         string op; 
@@ -78,29 +89,26 @@ module UIService {
     } SearchField;
 
 
-    /*
     typedef structure {
         string op;
-        list<SearchArg> args;
+        list<SearchField> args;
     } SearchSubExpression;
-    */
 
-    /* union type: either field or field_set */
-    /*
+
     typedef structure {
         SearchField field;
         SearchSubExpression expression;
     } SearchArg;
-    */
 
     typedef structure {
         string op;
-        list<SearchField> args;
+        list<SearchArg> args;
     } SearchExpression;
+    */
 
     typedef structure {
         SearchExpression query;
-        PagingSpec page;
+        PagingSpec paging;
         list<SortSpec> sorting;
     } AlertQuery;
 
@@ -111,12 +119,14 @@ module UIService {
     funcdef search_alerts(AlertQuery query)
         returns (SearchAlertsResult result, Error error);
 
+
+
     typedef  structure {
         mapping<string,int> statuses;
-    } AlertQueryResult;
+    } SearchAlertsSummaryResult;
 
-    funcdef search_alerts_summary(AlertQuery query)
-        returns (AlertQueryResult result, Error error);
+    funcdef search_alerts_summary(SearchExpression query)
+        returns (SearchAlertsSummaryResult result, Error error);
 
 
     /*
@@ -135,13 +145,13 @@ module UIService {
 
     typedef structure {
         Alert alert;
-    } AddAlertParams;
+    } AddAlertParam;
 
     typedef structure {
         AlertID id;
     } AddAlertResult;
 
-    funcdef add_alert(AddAlertParams alert_param)
+    funcdef add_alert(AddAlertParam alert_param)
         returns (AddAlertResult result, Error error) authentication required;
 
     typedef structure {
@@ -151,7 +161,11 @@ module UIService {
     funcdef delete_alert(AlertID id)
         returns (DeleteAlertResult result, Error error) authentication required;
 
-    funcdef is_admin_user(Username username)
+    typedef structure {
+        Username username;
+    } IsAdminUserParam;
+
+    funcdef is_admin_user(IsAdminUserParam param)
         returns (Boolean is_admin, Error error) authentication required;
 
      /* 
@@ -164,12 +178,7 @@ module UIService {
     funcdef update_alert(UpdateAlertParams alert_param)
         returns (Boolean success, Error error) authentication required;
 
-    /*
-        set_alert_status
-    */
-
-    funcdef set_alert_status(AlertID id, AlertStatus status)
+    funcdef set_alert(UpdateAlertParams alert_param)
         returns (Boolean success, Error error) authentication required;
-
 
 };

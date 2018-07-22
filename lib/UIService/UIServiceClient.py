@@ -33,10 +33,10 @@ class UIService(object):
             trust_all_ssl_certificates=trust_all_ssl_certificates,
             auth_svc=auth_svc)
 
-    def get_alert(self, id, context=None):
+    def get_alert(self, param, context=None):
         """
-        get_alert
-        :param id: instance of type "AlertID"
+        :param param: instance of type "GetAlertParam" (get_alert) ->
+           structure: parameter "id" of type "AlertID"
         :returns: multiple set - (1) parameter "alert" of type "Alert" ->
            structure: parameter "id" of type "AlertID", parameter "start_at"
            of type "Timestamp" (BASE Types), parameter "end_at" of type
@@ -52,7 +52,7 @@ class UIService(object):
         """
         return self._client.call_method(
             'UIService.get_alert',
-            [id], self._service_ver, context)
+            [param], self._service_ver, context)
 
     def get_active_alerts(self, context=None):
         """
@@ -76,17 +76,18 @@ class UIService(object):
 
     def search_alerts(self, query, context=None):
         """
-        :param query: instance of type "AlertQuery" -> structure: parameter
-           "query" of type "SearchExpression" (typedef structure {
-           SearchField field; SearchSubExpression expression; } SearchArg;)
-           -> structure: parameter "op" of String, parameter "args" of list
-           of type "SearchField" -> structure: parameter "path" of String,
-           parameter "op" of String, parameter "value" of String, parameter
-           "page" of type "PagingSpec" (typedef UnspecifiedObject Query;) ->
-           structure: parameter "start" of Long, parameter "limit" of Long,
-           parameter "sorting" of list of type "SortSpec" -> structure:
-           parameter "field" of String, parameter "is_descending" of type
-           "Boolean"
+        :param query: instance of type "AlertQuery" (typedef structure {
+           string path; string op; string value; } SearchField; typedef
+           structure { string op; list<SearchField> args; }
+           SearchSubExpression; typedef structure { SearchField field;
+           SearchSubExpression expression; } SearchArg; typedef structure {
+           string op; list<SearchArg> args; } SearchExpression;) ->
+           structure: parameter "query" of type "SearchExpression" (I give up
+           ...) -> unspecified object, parameter "paging" of type
+           "PagingSpec" (search_alerts) -> structure: parameter "start" of
+           Long, parameter "limit" of Long, parameter "sorting" of list of
+           type "SortSpec" -> structure: parameter "field" of String,
+           parameter "is_descending" of type "Boolean"
         :returns: multiple set - (1) parameter "result" of type
            "SearchAlertsResult" -> structure: parameter "alerts" of list of
            type "Alert" -> structure: parameter "id" of type "AlertID",
@@ -107,21 +108,12 @@ class UIService(object):
 
     def search_alerts_summary(self, query, context=None):
         """
-        :param query: instance of type "AlertQuery" -> structure: parameter
-           "query" of type "SearchExpression" (typedef structure {
-           SearchField field; SearchSubExpression expression; } SearchArg;)
-           -> structure: parameter "op" of String, parameter "args" of list
-           of type "SearchField" -> structure: parameter "path" of String,
-           parameter "op" of String, parameter "value" of String, parameter
-           "page" of type "PagingSpec" (typedef UnspecifiedObject Query;) ->
-           structure: parameter "start" of Long, parameter "limit" of Long,
-           parameter "sorting" of list of type "SortSpec" -> structure:
-           parameter "field" of String, parameter "is_descending" of type
-           "Boolean"
+        :param query: instance of type "SearchExpression" (I give up ...) ->
+           unspecified object
         :returns: multiple set - (1) parameter "result" of type
-           "AlertQueryResult" -> structure: parameter "statuses" of mapping
-           from String to Long, (2) parameter "error" of type "Error" ->
-           structure: parameter "message" of String, parameter "type" of
+           "SearchAlertsSummaryResult" -> structure: parameter "statuses" of
+           mapping from String to Long, (2) parameter "error" of type "Error"
+           -> structure: parameter "message" of String, parameter "type" of
            String, parameter "code" of String, parameter "info" of
            unspecified object
         """
@@ -143,7 +135,7 @@ class UIService(object):
 
     def add_alert(self, alert_param, context=None):
         """
-        :param alert_param: instance of type "AddAlertParams" (add_alert) ->
+        :param alert_param: instance of type "AddAlertParam" (add_alert) ->
            structure: parameter "alert" of type "Alert" -> structure:
            parameter "id" of type "AlertID", parameter "start_at" of type
            "Timestamp" (BASE Types), parameter "end_at" of type "Timestamp"
@@ -176,9 +168,10 @@ class UIService(object):
             'UIService.delete_alert',
             [id], self._service_ver, context)
 
-    def is_admin_user(self, username, context=None):
+    def is_admin_user(self, param, context=None):
         """
-        :param username: instance of type "Username"
+        :param param: instance of type "IsAdminUserParam" -> structure:
+           parameter "username" of type "Username"
         :returns: multiple set - (1) parameter "is_admin" of type "Boolean",
            (2) parameter "error" of type "Error" -> structure: parameter
            "message" of String, parameter "type" of String, parameter "code"
@@ -186,7 +179,7 @@ class UIService(object):
         """
         return self._client.call_method(
             'UIService.is_admin_user',
-            [username], self._service_ver, context)
+            [param], self._service_ver, context)
 
     def update_alert(self, alert_param, context=None):
         """
@@ -209,19 +202,26 @@ class UIService(object):
             'UIService.update_alert',
             [alert_param], self._service_ver, context)
 
-    def set_alert_status(self, id, status, context=None):
+    def set_alert(self, alert_param, context=None):
         """
-        set_alert_status
-        :param id: instance of type "AlertID"
-        :param status: instance of type "AlertStatus"
+        :param alert_param: instance of type "UpdateAlertParams" (update
+           alert) -> structure: parameter "alert" of type "Alert" ->
+           structure: parameter "id" of type "AlertID", parameter "start_at"
+           of type "Timestamp" (BASE Types), parameter "end_at" of type
+           "Timestamp" (BASE Types), parameter "type" of type "AlertType",
+           parameter "title" of String, parameter "message" of String,
+           parameter "status" of type "AlertStatus", parameter "created_at"
+           of type "Timestamp" (BASE Types), parameter "created_by" of
+           String, parameter "updated_at" of type "Timestamp" (BASE Types),
+           parameter "updated_by" of String
         :returns: multiple set - (1) parameter "success" of type "Boolean",
            (2) parameter "error" of type "Error" -> structure: parameter
            "message" of String, parameter "type" of String, parameter "code"
            of String, parameter "info" of unspecified object
         """
         return self._client.call_method(
-            'UIService.set_alert_status',
-            [id, status], self._service_ver, context)
+            'UIService.set_alert',
+            [alert_param], self._service_ver, context)
 
     def status(self, context=None):
         return self._client.call_method('UIService.status',

@@ -12,53 +12,35 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: PagingSpec</p>
+ * <p>Original spec-file type: GetAlertParam</p>
  * <pre>
- * search_alerts
+ * get_alert
  * </pre>
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
-    "start",
-    "limit"
+    "id"
 })
-public class PagingSpec {
+public class GetAlertParam {
 
-    @JsonProperty("start")
-    private Long start;
-    @JsonProperty("limit")
-    private Long limit;
+    @JsonProperty("id")
+    private String id;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("start")
-    public Long getStart() {
-        return start;
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
-    @JsonProperty("start")
-    public void setStart(Long start) {
-        this.start = start;
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public PagingSpec withStart(Long start) {
-        this.start = start;
-        return this;
-    }
-
-    @JsonProperty("limit")
-    public Long getLimit() {
-        return limit;
-    }
-
-    @JsonProperty("limit")
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    public PagingSpec withLimit(Long limit) {
-        this.limit = limit;
+    public GetAlertParam withId(String id) {
+        this.id = id;
         return this;
     }
 
@@ -74,7 +56,7 @@ public class PagingSpec {
 
     @Override
     public String toString() {
-        return ((((((("PagingSpec"+" [start=")+ start)+", limit=")+ limit)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((("GetAlertParam"+" [id=")+ id)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

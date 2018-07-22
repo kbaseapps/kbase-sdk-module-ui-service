@@ -15,7 +15,9 @@ TEST_SCRIPT_NAME = run_tests.sh
 
 default: compile
 
-all: compile build build-startup-script build-executable-script build-test-script
+all: build build-startup-script build-executable-script build-test-script
+
+test-all: build build-startup-script build-executable-script build-test-script
 
 compile:
 	kb-sdk compile $(SPEC_FILE) \
@@ -67,7 +69,7 @@ run-docker-image-dev:
 	bash scripts/run-docker-image-dev.sh	
 
 test:
-	if [ ! -f /kb/module/work/token ]; then echo -e '\nOutside a docker container please run "kb-sdk test" rather than "make test"\n' && exit 1; fi
+	@if [ ! -f /kb/module/work/token ]; then echo -e '\nOutside a docker container please run "kb-sdk test" rather than "make test"\n' && exit 1; fi
 	bash $(TEST_DIR)/$(TEST_SCRIPT_NAME)
 
 clean:

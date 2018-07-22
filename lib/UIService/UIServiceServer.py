@@ -335,7 +335,7 @@ class Application(object):
         self.method_authentication = dict()
         self.rpc_service.add(impl_UIService.get_alert,
                              name='UIService.get_alert',
-                             types=[basestring])
+                             types=[dict])
         self.method_authentication['UIService.get_alert'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.get_active_alerts,
                              name='UIService.get_active_alerts',
@@ -347,7 +347,7 @@ class Application(object):
         self.method_authentication['UIService.search_alerts'] = 'none'  # noqa
         self.rpc_service.add(impl_UIService.search_alerts_summary,
                              name='UIService.search_alerts_summary',
-                             types=[dict])
+                             types=[object])
         self.method_authentication['UIService.search_alerts_summary'] = 'none'  # noqa
         self.rpc_service.add(impl_UIService.am_admin_user,
                              name='UIService.am_admin_user',
@@ -363,16 +363,16 @@ class Application(object):
         self.method_authentication['UIService.delete_alert'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.is_admin_user,
                              name='UIService.is_admin_user',
-                             types=[basestring])
+                             types=[dict])
         self.method_authentication['UIService.is_admin_user'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.update_alert,
                              name='UIService.update_alert',
                              types=[dict])
         self.method_authentication['UIService.update_alert'] = 'required'  # noqa
-        self.rpc_service.add(impl_UIService.set_alert_status,
-                             name='UIService.set_alert_status',
-                             types=[basestring, basestring])
-        self.method_authentication['UIService.set_alert_status'] = 'required'  # noqa
+        self.rpc_service.add(impl_UIService.set_alert,
+                             name='UIService.set_alert',
+                             types=[dict])
+        self.method_authentication['UIService.set_alert'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.status,
                              name='UIService.status',
                              types=[dict])

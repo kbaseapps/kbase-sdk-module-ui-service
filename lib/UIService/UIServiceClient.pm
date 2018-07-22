@@ -110,7 +110,7 @@ sub new
 
 =head2 get_alert
 
-  $alert, $error = $obj->get_alert($id)
+  $alert, $error = $obj->get_alert($param)
 
 =over 4
 
@@ -119,9 +119,11 @@ sub new
 =begin html
 
 <pre>
-$id is an UIService.AlertID
+$param is an UIService.GetAlertParam
 $alert is an UIService.Alert
 $error is an UIService.Error
+GetAlertParam is a reference to a hash where the following keys are defined:
+	id has a value which is an UIService.AlertID
 AlertID is a string
 Alert is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
@@ -150,9 +152,11 @@ Error is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$id is an UIService.AlertID
+$param is an UIService.GetAlertParam
 $alert is an UIService.Alert
 $error is an UIService.Error
+GetAlertParam is a reference to a hash where the following keys are defined:
+	id has a value which is an UIService.AlertID
 AlertID is a string
 Alert is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
@@ -180,7 +184,7 @@ Error is a reference to a hash where the following keys are defined:
 
 =item Description
 
-get_alert
+
 
 =back
 
@@ -198,10 +202,10 @@ get_alert
 							       "Invalid argument count for function get_alert (received $n, expecting 1)");
     }
     {
-	my($id) = @args;
+	my($param) = @args;
 
 	my @_bad_arguments;
-        (!ref($id)) or push(@_bad_arguments, "Invalid type for argument 1 \"id\" (value was \"$id\")");
+        (ref($param) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"param\" (value was \"$param\")");
         if (@_bad_arguments) {
 	    my $msg = "Invalid arguments passed to get_alert:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
@@ -363,15 +367,9 @@ $result is an UIService.SearchAlertsResult
 $error is an UIService.Error
 AlertQuery is a reference to a hash where the following keys are defined:
 	query has a value which is an UIService.SearchExpression
-	page has a value which is an UIService.PagingSpec
+	paging has a value which is an UIService.PagingSpec
 	sorting has a value which is a reference to a list where each element is an UIService.SortSpec
-SearchExpression is a reference to a hash where the following keys are defined:
-	op has a value which is a string
-	args has a value which is a reference to a list where each element is an UIService.SearchField
-SearchField is a reference to a hash where the following keys are defined:
-	path has a value which is a string
-	op has a value which is a string
-	value has a value which is a string
+SearchExpression is an UnspecifiedObject, which can hold any non-null object
 PagingSpec is a reference to a hash where the following keys are defined:
 	start has a value which is an int
 	limit has a value which is an int
@@ -414,15 +412,9 @@ $result is an UIService.SearchAlertsResult
 $error is an UIService.Error
 AlertQuery is a reference to a hash where the following keys are defined:
 	query has a value which is an UIService.SearchExpression
-	page has a value which is an UIService.PagingSpec
+	paging has a value which is an UIService.PagingSpec
 	sorting has a value which is a reference to a list where each element is an UIService.SortSpec
-SearchExpression is a reference to a hash where the following keys are defined:
-	op has a value which is a string
-	args has a value which is a reference to a list where each element is an UIService.SearchField
-SearchField is a reference to a hash where the following keys are defined:
-	path has a value which is a string
-	op has a value which is a string
-	value has a value which is a string
+SearchExpression is an UnspecifiedObject, which can hold any non-null object
 PagingSpec is a reference to a hash where the following keys are defined:
 	start has a value which is an int
 	limit has a value which is an int
@@ -524,28 +516,11 @@ Error is a reference to a hash where the following keys are defined:
 =begin html
 
 <pre>
-$query is an UIService.AlertQuery
-$result is an UIService.AlertQueryResult
+$query is an UIService.SearchExpression
+$result is an UIService.SearchAlertsSummaryResult
 $error is an UIService.Error
-AlertQuery is a reference to a hash where the following keys are defined:
-	query has a value which is an UIService.SearchExpression
-	page has a value which is an UIService.PagingSpec
-	sorting has a value which is a reference to a list where each element is an UIService.SortSpec
-SearchExpression is a reference to a hash where the following keys are defined:
-	op has a value which is a string
-	args has a value which is a reference to a list where each element is an UIService.SearchField
-SearchField is a reference to a hash where the following keys are defined:
-	path has a value which is a string
-	op has a value which is a string
-	value has a value which is a string
-PagingSpec is a reference to a hash where the following keys are defined:
-	start has a value which is an int
-	limit has a value which is an int
-SortSpec is a reference to a hash where the following keys are defined:
-	field has a value which is a string
-	is_descending has a value which is an UIService.Boolean
-Boolean is an int
-AlertQueryResult is a reference to a hash where the following keys are defined:
+SearchExpression is an UnspecifiedObject, which can hold any non-null object
+SearchAlertsSummaryResult is a reference to a hash where the following keys are defined:
 	statuses has a value which is a reference to a hash where the key is a string and the value is an int
 Error is a reference to a hash where the following keys are defined:
 	message has a value which is a string
@@ -559,28 +534,11 @@ Error is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$query is an UIService.AlertQuery
-$result is an UIService.AlertQueryResult
+$query is an UIService.SearchExpression
+$result is an UIService.SearchAlertsSummaryResult
 $error is an UIService.Error
-AlertQuery is a reference to a hash where the following keys are defined:
-	query has a value which is an UIService.SearchExpression
-	page has a value which is an UIService.PagingSpec
-	sorting has a value which is a reference to a list where each element is an UIService.SortSpec
-SearchExpression is a reference to a hash where the following keys are defined:
-	op has a value which is a string
-	args has a value which is a reference to a list where each element is an UIService.SearchField
-SearchField is a reference to a hash where the following keys are defined:
-	path has a value which is a string
-	op has a value which is a string
-	value has a value which is a string
-PagingSpec is a reference to a hash where the following keys are defined:
-	start has a value which is an int
-	limit has a value which is an int
-SortSpec is a reference to a hash where the following keys are defined:
-	field has a value which is a string
-	is_descending has a value which is an UIService.Boolean
-Boolean is an int
-AlertQueryResult is a reference to a hash where the following keys are defined:
+SearchExpression is an UnspecifiedObject, which can hold any non-null object
+SearchAlertsSummaryResult is a reference to a hash where the following keys are defined:
 	statuses has a value which is a reference to a hash where the key is a string and the value is an int
 Error is a reference to a hash where the following keys are defined:
 	message has a value which is a string
@@ -614,7 +572,7 @@ Error is a reference to a hash where the following keys are defined:
 	my($query) = @args;
 
 	my @_bad_arguments;
-        (ref($query) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"query\" (value was \"$query\")");
+        (defined $query) or push(@_bad_arguments, "Invalid type for argument 1 \"query\" (value was \"$query\")");
         if (@_bad_arguments) {
 	    my $msg = "Invalid arguments passed to search_alerts_summary:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
@@ -741,10 +699,10 @@ am_admin_user
 =begin html
 
 <pre>
-$alert_param is an UIService.AddAlertParams
+$alert_param is an UIService.AddAlertParam
 $result is an UIService.AddAlertResult
 $error is an UIService.Error
-AddAlertParams is a reference to a hash where the following keys are defined:
+AddAlertParam is a reference to a hash where the following keys are defined:
 	alert has a value which is an UIService.Alert
 Alert is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
@@ -776,10 +734,10 @@ Error is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$alert_param is an UIService.AddAlertParams
+$alert_param is an UIService.AddAlertParam
 $result is an UIService.AddAlertResult
 $error is an UIService.Error
-AddAlertParams is a reference to a hash where the following keys are defined:
+AddAlertParam is a reference to a hash where the following keys are defined:
 	alert has a value which is an UIService.Alert
 Alert is a reference to a hash where the following keys are defined:
 	id has a value which is an UIService.AlertID
@@ -966,7 +924,7 @@ Error is a reference to a hash where the following keys are defined:
 
 =head2 is_admin_user
 
-  $is_admin, $error = $obj->is_admin_user($username)
+  $is_admin, $error = $obj->is_admin_user($param)
 
 =over 4
 
@@ -975,9 +933,11 @@ Error is a reference to a hash where the following keys are defined:
 =begin html
 
 <pre>
-$username is an UIService.Username
+$param is an UIService.IsAdminUserParam
 $is_admin is an UIService.Boolean
 $error is an UIService.Error
+IsAdminUserParam is a reference to a hash where the following keys are defined:
+	username has a value which is an UIService.Username
 Username is a string
 Boolean is an int
 Error is a reference to a hash where the following keys are defined:
@@ -992,9 +952,11 @@ Error is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$username is an UIService.Username
+$param is an UIService.IsAdminUserParam
 $is_admin is an UIService.Boolean
 $error is an UIService.Error
+IsAdminUserParam is a reference to a hash where the following keys are defined:
+	username has a value which is an UIService.Username
 Username is a string
 Boolean is an int
 Error is a reference to a hash where the following keys are defined:
@@ -1026,10 +988,10 @@ Error is a reference to a hash where the following keys are defined:
 							       "Invalid argument count for function is_admin_user (received $n, expecting 1)");
     }
     {
-	my($username) = @args;
+	my($param) = @args;
 
 	my @_bad_arguments;
-        (!ref($username)) or push(@_bad_arguments, "Invalid type for argument 1 \"username\" (value was \"$username\")");
+        (ref($param) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"param\" (value was \"$param\")");
         if (@_bad_arguments) {
 	    my $msg = "Invalid arguments passed to is_admin_user:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
@@ -1194,9 +1156,9 @@ Error is a reference to a hash where the following keys are defined:
  
 
 
-=head2 set_alert_status
+=head2 set_alert
 
-  $success, $error = $obj->set_alert_status($id, $status)
+  $success, $error = $obj->set_alert($alert_param)
 
 =over 4
 
@@ -1205,11 +1167,26 @@ Error is a reference to a hash where the following keys are defined:
 =begin html
 
 <pre>
-$id is an UIService.AlertID
-$status is an UIService.AlertStatus
+$alert_param is an UIService.UpdateAlertParams
 $success is an UIService.Boolean
 $error is an UIService.Error
+UpdateAlertParams is a reference to a hash where the following keys are defined:
+	alert has a value which is an UIService.Alert
+Alert is a reference to a hash where the following keys are defined:
+	id has a value which is an UIService.AlertID
+	start_at has a value which is an UIService.Timestamp
+	end_at has a value which is an UIService.Timestamp
+	type has a value which is an UIService.AlertType
+	title has a value which is a string
+	message has a value which is a string
+	status has a value which is an UIService.AlertStatus
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
 AlertID is a string
+Timestamp is an int
+AlertType is a string
 AlertStatus is a string
 Boolean is an int
 Error is a reference to a hash where the following keys are defined:
@@ -1224,11 +1201,26 @@ Error is a reference to a hash where the following keys are defined:
 
 =begin text
 
-$id is an UIService.AlertID
-$status is an UIService.AlertStatus
+$alert_param is an UIService.UpdateAlertParams
 $success is an UIService.Boolean
 $error is an UIService.Error
+UpdateAlertParams is a reference to a hash where the following keys are defined:
+	alert has a value which is an UIService.Alert
+Alert is a reference to a hash where the following keys are defined:
+	id has a value which is an UIService.AlertID
+	start_at has a value which is an UIService.Timestamp
+	end_at has a value which is an UIService.Timestamp
+	type has a value which is an UIService.AlertType
+	title has a value which is a string
+	message has a value which is a string
+	status has a value which is an UIService.AlertStatus
+	created_at has a value which is an UIService.Timestamp
+	created_by has a value which is a string
+	updated_at has a value which is an UIService.Timestamp
+	updated_by has a value which is a string
 AlertID is a string
+Timestamp is an int
+AlertType is a string
 AlertStatus is a string
 Boolean is an int
 Error is a reference to a hash where the following keys are defined:
@@ -1242,55 +1234,54 @@ Error is a reference to a hash where the following keys are defined:
 
 =item Description
 
-set_alert_status
+
 
 =back
 
 =cut
 
- sub set_alert_status
+ sub set_alert
 {
     my($self, @args) = @_;
 
 # Authentication: required
 
-    if ((my $n = @args) != 2)
+    if ((my $n = @args) != 1)
     {
 	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
-							       "Invalid argument count for function set_alert_status (received $n, expecting 2)");
+							       "Invalid argument count for function set_alert (received $n, expecting 1)");
     }
     {
-	my($id, $status) = @args;
+	my($alert_param) = @args;
 
 	my @_bad_arguments;
-        (!ref($id)) or push(@_bad_arguments, "Invalid type for argument 1 \"id\" (value was \"$id\")");
-        (!ref($status)) or push(@_bad_arguments, "Invalid type for argument 2 \"status\" (value was \"$status\")");
+        (ref($alert_param) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"alert_param\" (value was \"$alert_param\")");
         if (@_bad_arguments) {
-	    my $msg = "Invalid arguments passed to set_alert_status:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    my $msg = "Invalid arguments passed to set_alert:\n" . join("", map { "\t$_\n" } @_bad_arguments);
 	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
-								   method_name => 'set_alert_status');
+								   method_name => 'set_alert');
 	}
     }
 
     my $url = $self->{url};
     my $result = $self->{client}->call($url, $self->{headers}, {
-	    method => "UIService.set_alert_status",
+	    method => "UIService.set_alert",
 	    params => \@args,
     });
     if ($result) {
 	if ($result->is_error) {
 	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
 					       code => $result->content->{error}->{code},
-					       method_name => 'set_alert_status',
+					       method_name => 'set_alert',
 					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
 					      );
 	} else {
 	    return wantarray ? @{$result->result} : $result->result->[0];
 	}
     } else {
-        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method set_alert_status",
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method set_alert",
 					    status_line => $self->{client}->status_line,
-					    method_name => 'set_alert_status',
+					    method_name => 'set_alert',
 				       );
     }
 }
@@ -1338,16 +1329,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'set_alert_status',
+                method_name => 'set_alert',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method set_alert_status",
+            error => "Error invoking method set_alert",
             status_line => $self->{client}->status_line,
-            method_name => 'set_alert_status',
+            method_name => 'set_alert',
         );
     }
 }
@@ -1631,6 +1622,41 @@ info has a value which is an UnspecifiedObject, which can hold any non-null obje
 
 
 
+=head2 GetAlertParam
+
+=over 4
+
+
+
+=item Description
+
+get_alert
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+id has a value which is an UIService.AlertID
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+id has a value which is an UIService.AlertID
+
+
+=end text
+
+=back
+
+
+
 =head2 PagingSpec
 
 =over 4
@@ -1639,7 +1665,7 @@ info has a value which is an UnspecifiedObject, which can hold any non-null obje
 
 =item Description
 
-typedef UnspecifiedObject Query;
+search_alerts
 
 
 =item Definition
@@ -1700,40 +1726,6 @@ is_descending has a value which is an UIService.Boolean
 
 
 
-=head2 SearchField
-
-=over 4
-
-
-
-=item Definition
-
-=begin html
-
-<pre>
-a reference to a hash where the following keys are defined:
-path has a value which is a string
-op has a value which is a string
-value has a value which is a string
-
-</pre>
-
-=end html
-
-=begin text
-
-a reference to a hash where the following keys are defined:
-path has a value which is a string
-op has a value which is a string
-value has a value which is a string
-
-
-=end text
-
-=back
-
-
-
 =head2 SearchExpression
 
 =over 4
@@ -1742,10 +1734,7 @@ value has a value which is a string
 
 =item Description
 
-typedef structure {
-    SearchField field;
-    SearchSubExpression expression;
-} SearchArg;
+I give up ...
 
 
 =item Definition
@@ -1753,20 +1742,14 @@ typedef structure {
 =begin html
 
 <pre>
-a reference to a hash where the following keys are defined:
-op has a value which is a string
-args has a value which is a reference to a list where each element is an UIService.SearchField
-
+an UnspecifiedObject, which can hold any non-null object
 </pre>
 
 =end html
 
 =begin text
 
-a reference to a hash where the following keys are defined:
-op has a value which is a string
-args has a value which is a reference to a list where each element is an UIService.SearchField
-
+an UnspecifiedObject, which can hold any non-null object
 
 =end text
 
@@ -1780,6 +1763,32 @@ args has a value which is a reference to a list where each element is an UIServi
 
 
 
+=item Description
+
+typedef structure {
+    string path;        
+    string op; 
+    string value;
+} SearchField;
+
+
+typedef structure {
+    string op;
+    list<SearchField> args;
+} SearchSubExpression;
+
+
+typedef structure {
+    SearchField field;
+    SearchSubExpression expression;
+} SearchArg;
+
+typedef structure {
+    string op;
+    list<SearchArg> args;
+} SearchExpression;
+
+
 =item Definition
 
 =begin html
@@ -1787,7 +1796,7 @@ args has a value which is a reference to a list where each element is an UIServi
 <pre>
 a reference to a hash where the following keys are defined:
 query has a value which is an UIService.SearchExpression
-page has a value which is an UIService.PagingSpec
+paging has a value which is an UIService.PagingSpec
 sorting has a value which is a reference to a list where each element is an UIService.SortSpec
 
 </pre>
@@ -1798,7 +1807,7 @@ sorting has a value which is a reference to a list where each element is an UISe
 
 a reference to a hash where the following keys are defined:
 query has a value which is an UIService.SearchExpression
-page has a value which is an UIService.PagingSpec
+paging has a value which is an UIService.PagingSpec
 sorting has a value which is a reference to a list where each element is an UIService.SortSpec
 
 
@@ -1838,7 +1847,7 @@ alerts has a value which is a reference to a list where each element is an UISer
 
 
 
-=head2 AlertQueryResult
+=head2 SearchAlertsSummaryResult
 
 =over 4
 
@@ -1868,7 +1877,7 @@ statuses has a value which is a reference to a hash where the key is a string an
 
 
 
-=head2 AddAlertParams
+=head2 AddAlertParam
 
 =over 4
 
@@ -1955,6 +1964,36 @@ id has a value which is an UIService.AlertID
 
 a reference to a hash where the following keys are defined:
 id has a value which is an UIService.AlertID
+
+
+=end text
+
+=back
+
+
+
+=head2 IsAdminUserParam
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+username has a value which is an UIService.Username
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+username has a value which is an UIService.Username
 
 
 =end text

@@ -12,53 +12,33 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: PagingSpec</p>
- * <pre>
- * search_alerts
- * </pre>
+ * <p>Original spec-file type: IsAdminUserParam</p>
+ * 
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
-    "start",
-    "limit"
+    "username"
 })
-public class PagingSpec {
+public class IsAdminUserParam {
 
-    @JsonProperty("start")
-    private Long start;
-    @JsonProperty("limit")
-    private Long limit;
+    @JsonProperty("username")
+    private String username;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("start")
-    public Long getStart() {
-        return start;
+    @JsonProperty("username")
+    public String getUsername() {
+        return username;
     }
 
-    @JsonProperty("start")
-    public void setStart(Long start) {
-        this.start = start;
+    @JsonProperty("username")
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public PagingSpec withStart(Long start) {
-        this.start = start;
-        return this;
-    }
-
-    @JsonProperty("limit")
-    public Long getLimit() {
-        return limit;
-    }
-
-    @JsonProperty("limit")
-    public void setLimit(Long limit) {
-        this.limit = limit;
-    }
-
-    public PagingSpec withLimit(Long limit) {
-        this.limit = limit;
+    public IsAdminUserParam withUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -74,7 +54,7 @@ public class PagingSpec {
 
     @Override
     public String toString() {
-        return ((((((("PagingSpec"+" [start=")+ start)+", limit=")+ limit)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((("IsAdminUserParam"+" [username=")+ username)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

@@ -10,78 +10,67 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import us.kbase.common.service.UObject;
 
 
 /**
  * <p>Original spec-file type: AlertQuery</p>
- * 
+ * <pre>
+ * typedef structure {
+ *     string path;        
+ *     string op; 
+ *     string value;
+ * } SearchField;
+ * typedef structure {
+ *     string op;
+ *     list<SearchField> args;
+ * } SearchSubExpression;
+ * typedef structure {
+ *     SearchField field;
+ *     SearchSubExpression expression;
+ * } SearchArg;
+ * typedef structure {
+ *     string op;
+ *     list<SearchArg> args;
+ * } SearchExpression;
+ * </pre>
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
     "query",
-    "page",
+    "paging",
     "sorting"
 })
 public class AlertQuery {
 
-    /**
-     * <p>Original spec-file type: SearchExpression</p>
-     * <pre>
-     * typedef structure {
-     *     SearchField field;
-     *     SearchSubExpression expression;
-     * } SearchArg;
-     * </pre>
-     * 
-     */
     @JsonProperty("query")
-    private SearchExpression query;
+    private UObject query;
     /**
      * <p>Original spec-file type: PagingSpec</p>
      * <pre>
-     * typedef UnspecifiedObject Query;
+     * search_alerts
      * </pre>
      * 
      */
-    @JsonProperty("page")
-    private PagingSpec page;
+    @JsonProperty("paging")
+    private PagingSpec paging;
     @JsonProperty("sorting")
     private List<SortSpec> sorting;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * <p>Original spec-file type: SearchExpression</p>
-     * <pre>
-     * typedef structure {
-     *     SearchField field;
-     *     SearchSubExpression expression;
-     * } SearchArg;
-     * </pre>
-     * 
-     */
     @JsonProperty("query")
-    public SearchExpression getQuery() {
+    public UObject getQuery() {
         return query;
     }
 
-    /**
-     * <p>Original spec-file type: SearchExpression</p>
-     * <pre>
-     * typedef structure {
-     *     SearchField field;
-     *     SearchSubExpression expression;
-     * } SearchArg;
-     * </pre>
-     * 
-     */
     @JsonProperty("query")
-    public void setQuery(SearchExpression query) {
+    public void setQuery(UObject query) {
         this.query = query;
     }
 
-    public AlertQuery withQuery(SearchExpression query) {
+    public AlertQuery withQuery(UObject query) {
         this.query = query;
         return this;
     }
@@ -89,29 +78,29 @@ public class AlertQuery {
     /**
      * <p>Original spec-file type: PagingSpec</p>
      * <pre>
-     * typedef UnspecifiedObject Query;
+     * search_alerts
      * </pre>
      * 
      */
-    @JsonProperty("page")
-    public PagingSpec getPage() {
-        return page;
+    @JsonProperty("paging")
+    public PagingSpec getPaging() {
+        return paging;
     }
 
     /**
      * <p>Original spec-file type: PagingSpec</p>
      * <pre>
-     * typedef UnspecifiedObject Query;
+     * search_alerts
      * </pre>
      * 
      */
-    @JsonProperty("page")
-    public void setPage(PagingSpec page) {
-        this.page = page;
+    @JsonProperty("paging")
+    public void setPaging(PagingSpec paging) {
+        this.paging = paging;
     }
 
-    public AlertQuery withPage(PagingSpec page) {
-        this.page = page;
+    public AlertQuery withPaging(PagingSpec paging) {
+        this.paging = paging;
         return this;
     }
 
@@ -142,7 +131,7 @@ public class AlertQuery {
 
     @Override
     public String toString() {
-        return ((((((((("AlertQuery"+" [query=")+ query)+", page=")+ page)+", sorting=")+ sorting)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("AlertQuery"+" [query=")+ query)+", paging=")+ paging)+", sorting=")+ sorting)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

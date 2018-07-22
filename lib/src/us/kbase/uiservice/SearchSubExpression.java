@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: SearchExpression</p>
+ * <p>Original spec-file type: SearchSubExpression</p>
  * 
  * 
  */
@@ -23,12 +23,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "op",
     "args"
 })
-public class SearchExpression {
+public class SearchSubExpression {
 
     @JsonProperty("op")
     private String op;
     @JsonProperty("args")
-    private List<SearchArg> args;
+    private List<SearchField> args;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("op")
@@ -41,22 +41,22 @@ public class SearchExpression {
         this.op = op;
     }
 
-    public SearchExpression withOp(String op) {
+    public SearchSubExpression withOp(String op) {
         this.op = op;
         return this;
     }
 
     @JsonProperty("args")
-    public List<SearchArg> getArgs() {
+    public List<SearchField> getArgs() {
         return args;
     }
 
     @JsonProperty("args")
-    public void setArgs(List<SearchArg> args) {
+    public void setArgs(List<SearchField> args) {
         this.args = args;
     }
 
-    public SearchExpression withArgs(List<SearchArg> args) {
+    public SearchSubExpression withArgs(List<SearchField> args) {
         this.args = args;
         return this;
     }
@@ -73,7 +73,7 @@ public class SearchExpression {
 
     @Override
     public String toString() {
-        return ((((((("SearchExpression"+" [op=")+ op)+", args=")+ args)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((("SearchSubExpression"+" [op=")+ op)+", args=")+ args)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
