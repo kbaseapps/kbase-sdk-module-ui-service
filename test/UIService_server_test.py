@@ -15,7 +15,6 @@ except:
 
 from pprint import pprint  # noqa: F401
 
-from biokbase.workspace.client import Workspace as workspaceService
 from UIService.UIServiceImpl import UIService
 from UIService.UIServiceServer import MethodContext
 from UIService.authclient import KBaseAuth as _KBaseAuth
@@ -60,22 +59,8 @@ class UIServiceTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        if hasattr(cls, 'wsName'):
-            cls.wsClient.delete_workspace({'workspace': cls.wsName})
-            print('Test workspace was deleted')
-
-    def getWsClient(self):
-        return self.__class__.wsClient
-
-    def getWsName(self):
-        if hasattr(self.__class__, 'wsName'):
-            return self.__class__.wsName
-        suffix = int(time.time() * 1000)
-        wsName = "test_UIService_" + str(suffix)
-        ret = self.getWsClient().create_workspace({'workspace': wsName})  # noqa
-        self.__class__.wsName = wsName
-        return wsName
-
+        pass
+        
     def getImpl(self):
         return self.__class__.serviceImpl
 

@@ -15,12 +15,16 @@ you may need to stop, clear the database (remove all files in the data directori
 
 start the mongo instance
 
-use compass to create the database and collection 
+use compass to create the database and collection   (log in as the root user created above)
 
 now log in from the command line (host) as the root user
 
+mongo --host localhost --port 32780 --username dev_root --password dev_r00t admin
+
 now create a user with read/write permissions
 
-db.createUser({user: "ui_service", pwd: "ui_service", roles: [{role: "readWrite", db: "ui_service"}]})
+mongo --host localhost --port 32780 --username dev_root --password dev_r00t admin
+> use ui_service
+> db.createUser({user: "ui_service", pwd: "ui_service", passwordDigestor: "server", roles: [{role: "readWrite", db: "ui_service"}]})
 
 back in the ui service, you will need to set the host to mongo.

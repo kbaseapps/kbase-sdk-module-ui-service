@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /kb/deployment/user-env.sh
+# . /kb/deployment/user-env.sh
 
 python ./scripts/prepare_deploy_cfg.py ./deploy.cfg ./work/config.properties
 
@@ -20,8 +20,10 @@ elif [ "${1}" = "init" ] ; then
 elif [ "${1}" = "bash" ] ; then
   bash
 elif [ "${1}" = "report" ] ; then
-  export KB_SDK_COMPILE_REPORT_FILE=./work/compile_report.json
-  make compile
+  # export KB_SDK_COMPILE_REPORT_FILE=./work/compile_report.json
+  # make compile
+  cp ./compile_report.json ./work/compile_report.json
+  echo "Compilation Report copied to ./work/compile_report.json"
 else
   echo Unknown
 fi

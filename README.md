@@ -68,3 +68,19 @@ E.g.
 KB_TOKEN=XXXMYTOKENXXX bash send.sh add-alert
 ```
 
+## Development
+
+### install mongo image 
+
+I use Kitematic to get the latest in the 3 series (currently 3.7.9) - the 2 series which kbase uses is not supported in the official distribution.
+
+Change these settings:
+
+- enable kbase-dev network
+- map directories to SPRINT/mongo/db and SPRINT/mongo/configdb
+
+### Add ui_service user and database
+
+mongo localhost:PORT
+
+where port is the port reported in Kitematic (it changes with every container startup)

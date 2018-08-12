@@ -109,12 +109,14 @@ class UIService:
         # ctx is the context object
         # return variables are: alerts, error
         #BEGIN get_active_alerts
+        # print('getting active alerts... %s, %s, %s, %s, %s' % (self.auth_url, self.admin_users, ctx['token'], ctx['user_id'], self.db_config))
         model = UIServiceModel(
             auth_url=self.auth_url, 
             admin_users=self.admin_users,
             token=ctx['token'], 
             username=ctx['user_id'],
             db_config=self.db_config)
+        # print('getting active alerts...')
         alerts, error = model.get_active_alerts()
         return [alerts, error]
         #END get_active_alerts
