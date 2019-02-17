@@ -24,7 +24,7 @@ class UIService:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "ssh://git@github.com/eapearson/kbase-sdk-module-ui-service"
-    GIT_COMMIT_HASH = "320bf46e871dd31b8be40034512168274769e7d5"
+    GIT_COMMIT_HASH = "57c144ff0feb295d2ef39d01661d64c1dbfc974a"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER

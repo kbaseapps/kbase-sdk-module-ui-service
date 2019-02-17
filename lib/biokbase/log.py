@@ -116,7 +116,7 @@ _MLOG_TO_SYSLOG = [_syslog.LOG_EMERG, _syslog.LOG_ALERT, _syslog.LOG_CRIT,
                  _syslog.LOG_DEBUG]
 #ALLOWED_LOG_LEVELS = set(_MLOG_TEXT_TO_LEVEL.values())
 _MLOG_LEVEL_TO_TEXT = {}
-for k, v in _MLOG_TEXT_TO_LEVEL.iteritems():
+for k, v in _MLOG_TEXT_TO_LEVEL.items():
     _MLOG_LEVEL_TO_TEXT[v] = k
 LOG_LEVEL_MIN = min(_MLOG_LEVEL_TO_TEXT.keys())
 LOG_LEVEL_MAX = max(_MLOG_LEVEL_TO_TEXT.keys())
