@@ -40,7 +40,7 @@ class Validation(object):
 
     @classmethod
     def validate_get_alert_parameter(cls, parameter, ctx):
-        id, error = cls.check_param(parameter, 'id', True, basestring)
+        id, error = cls.check_param(parameter, 'id', True, str)
         if error is not None:
             return None, error
 
@@ -80,7 +80,7 @@ class Validation(object):
 
     @classmethod
     def validate_is_admin_user(cls, parameter, ctx):
-        username, error = cls.check_param(parameter, 'username', True, basestring)
+        username, error = cls.check_param(parameter, 'username', True, str)
         if error is not None:
             return None, error
 

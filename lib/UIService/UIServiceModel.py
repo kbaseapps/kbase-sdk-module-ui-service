@@ -263,6 +263,7 @@ class UIServiceModel(object):
             raise ValueError('No authorization token')
 
         if not self.username in self.admin_users:
+            print('admin users? %s' % (self.admin_users))
             raise ValueError('Not admin user')
 
         return self.username

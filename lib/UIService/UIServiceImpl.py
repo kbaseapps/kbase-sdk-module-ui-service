@@ -34,7 +34,7 @@ class UIService:
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
         # self.admin_users = string.split(os.environ.get('ADMIN_USERS', ''), ' ')
-        self.admin_users = ' '.split(config['admin-users'])
+        self.admin_users = config['admin-users'].split(' ')
 
         config = Validation.validate_config(config)
 
