@@ -24,7 +24,7 @@ class UIService:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "ssh://git@github.com/eapearson/kbase-sdk-module-ui-service"
-    GIT_COMMIT_HASH = "57c144ff0feb295d2ef39d01661d64c1dbfc974a"
+    GIT_COMMIT_HASH = "9dfa12670ba51830c9e0dec892331480e9e81210"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -34,7 +34,7 @@ class UIService:
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
         # self.admin_users = string.split(os.environ.get('ADMIN_USERS', ''), ' ')
-        self.admin_users = string.split(config['admin-users'], ' ')
+        self.admin_users = ' '.split(config['admin-users'])
 
         config = Validation.validate_config(config)
 

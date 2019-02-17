@@ -9,9 +9,10 @@ import random
 
 from os import environ
 try:
-    from ConfigParser import ConfigParser  # py2
-except:
-    from configparser import ConfigParser  # py3
+    from configparser import ConfigParser as _ConfigParser  # py 3
+except ImportError:
+    from ConfigParser import ConfigParser as _ConfigParser  # py 2
+import time
 
 from pprint import pprint  # noqa: F401
 
@@ -29,7 +30,7 @@ class UIServiceTest(unittest.TestCase):
         token = environ.get('KB_AUTH_TOKEN', None)
         config_file = environ.get('KB_DEPLOYMENT_CONFIG', None)
         cls.cfg = {}
-        config = ConfigParser()
+        config = _ConfigParser()
         config.read(config_file)
 
         for nameval in config.items('UIService'):

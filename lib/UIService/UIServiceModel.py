@@ -27,7 +27,7 @@ class UIServiceModel(object):
         self.mongo = pymongo.MongoClient(self.mongo_host, self.mongo_port, serverSelectionTimeoutMS=1000)
         # print('mongo: authenticating')
         self.db = self.mongo[self.mongo_db]
-        self.db.authenticate(self.mongo_user, urllib.quote_plus(self.mongo_pwd))
+        self.db.authenticate(self.mongo_user, urllib.parse.quote_plus(self.mongo_pwd))
         # print('mongo: authenticated')
 
     @staticmethod
