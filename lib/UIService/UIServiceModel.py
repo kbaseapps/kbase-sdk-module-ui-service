@@ -179,7 +179,7 @@ class UIServiceModel(object):
             find_expression = self.search_query_to_mongo(search_query['query'])
         except ValueError as ex:
             return None, {
-                'message': ex.message,
+                'message': str(ex),
                 'type': 'input',
                 'code': 'invalid',
                 'info': {}
@@ -202,7 +202,7 @@ class UIServiceModel(object):
             find_expression = self.search_query_to_mongo(search_query['query'])
         except ValueError as ex:
             return None, {
-                'message': ex.message,
+                'message': str(ex),
                 'type': 'input',
                 'code': 'invalid',
                 'info': {}

@@ -38,6 +38,32 @@ class Validation(object):
             return [None, error]
         return [param_value, None]
 
+    @staticmethod
+    def check_url(url, must_be_secure):
+        secure_url = re.compile('^https://')
+        nonsecure_url = re.compile('^http://')
+        any_url = re.compile('^http[s]?://')
+        if must_be_secure:
+            if not re.match(secure_url, url):
+                error = {
+                    'message': ('this url parameter must be secure'),
+                    'type': 'input',
+                    'code': 'wrong-format',
+                    'info': {
+                    }
+                }
+                return [None, error]
+        if not re.match(any_url, url):
+            error = {
+                'message': ('does not match a valid url'),
+                'type': 'input',
+                'code': 'wrong-format',
+                'info': {
+                }
+            }
+            return [None, error]
+        return [url, None]
+
     @classmethod
     def validate_get_alert_parameter(cls, parameter, ctx):
         id, error = cls.check_param(parameter, 'id', True, str)
@@ -86,6 +112,43 @@ class Validation(object):
 
         return [{
             'username': username
+        }, None]
+
+    @classmethod
+    def validate_validate_html_url_param(cls, parameter, ctx):
+        url, error = cls.check_param(parameter, 'url', True, str)
+        if error is not None:
+            return None, error
+
+        url, error = cls.check_url(url, False)
+        if error is not None:
+            error['info']['key'] = 'url'
+            return None, error
+
+        return [{
+            'url': url
+        }, None]
+
+    @classmethod
+    def validate_validate_image_url_param(cls, parameter, ctx):
+        username, error = cls.check_param(parameter, 'url', True, str)
+        if error is not None:
+            return None, error
+
+        url, error = cls.check_param(parameter, 'url', True, str)
+        if error is not None:
+            return None, error
+
+        url, error = cls.check_url(url, True)
+        if error is not None:
+            error['info']['key'] = 'url'
+            return None, error
+
+        # try to fetch it with HEAD
+       
+
+        return [{
+            'url': url
         }, None]
 
     @classmethod

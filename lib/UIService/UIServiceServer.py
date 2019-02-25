@@ -378,6 +378,14 @@ class Application(object):
                              name='UIService.set_alert',
                              types=[dict])
         self.method_authentication['UIService.set_alert'] = 'required'  # noqa
+        self.rpc_service.add(impl_UIService.check_html_url,
+                             name='UIService.check_html_url',
+                             types=[dict])
+        self.method_authentication['UIService.check_html_url'] = 'required'  # noqa
+        self.rpc_service.add(impl_UIService.check_image_url,
+                             name='UIService.check_image_url',
+                             types=[dict])
+        self.method_authentication['UIService.check_image_url'] = 'required'  # noqa
         self.rpc_service.add(impl_UIService.status,
                              name='UIService.status',
                              types=[dict])

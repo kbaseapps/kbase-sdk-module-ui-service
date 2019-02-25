@@ -1286,6 +1286,230 @@ Error is a reference to a hash where the following keys are defined:
     }
 }
  
+
+
+=head2 check_html_url
+
+  $result, $error = $obj->check_html_url($param)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$param is an UIService.CheckHTMLURLParams
+$result is an UIService.CheckHTMLURLResult
+$error is an UIService.Error
+CheckHTMLURLParams is a reference to a hash where the following keys are defined:
+	url has a value which is a string
+CheckHTMLURLResult is a reference to a hash where the following keys are defined:
+	is_valid has a value which is an UIService.Boolean
+	error has a value which is an UIService.CheckError
+Boolean is an int
+CheckError is a reference to a hash where the following keys are defined:
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
+
+</pre>
+
+=end html
+
+=begin text
+
+$param is an UIService.CheckHTMLURLParams
+$result is an UIService.CheckHTMLURLResult
+$error is an UIService.Error
+CheckHTMLURLParams is a reference to a hash where the following keys are defined:
+	url has a value which is a string
+CheckHTMLURLResult is a reference to a hash where the following keys are defined:
+	is_valid has a value which is an UIService.Boolean
+	error has a value which is an UIService.CheckError
+Boolean is an int
+CheckError is a reference to a hash where the following keys are defined:
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub check_html_url
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function check_html_url (received $n, expecting 1)");
+    }
+    {
+	my($param) = @args;
+
+	my @_bad_arguments;
+        (ref($param) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"param\" (value was \"$param\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to check_html_url:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'check_html_url');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "UIService.check_html_url",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'check_html_url',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method check_html_url",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'check_html_url',
+				       );
+    }
+}
+ 
+
+
+=head2 check_image_url
+
+  $result, $error = $obj->check_image_url($param)
+
+=over 4
+
+=item Parameter and return types
+
+=begin html
+
+<pre>
+$param is an UIService.CheckImageURLParams
+$result is an UIService.CheckImageURLResult
+$error is an UIService.Error
+CheckImageURLParams is a reference to a hash where the following keys are defined:
+	url has a value which is a string
+CheckImageURLResult is a reference to a hash where the following keys are defined:
+	is_valid has a value which is an UIService.Boolean
+	error has a value which is an UIService.CheckError
+Boolean is an int
+CheckError is a reference to a hash where the following keys are defined:
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
+
+</pre>
+
+=end html
+
+=begin text
+
+$param is an UIService.CheckImageURLParams
+$result is an UIService.CheckImageURLResult
+$error is an UIService.Error
+CheckImageURLParams is a reference to a hash where the following keys are defined:
+	url has a value which is a string
+CheckImageURLResult is a reference to a hash where the following keys are defined:
+	is_valid has a value which is an UIService.Boolean
+	error has a value which is an UIService.CheckError
+Boolean is an int
+CheckError is a reference to a hash where the following keys are defined:
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
+Error is a reference to a hash where the following keys are defined:
+	message has a value which is a string
+	type has a value which is a string
+	code has a value which is a string
+	info has a value which is an UnspecifiedObject, which can hold any non-null object
+
+
+=end text
+
+=item Description
+
+
+
+=back
+
+=cut
+
+ sub check_image_url
+{
+    my($self, @args) = @_;
+
+# Authentication: required
+
+    if ((my $n = @args) != 1)
+    {
+	Bio::KBase::Exceptions::ArgumentValidationError->throw(error =>
+							       "Invalid argument count for function check_image_url (received $n, expecting 1)");
+    }
+    {
+	my($param) = @args;
+
+	my @_bad_arguments;
+        (ref($param) eq 'HASH') or push(@_bad_arguments, "Invalid type for argument 1 \"param\" (value was \"$param\")");
+        if (@_bad_arguments) {
+	    my $msg = "Invalid arguments passed to check_image_url:\n" . join("", map { "\t$_\n" } @_bad_arguments);
+	    Bio::KBase::Exceptions::ArgumentValidationError->throw(error => $msg,
+								   method_name => 'check_image_url');
+	}
+    }
+
+    my $url = $self->{url};
+    my $result = $self->{client}->call($url, $self->{headers}, {
+	    method => "UIService.check_image_url",
+	    params => \@args,
+    });
+    if ($result) {
+	if ($result->is_error) {
+	    Bio::KBase::Exceptions::JSONRPC->throw(error => $result->error_message,
+					       code => $result->content->{error}->{code},
+					       method_name => 'check_image_url',
+					       data => $result->content->{error}->{error} # JSON::RPC::ReturnObject only supports JSONRPC 1.1 or 1.O
+					      );
+	} else {
+	    return wantarray ? @{$result->result} : $result->result->[0];
+	}
+    } else {
+        Bio::KBase::Exceptions::HTTP->throw(error => "Error invoking method check_image_url",
+					    status_line => $self->{client}->status_line,
+					    method_name => 'check_image_url',
+				       );
+    }
+}
+ 
   
 sub status
 {
@@ -1329,16 +1553,16 @@ sub version {
             Bio::KBase::Exceptions::JSONRPC->throw(
                 error => $result->error_message,
                 code => $result->content->{code},
-                method_name => 'set_alert',
+                method_name => 'check_image_url',
             );
         } else {
             return wantarray ? @{$result->result} : $result->result->[0];
         }
     } else {
         Bio::KBase::Exceptions::HTTP->throw(
-            error => "Error invoking method set_alert",
+            error => "Error invoking method check_image_url",
             status_line => $self->{client}->status_line,
-            method_name => 'set_alert',
+            method_name => 'check_image_url',
         );
     }
 }
@@ -2029,6 +2253,177 @@ alert has a value which is an UIService.Alert
 
 a reference to a hash where the following keys are defined:
 alert has a value which is an UIService.Alert
+
+
+=end text
+
+=back
+
+
+
+=head2 CheckError
+
+=over 4
+
+
+
+=item Description
+
+Validations
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+code has a value which is a string
+info has a value which is an UnspecifiedObject, which can hold any non-null object
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+code has a value which is a string
+info has a value which is an UnspecifiedObject, which can hold any non-null object
+
+
+=end text
+
+=back
+
+
+
+=head2 CheckHTMLURLParams
+
+=over 4
+
+
+
+=item Description
+
+Check html url
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+url has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+url has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 CheckHTMLURLResult
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+is_valid has a value which is an UIService.Boolean
+error has a value which is an UIService.CheckError
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+is_valid has a value which is an UIService.Boolean
+error has a value which is an UIService.CheckError
+
+
+=end text
+
+=back
+
+
+
+=head2 CheckImageURLParams
+
+=over 4
+
+
+
+=item Description
+
+Check image url
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+url has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+url has a value which is a string
+
+
+=end text
+
+=back
+
+
+
+=head2 CheckImageURLResult
+
+=over 4
+
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+is_valid has a value which is an UIService.Boolean
+error has a value which is an UIService.CheckError
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+is_valid has a value which is an UIService.Boolean
+error has a value which is an UIService.CheckError
 
 
 =end text

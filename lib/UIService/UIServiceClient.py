@@ -213,6 +213,38 @@ class UIService(object):
         return self._client.call_method('UIService.set_alert',
                                         [alert_param], self._service_ver, context)
 
+    def check_html_url(self, param, context=None):
+        """
+        :param param: instance of type "CheckHTMLURLParams" (Check html url)
+           -> structure: parameter "url" of String
+        :returns: multiple set - (1) parameter "result" of type
+           "CheckHTMLURLResult" -> structure: parameter "is_valid" of type
+           "Boolean", parameter "error" of type "CheckError" (Validations) ->
+           structure: parameter "code" of String, parameter "info" of
+           unspecified object, (2) parameter "error" of type "Error" ->
+           structure: parameter "message" of String, parameter "type" of
+           String, parameter "code" of String, parameter "info" of
+           unspecified object
+        """
+        return self._client.call_method('UIService.check_html_url',
+                                        [param], self._service_ver, context)
+
+    def check_image_url(self, param, context=None):
+        """
+        :param param: instance of type "CheckImageURLParams" (Check image
+           url) -> structure: parameter "url" of String
+        :returns: multiple set - (1) parameter "result" of type
+           "CheckImageURLResult" -> structure: parameter "is_valid" of type
+           "Boolean", parameter "error" of type "CheckError" (Validations) ->
+           structure: parameter "code" of String, parameter "info" of
+           unspecified object, (2) parameter "error" of type "Error" ->
+           structure: parameter "message" of String, parameter "type" of
+           String, parameter "code" of String, parameter "info" of
+           unspecified object
+        """
+        return self._client.call_method('UIService.check_image_url',
+                                        [param], self._service_ver, context)
+
     def status(self, context=None):
         return self._client.call_method('UIService.status',
                                         [], self._service_ver, context)

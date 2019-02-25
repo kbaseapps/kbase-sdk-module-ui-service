@@ -2,7 +2,7 @@
 
 ## install mongo image 
 
-(1) Use Kitematic to get the latest in the 3 series (currently 3.7.9) - the 2 series which KBase uses is not supported in the official distribution.
+(1) Use Kitematic to get the latest in the 3 series (currently 3.6.9) - the 2 series which KBase uses is not supported in the official distribution.
 
 (2) Change image settings:
 
