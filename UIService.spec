@@ -195,6 +195,7 @@ module UIService {
     */
     typedef structure {
         string url;
+        int timeout;
     } CheckHTMLURLParams;
 
     typedef structure {
@@ -211,6 +212,7 @@ module UIService {
     */
     typedef structure {
         string url;
+        int timeout;
         /* int max_size; */
         /* todo: image types */
     } CheckImageURLParams;

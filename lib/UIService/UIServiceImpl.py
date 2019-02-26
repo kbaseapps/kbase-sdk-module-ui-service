@@ -476,12 +476,12 @@ class UIService:
         # ctx is the context object
         # return variables are: result, error
         #BEGIN check_html_url
-        param, error = Validation.validate_validate_html_url_param(param, ctx)
+        param, error = Validation.validate_check_html_url_param(param, ctx)
         if error:
             return [None, error]
 
         try:
-            response = requests.head(url=param['url'])
+            response = requests.head(url=param['url'], timeout=param['timeout']/1000)
             if response.status_code == 404:
                 return [{
                     'is_valid': False,
@@ -534,7 +534,7 @@ class UIService:
 
         except Exception as ex:
             return [None, {
-                'message': ('exception requesting image'),
+                'message': ('exception requesting html page'),
                 'type': 'value',
                 'code': 'error-response',
                 'info': {
@@ -569,12 +569,12 @@ class UIService:
         # ctx is the context object
         # return variables are: result, error
         #BEGIN check_image_url
-        param, error = Validation.validate_validate_image_url_param(param, ctx)
+        param, error = Validation.validate_check_image_url_param(param, ctx)
         if error:
             return [None, error]
 
         try:
-            response = requests.head(url=param['url'])
+            response = requests.head(url=param['url'], timeout=param['timeout']/1000)
             if response.status_code == 404:
                 return [{
                     'is_valid': False,

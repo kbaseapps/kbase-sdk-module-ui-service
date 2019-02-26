@@ -9,12 +9,14 @@ class UIServiceTest_check_image_url(UIServiceTest):
     def test_validation_image_url_good_url(self):
         try:
             param1 = {
-                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.png'
+                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.png',
+                'timeout': 1000
             }
             expected1 = {
-                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.png'
+                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.png',
+                'timeout': 1000
             }
-            result1, err = Validation.validate_validate_image_url_param(param1, None)
+            result1, err = Validation.validate_check_image_url_param(param1, None)
             self.assertIsNone(err, 'Good url failed: %s' % (str(err)))
             self.assertIsNotNone(result1)
             
@@ -29,7 +31,7 @@ class UIServiceTest_check_image_url(UIServiceTest):
         try:
             param = {
                 'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.png',
-                'max_size': 1000000
+                'timeout': 1000
             }
             expected = {
                 'is_valid': True
@@ -46,7 +48,8 @@ class UIServiceTest_check_image_url(UIServiceTest):
     def test_check_image_url_not_found(self):
         try:
             param = {
-                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.pngx'
+                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.pngx',
+                'timeout': 1000
             }
 
             expected = {
@@ -70,7 +73,8 @@ class UIServiceTest_check_image_url(UIServiceTest):
     def test_check_image_url_not_image_type(self):
         try:
             param = {
-                'url': 'https://kbase.us/wp-content/themes/kbase-wordpress-theme/style.css'
+                'url': 'https://kbase.us/wp-content/themes/kbase-wordpress-theme/style.css',
+                'timeout': 1000
             }
 
             expected = {
