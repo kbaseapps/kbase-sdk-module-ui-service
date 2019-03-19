@@ -4,6 +4,9 @@ from UIService.UIServiceModel import UIServiceModel
 from UIService.UIServiceValidation import Validation
 import os
 import string
+import traceback
+import re
+import requests
 #END_HEADER
 
 
@@ -24,7 +27,7 @@ class UIService:
     ######################################### noqa
     VERSION = "0.0.1"
     GIT_URL = "ssh://git@github.com/eapearson/kbase-sdk-module-ui-service"
-    GIT_COMMIT_HASH = "320bf46e871dd31b8be40034512168274769e7d5"
+    GIT_COMMIT_HASH = "049c3ed8023a01cccc80170ab8c0776b0598d214"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -34,7 +37,7 @@ class UIService:
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
         # self.admin_users = string.split(os.environ.get('ADMIN_USERS', ''), ' ')
-        self.admin_users = string.split(config['admin-users'], ' ')
+        self.admin_users = config['admin-users'].split(' ')
 
         config = Validation.validate_config(config)
 
@@ -68,7 +71,7 @@ class UIService:
         #BEGIN get_alert
         input, error = Validation.validate_get_alert_parameter(param, ctx)
         if error:
-            return None, error
+            return [None, error]
             
         model = UIServiceModel(
             auth_url=self.auth_url,
@@ -80,15 +83,15 @@ class UIService:
         return [alert, error]
         #END get_alert
 
-        # At some point might do deeper type checking...
-        if not isinstance(alert, dict):
-            raise ValueError('Method get_alert return value ' +
-                             'alert is not type dict as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method get_alert return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [alert, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(alert, dict):
+        #     raise ValueError('Method get_alert return value ' +
+        #                      'alert is not type dict as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method get_alert return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [alert, error]
 
     def get_active_alerts(self, ctx):
         """
@@ -121,15 +124,15 @@ class UIService:
         return [alerts, error]
         #END get_active_alerts
 
-        # At some point might do deeper type checking...
-        if not isinstance(alerts, list):
-            raise ValueError('Method get_active_alerts return value ' +
-                             'alerts is not type list as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method get_active_alerts return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [alerts, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(alerts, list):
+        #     raise ValueError('Method get_active_alerts return value ' +
+        #                      'alerts is not type list as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method get_active_alerts return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [alerts, error]
 
     def search_alerts(self, ctx, query):
         """
@@ -164,7 +167,7 @@ class UIService:
         #BEGIN search_alerts
         query2, error = Validation.validate_search_alerts_parameter(query, ctx)
         if error:
-            return None, error
+            return [None, error]
 
         model = UIServiceModel(
             auth_url=self.auth_url, 
@@ -183,15 +186,15 @@ class UIService:
 
         #END search_alerts
 
-        # At some point might do deeper type checking...
-        if not isinstance(result, dict):
-            raise ValueError('Method search_alerts return value ' +
-                             'result is not type dict as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method search_alerts return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [result, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(result, dict):
+        #     raise ValueError('Method search_alerts return value ' +
+        #                      'result is not type dict as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method search_alerts return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [result, error]
 
     def search_alerts_summary(self, ctx, query):
         """
@@ -209,7 +212,7 @@ class UIService:
         #BEGIN search_alerts_summary
         query2, error = Validation.validate_search_alerts_summary_parameter(query, ctx)
         if error:
-            return None, error
+            return [None, error]
 
         model = UIServiceModel(
             auth_url=self.auth_url, 
@@ -227,15 +230,15 @@ class UIService:
         }, None]
         #END search_alerts_summary
 
-        # At some point might do deeper type checking...
-        if not isinstance(result, dict):
-            raise ValueError('Method search_alerts_summary return value ' +
-                             'result is not type dict as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method search_alerts_summary return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [result, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(result, dict):
+        #     raise ValueError('Method search_alerts_summary return value ' +
+        #                      'result is not type dict as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method search_alerts_summary return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [result, error]
 
     def am_admin_user(self, ctx):
         """
@@ -252,15 +255,15 @@ class UIService:
         return [is_admin, None]
         #END am_admin_user
 
-        # At some point might do deeper type checking...
-        if not isinstance(is_admin, int):
-            raise ValueError('Method am_admin_user return value ' +
-                             'is_admin is not type int as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method am_admin_user return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [is_admin, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(is_admin, int):
+        #     raise ValueError('Method am_admin_user return value ' +
+        #                      'is_admin is not type int as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method am_admin_user return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [is_admin, error]
 
     def add_alert(self, ctx, alert_param):
         """
@@ -295,15 +298,15 @@ class UIService:
         return [result, None]
         #END add_alert
 
-        # At some point might do deeper type checking...
-        if not isinstance(result, dict):
-            raise ValueError('Method add_alert return value ' +
-                             'result is not type dict as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method add_alert return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [result, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(result, dict):
+        #     raise ValueError('Method add_alert return value ' +
+        #                      'result is not type dict as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method add_alert return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [result, error]
 
     def delete_alert(self, ctx, id):
         """
@@ -328,15 +331,15 @@ class UIService:
         return [result, None]
         #END delete_alert
 
-        # At some point might do deeper type checking...
-        if not isinstance(result, dict):
-            raise ValueError('Method delete_alert return value ' +
-                             'result is not type dict as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method delete_alert return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [result, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(result, dict):
+        #     raise ValueError('Method delete_alert return value ' +
+        #                      'result is not type dict as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method delete_alert return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [result, error]
 
     def is_admin_user(self, ctx, param):
         """
@@ -352,7 +355,7 @@ class UIService:
         #BEGIN is_admin_user
         param, error = Validation.validate_is_admin_user(param, ctx)
         if error:
-            return None, error
+            return [None, error]
 
         # This uses the admin user stored in the model...   
         model = UIServiceModel(
@@ -365,15 +368,15 @@ class UIService:
         return [is_admin, None]
         #END is_admin_user
 
-        # At some point might do deeper type checking...
-        if not isinstance(is_admin, int):
-            raise ValueError('Method is_admin_user return value ' +
-                             'is_admin is not type int as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method is_admin_user return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [is_admin, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(is_admin, int):
+        #     raise ValueError('Method is_admin_user return value ' +
+        #                      'is_admin is not type int as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method is_admin_user return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [is_admin, error]
 
     def update_alert(self, ctx, alert_param):
         """
@@ -406,15 +409,15 @@ class UIService:
         return [success, None]
         #END update_alert
 
-        # At some point might do deeper type checking...
-        if not isinstance(success, int):
-            raise ValueError('Method update_alert return value ' +
-                             'success is not type int as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method update_alert return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [success, error]
+        # # At some point might do deeper type checking...
+        # if not isinstance(success, int):
+        #     raise ValueError('Method update_alert return value ' +
+        #                      'success is not type int as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method update_alert return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [success, error]
 
     def set_alert(self, ctx, alert_param):
         """
@@ -447,15 +450,198 @@ class UIService:
         return [success, None]
         #END set_alert
 
+        # # At some point might do deeper type checking...
+        # if not isinstance(success, int):
+        #     raise ValueError('Method set_alert return value ' +
+        #                      'success is not type int as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method set_alert return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [success, error]
+
+    def check_html_url(self, ctx, param):
+        """
+        :param param: instance of type "CheckHTMLURLParams" (Check html url)
+           -> structure: parameter "url" of String
+        :returns: multiple set - (1) parameter "result" of type
+           "CheckHTMLURLResult" -> structure: parameter "is_valid" of type
+           "Boolean", parameter "error" of type "CheckError" (Validations) ->
+           structure: parameter "code" of String, parameter "info" of
+           unspecified object, (2) parameter "error" of type "Error" ->
+           structure: parameter "message" of String, parameter "type" of
+           String, parameter "code" of String, parameter "info" of
+           unspecified object
+        """
+        # ctx is the context object
+        # return variables are: result, error
+        #BEGIN check_html_url
+        param, error = Validation.validate_check_html_url_param(param, ctx)
+        if error:
+            return [None, error]
+
+        try:
+            response = requests.head(url=param['url'], timeout=param['timeout']/1000)
+            if response.status_code == 404:
+                return [{
+                    'is_valid': False,
+                    'error': {
+                        'code': 'not-found'
+                    }
+                    
+                }, None]
+
+            if response.status_code != 200:
+                return [{
+                    'is_valid': False,
+                    'error': {
+                        'code': 'unexpected-response-status-code',
+                        'info': {
+                            'status_code': response.status_code
+                        }
+                    }
+                    
+                }, None]
+
+            if 'content-type' not in response.headers:
+                return [{
+                    'is_valid': False,
+                    'error': {
+                        'code': 'missing-content-type',
+                        'info': {
+                            'headers': response.headers
+                        }
+                    }
+                   
+                }, None]
+
+            content_type = response.headers['content-type']
+            image_re = re.compile('^text/html')
+            if not re.match(image_re, content_type):
+                return [{
+                    'is_valid': False,
+                    'error': {
+                        'code': 'invalid-content-type',
+                        'info': {
+                            'content_type': content_type
+                        }
+                    }
+                }, None]
+
+            return [{
+                'is_valid': True,
+            }, None]
+
+        except Exception as ex:
+            return [None, {
+                'message': ('exception requesting html page'),
+                'type': 'value',
+                'code': 'error-response',
+                'info': {
+                    'exception': str(ex)
+                }
+            }]
+        #END check_html_url
+
         # At some point might do deeper type checking...
-        if not isinstance(success, int):
-            raise ValueError('Method set_alert return value ' +
-                             'success is not type int as required.')
-        if not isinstance(error, dict):
-            raise ValueError('Method set_alert return value ' +
-                             'error is not type dict as required.')
-        # return the results
-        return [success, error]
+        # if not isinstance(result, dict):
+        #     raise ValueError('Method check_html_url return value ' +
+        #                      'result is not type dict as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method check_html_url return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [result, error]
+
+    def check_image_url(self, ctx, param):
+        """
+        :param param: instance of type "CheckImageURLParams" (Check image
+           url) -> structure: parameter "url" of String
+        :returns: multiple set - (1) parameter "result" of type
+           "CheckImageURLResult" -> structure: parameter "is_valid" of type
+           "Boolean", parameter "error" of type "CheckError" (Validations) ->
+           structure: parameter "code" of String, parameter "info" of
+           unspecified object, (2) parameter "error" of type "Error" ->
+           structure: parameter "message" of String, parameter "type" of
+           String, parameter "code" of String, parameter "info" of
+           unspecified object
+        """
+        # ctx is the context object
+        # return variables are: result, error
+        #BEGIN check_image_url
+        param, error = Validation.validate_check_image_url_param(param, ctx)
+        if error:
+            return [None, error]
+
+        try:
+            response = requests.head(url=param['url'], timeout=param['timeout']/1000)
+            if response.status_code == 404:
+                return [{
+                    'is_valid': False,
+                    'error': {
+                        'code': 'not-found'
+                    }
+                }, None]
+
+            if response.status_code != 200:
+                return [{
+                    'is_valid': False,
+                    'error': {
+                        'code': 'unexpected-response-status-code',
+                        'info': {
+                            'status_code': response.status_code
+                        }
+                    }
+                }, None]
+
+            if 'content-type' not in response.headers:
+                return [{
+                    'is_valid': False,
+                    'error': {
+                        'code': 'missing-content-type',
+                        'info': {
+                            'headers': response.headers
+                        }
+                    }
+                }, None]
+
+            content_type = response.headers['content-type']
+            image_re = re.compile('^image/')
+            if not re.match(image_re, content_type):
+                return [{
+                    'is_valid': False,
+                    'error': {
+                        'code': 'invalid-content-type',
+                        'info': {
+                            'content_type': content_type
+                        }
+                    }
+                }, None]
+
+            return [{
+                'is_valid': True,
+            }, None]
+
+        except Exception as ex:
+            return [None, {
+                'message': ('exception requesting image'),
+                'type': 'value',
+                'code': 'error-response',
+                'info': {
+                    'exception': str(ex)
+                }
+            }]
+        #END check_image_url
+
+        # # At some point might do deeper type checking...
+        # if not isinstance(result, dict):
+        #     raise ValueError('Method check_image_url return value ' +
+        #                      'result is not type dict as required.')
+        # if not isinstance(error, dict):
+        #     raise ValueError('Method check_image_url return value ' +
+        #                      'error is not type dict as required.')
+        # # return the results
+        # return [result, error]
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

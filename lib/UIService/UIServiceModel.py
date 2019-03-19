@@ -27,7 +27,7 @@ class UIServiceModel(object):
         self.mongo = pymongo.MongoClient(self.mongo_host, self.mongo_port, serverSelectionTimeoutMS=1000)
         # print('mongo: authenticating')
         self.db = self.mongo[self.mongo_db]
-        self.db.authenticate(self.mongo_user, urllib.quote_plus(self.mongo_pwd))
+        self.db.authenticate(self.mongo_user, urllib.parse.quote_plus(self.mongo_pwd))
         # print('mongo: authenticated')
 
     @staticmethod
@@ -179,7 +179,7 @@ class UIServiceModel(object):
             find_expression = self.search_query_to_mongo(search_query['query'])
         except ValueError as ex:
             return None, {
-                'message': ex.message,
+                'message': str(ex),
                 'type': 'input',
                 'code': 'invalid',
                 'info': {}
@@ -202,7 +202,7 @@ class UIServiceModel(object):
             find_expression = self.search_query_to_mongo(search_query['query'])
         except ValueError as ex:
             return None, {
-                'message': ex.message,
+                'message': str(ex),
                 'type': 'input',
                 'code': 'invalid',
                 'info': {}
@@ -263,6 +263,7 @@ class UIServiceModel(object):
             raise ValueError('No authorization token')
 
         if not self.username in self.admin_users:
+            print('admin users? %s' % (self.admin_users))
             raise ValueError('Not admin user')
 
         return self.username

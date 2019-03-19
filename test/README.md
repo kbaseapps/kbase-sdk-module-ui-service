@@ -22,5 +22,17 @@ secure.mongo_host=mongo
 secure.mongo_port=27017
 secure.mongo_user=ui_service
 secure.mongo_pwd=ui_service
+secure.admin_users=<your admin username here>
 ```
 
+
+
+If get 
+
+```
+Error while testing module: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+```
+
+this means you are using a local proxy for ci.kbase.us; just disable it in /etc/hosts
+
+Need to fix this

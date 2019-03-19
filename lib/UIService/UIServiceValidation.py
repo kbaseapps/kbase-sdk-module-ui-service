@@ -38,9 +38,35 @@ class Validation(object):
             return [None, error]
         return [param_value, None]
 
+    @staticmethod
+    def check_url(url, must_be_secure):
+        secure_url = re.compile('^https://')
+        nonsecure_url = re.compile('^http://')
+        any_url = re.compile('^http[s]?://')
+        if must_be_secure:
+            if not re.match(secure_url, url):
+                error = {
+                    'message': ('this url parameter must be secure'),
+                    'type': 'input',
+                    'code': 'wrong-format',
+                    'info': {
+                    }
+                }
+                return [None, error]
+        if not re.match(any_url, url):
+            error = {
+                'message': ('does not match a valid url'),
+                'type': 'input',
+                'code': 'wrong-format',
+                'info': {
+                }
+            }
+            return [None, error]
+        return [url, None]
+
     @classmethod
     def validate_get_alert_parameter(cls, parameter, ctx):
-        id, error = cls.check_param(parameter, 'id', True, basestring)
+        id, error = cls.check_param(parameter, 'id', True, str)
         if error is not None:
             return None, error
 
@@ -80,12 +106,113 @@ class Validation(object):
 
     @classmethod
     def validate_is_admin_user(cls, parameter, ctx):
-        username, error = cls.check_param(parameter, 'username', True, basestring)
+        username, error = cls.check_param(parameter, 'username', True, str)
         if error is not None:
             return None, error
 
         return [{
             'username': username
+        }, None]
+
+    @classmethod
+    def validate_check_html_url_param(cls, parameter, ctx):
+        url, error = cls.check_param(parameter, 'url', True, str)
+        if error is not None:
+            return None, error
+
+        url, error = cls.check_url(url, False)
+        if error is not None:
+            error['info']['key'] = 'url'
+            return None, error
+
+        timeout, error = cls.check_param(parameter, 'timeout', True, int)
+        if error is not None:
+            return None, error
+
+        min_timeout = 0
+        max_timeout = 1000 * 60
+
+        if (timeout < min_timeout):
+            error = {
+                    'message': ('the timeout parameter must be greater than 0'),
+                    'type': 'input',
+                    'code': 'out-of-range',
+                    'info': {
+                        'min': min_timeout,
+                        'max': max_timeout
+                    }
+            }
+            return [None, error]
+
+        if (timeout > max_timeout):
+            error = {
+                    'message': ('the timeout parameter must be less than one minute'),
+                    'type': 'input',
+                    'code': 'out-of-range',
+                    'info': {
+                        'min': min_timeout,
+                        'max': max_timeout
+                    }
+            }
+            return [None, error]
+
+        return [{
+            'url': url,
+            'timeout': timeout
+        }, None]
+
+    @classmethod
+    def validate_check_image_url_param(cls, parameter, ctx):
+        username, error = cls.check_param(parameter, 'url', True, str)
+        if error is not None:
+            return None, error
+
+        url, error = cls.check_param(parameter, 'url', True, str)
+        if error is not None:
+            return None, error
+
+        url, error = cls.check_url(url, True)
+        if error is not None:
+            error['info']['key'] = 'url'
+            return None, error
+
+        timeout, error = cls.check_param(parameter, 'timeout', True, int)
+        if error is not None:
+            return None, error
+
+        min_timeout = 0
+        max_timeout = 1000 * 60
+
+        if (timeout < min_timeout):
+            error = {
+                    'message': ('the timeout parameter must be greater than 0'),
+                    'type': 'input',
+                    'code': 'out-of-range',
+                    'info': {
+                        'min': min_timeout,
+                        'max': max_timeout
+                    }
+            }
+            return [None, error]
+
+        if (timeout > max_timeout):
+            error = {
+                    'message': ('the timeout parameter must be less than one minute'),
+                    'type': 'input',
+                    'code': 'out-of-range',
+                    'info': {
+                        'min': min_timeout,
+                        'max': max_timeout
+                    }
+            }
+            return [None, error]
+
+        # try to fetch it with HEAD
+       
+
+        return [{
+            'url': url,
+            'timeout': timeout
         }, None]
 
     @classmethod

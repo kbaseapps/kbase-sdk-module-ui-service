@@ -12,7 +12,7 @@ from __future__ import print_function
 try:
     # baseclient and this client are in a package
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
-except:
+except ImportError:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
 
@@ -23,7 +23,7 @@ class UIService(object):
             self, url=None, timeout=30 * 60, user_id=None,
             password=None, token=None, ignore_authrc=False,
             trust_all_ssl_certificates=False,
-            auth_svc='https://kbase.us/services/authorization/Sessions/Login'):
+            auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login'):
         if url is None:
             raise ValueError('A url is required')
         self._service_ver = None
@@ -50,9 +50,8 @@ class UIService(object):
            "type" of String, parameter "code" of String, parameter "info" of
            unspecified object
         """
-        return self._client.call_method(
-            'UIService.get_alert',
-            [param], self._service_ver, context)
+        return self._client.call_method('UIService.get_alert',
+                                        [param], self._service_ver, context)
 
     def get_active_alerts(self, context=None):
         """
@@ -70,9 +69,8 @@ class UIService(object):
            String, parameter "type" of String, parameter "code" of String,
            parameter "info" of unspecified object
         """
-        return self._client.call_method(
-            'UIService.get_active_alerts',
-            [], self._service_ver, context)
+        return self._client.call_method('UIService.get_active_alerts',
+                                        [], self._service_ver, context)
 
     def search_alerts(self, query, context=None):
         """
@@ -102,9 +100,8 @@ class UIService(object):
            String, parameter "type" of String, parameter "code" of String,
            parameter "info" of unspecified object
         """
-        return self._client.call_method(
-            'UIService.search_alerts',
-            [query], self._service_ver, context)
+        return self._client.call_method('UIService.search_alerts',
+                                        [query], self._service_ver, context)
 
     def search_alerts_summary(self, query, context=None):
         """
@@ -117,9 +114,8 @@ class UIService(object):
            String, parameter "code" of String, parameter "info" of
            unspecified object
         """
-        return self._client.call_method(
-            'UIService.search_alerts_summary',
-            [query], self._service_ver, context)
+        return self._client.call_method('UIService.search_alerts_summary',
+                                        [query], self._service_ver, context)
 
     def am_admin_user(self, context=None):
         """
@@ -129,9 +125,8 @@ class UIService(object):
            "message" of String, parameter "type" of String, parameter "code"
            of String, parameter "info" of unspecified object
         """
-        return self._client.call_method(
-            'UIService.am_admin_user',
-            [], self._service_ver, context)
+        return self._client.call_method('UIService.am_admin_user',
+                                        [], self._service_ver, context)
 
     def add_alert(self, alert_param, context=None):
         """
@@ -151,9 +146,8 @@ class UIService(object):
            "message" of String, parameter "type" of String, parameter "code"
            of String, parameter "info" of unspecified object
         """
-        return self._client.call_method(
-            'UIService.add_alert',
-            [alert_param], self._service_ver, context)
+        return self._client.call_method('UIService.add_alert',
+                                        [alert_param], self._service_ver, context)
 
     def delete_alert(self, id, context=None):
         """
@@ -164,9 +158,8 @@ class UIService(object):
            parameter "message" of String, parameter "type" of String,
            parameter "code" of String, parameter "info" of unspecified object
         """
-        return self._client.call_method(
-            'UIService.delete_alert',
-            [id], self._service_ver, context)
+        return self._client.call_method('UIService.delete_alert',
+                                        [id], self._service_ver, context)
 
     def is_admin_user(self, param, context=None):
         """
@@ -177,9 +170,8 @@ class UIService(object):
            "message" of String, parameter "type" of String, parameter "code"
            of String, parameter "info" of unspecified object
         """
-        return self._client.call_method(
-            'UIService.is_admin_user',
-            [param], self._service_ver, context)
+        return self._client.call_method('UIService.is_admin_user',
+                                        [param], self._service_ver, context)
 
     def update_alert(self, alert_param, context=None):
         """
@@ -198,9 +190,8 @@ class UIService(object):
            "message" of String, parameter "type" of String, parameter "code"
            of String, parameter "info" of unspecified object
         """
-        return self._client.call_method(
-            'UIService.update_alert',
-            [alert_param], self._service_ver, context)
+        return self._client.call_method('UIService.update_alert',
+                                        [alert_param], self._service_ver, context)
 
     def set_alert(self, alert_param, context=None):
         """
@@ -219,9 +210,40 @@ class UIService(object):
            "message" of String, parameter "type" of String, parameter "code"
            of String, parameter "info" of unspecified object
         """
-        return self._client.call_method(
-            'UIService.set_alert',
-            [alert_param], self._service_ver, context)
+        return self._client.call_method('UIService.set_alert',
+                                        [alert_param], self._service_ver, context)
+
+    def check_html_url(self, param, context=None):
+        """
+        :param param: instance of type "CheckHTMLURLParams" (Check html url)
+           -> structure: parameter "url" of String
+        :returns: multiple set - (1) parameter "result" of type
+           "CheckHTMLURLResult" -> structure: parameter "is_valid" of type
+           "Boolean", parameter "error" of type "CheckError" (Validations) ->
+           structure: parameter "code" of String, parameter "info" of
+           unspecified object, (2) parameter "error" of type "Error" ->
+           structure: parameter "message" of String, parameter "type" of
+           String, parameter "code" of String, parameter "info" of
+           unspecified object
+        """
+        return self._client.call_method('UIService.check_html_url',
+                                        [param], self._service_ver, context)
+
+    def check_image_url(self, param, context=None):
+        """
+        :param param: instance of type "CheckImageURLParams" (Check image
+           url) -> structure: parameter "url" of String
+        :returns: multiple set - (1) parameter "result" of type
+           "CheckImageURLResult" -> structure: parameter "is_valid" of type
+           "Boolean", parameter "error" of type "CheckError" (Validations) ->
+           structure: parameter "code" of String, parameter "info" of
+           unspecified object, (2) parameter "error" of type "Error" ->
+           structure: parameter "message" of String, parameter "type" of
+           String, parameter "code" of String, parameter "info" of
+           unspecified object
+        """
+        return self._client.call_method('UIService.check_image_url',
+                                        [param], self._service_ver, context)
 
     def status(self, context=None):
         return self._client.call_method('UIService.status',

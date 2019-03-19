@@ -332,6 +332,40 @@ public class UIServiceClient {
         return res;
     }
 
+    /**
+     * <p>Original spec-file function name: check_html_url</p>
+     * <pre>
+     * </pre>
+     * @param   param   instance of type {@link us.kbase.uiservice.CheckHTMLURLParams CheckHTMLURLParams}
+     * @return   multiple set: (1) parameter "result" of type {@link us.kbase.uiservice.CheckHTMLURLResult CheckHTMLURLResult}, (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public Tuple2<CheckHTMLURLResult, Error> checkHtmlUrl(CheckHTMLURLParams param, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(param);
+        TypeReference<Tuple2<CheckHTMLURLResult, Error>> retType = new TypeReference<Tuple2<CheckHTMLURLResult, Error>>() {};
+        Tuple2<CheckHTMLURLResult, Error> res = caller.jsonrpcCall("UIService.check_html_url", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
+    }
+
+    /**
+     * <p>Original spec-file function name: check_image_url</p>
+     * <pre>
+     * </pre>
+     * @param   param   instance of type {@link us.kbase.uiservice.CheckImageURLParams CheckImageURLParams}
+     * @return   multiple set: (1) parameter "result" of type {@link us.kbase.uiservice.CheckImageURLResult CheckImageURLResult}, (2) parameter "error" of type {@link us.kbase.uiservice.Error Error}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public Tuple2<CheckImageURLResult, Error> checkImageUrl(CheckImageURLParams param, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        List<Object> args = new ArrayList<Object>();
+        args.add(param);
+        TypeReference<Tuple2<CheckImageURLResult, Error>> retType = new TypeReference<Tuple2<CheckImageURLResult, Error>>() {};
+        Tuple2<CheckImageURLResult, Error> res = caller.jsonrpcCall("UIService.check_image_url", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        return res;
+    }
+
     public Map<String, Object> status(RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         TypeReference<List<Map<String, Object>>> retType = new TypeReference<List<Map<String, Object>>>() {};

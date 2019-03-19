@@ -2,8 +2,12 @@ import sys
 import os
 import os.path
 from jinja2 import Template
-from ConfigParser import ConfigParser
-import StringIO
+import io
+
+try:
+    from ConfigParser import ConfigParser as _ConfigParser
+except ImportError:
+    from configparser import ConfigParser as _ConfigParser
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -14,7 +18,7 @@ if __name__ == "__main__":
     file = open(sys.argv[1], 'r')
     text = file.read()
     t = Template(text)
-    config = ConfigParser()
+    config = _ConfigParser()
     if os.path.isfile(sys.argv[2]):
         config.read(sys.argv[2])
     elif "KBASE_ENDPOINT" in os.environ:
@@ -36,7 +40,7 @@ if __name__ == "__main__":
                 param_name = key[len('KBASE_SECURE_CONFIG_PARAM_'):]
                 print("PARAM", key, param_name, os.environ.get(key))
                 props += param_name + " = " + os.environ.get(key) + "\n"
-        config.readfp(StringIO.StringIO(props))
+        config.readfp(io.StringIO(props))
     else:
         raise ValueError('Neither ' + sys.argv[2] + ' file nor KBASE_ENDPOINT env-variable found')
     props = dict(config.items("global"))

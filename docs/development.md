@@ -104,7 +104,7 @@ mongo --host localhost --port PORT --username dev_root --password dev_r00t admin
 
 > Where PORT is the port assigned to mongo by Docker. See **PUBLISHED IP:PORT** in the **Settings > Hostname/Ports** tab.
 
-> If you don't have mongo installed locally, use your favorite method for doing this. E.g. `sudo port install mongo` to install with macports (my favorite).
+> If you don't have mongo installed locally, use your favorite method for doing this. E.g. `sudo port install mongodb` to install with macports (my favorite).
 
 Now create a user with read/write permissions
 
