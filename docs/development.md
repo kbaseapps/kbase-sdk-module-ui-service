@@ -207,6 +207,38 @@ where
 
 > TODO: clarify this!!!
 
+## Tweak the test runner script
+
+Currently the tests must be run in the custom network "kbase-dev". This is a simplification to ensure that the test container and mongo are operating on the same docker network. It is also necessary in order to develop and test the service alongside kbase-ui.
+
+Add the option
+
+```
+--network kbase-dev
+```
+
+to the end of the options in the invocation of run_docker.sh
+
+E.g.
+
+```
+#!/bin/bash
+script_dir="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+cd $script_dir/..
+$script_dir/run_docker.sh run -v $script_dir/workdir:/kb/module/work -e "SDK_CALLBACK_URL=$1" test/uiservice:latest test
+```
+
+becomes
+
+```
+#!/bin/bash
+script_dir="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+cd $script_dir/..
+$script_dir/run_docker.sh run -v $script_dir/workdir:/kb/module/work -e "SDK_CALLBACK_URL=$1" --network kbase-dev  test/uiservice:latest test
+```
+
+> TODO: make this step go away
+
 ## Run the Tests
 
 Now you are ready to run the tests.
