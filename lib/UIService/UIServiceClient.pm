@@ -1304,6 +1304,7 @@ $result is an UIService.CheckHTMLURLResult
 $error is an UIService.Error
 CheckHTMLURLParams is a reference to a hash where the following keys are defined:
 	url has a value which is a string
+	timeout has a value which is an int
 CheckHTMLURLResult is a reference to a hash where the following keys are defined:
 	is_valid has a value which is an UIService.Boolean
 	error has a value which is an UIService.CheckError
@@ -1328,6 +1329,7 @@ $result is an UIService.CheckHTMLURLResult
 $error is an UIService.Error
 CheckHTMLURLParams is a reference to a hash where the following keys are defined:
 	url has a value which is a string
+	timeout has a value which is an int
 CheckHTMLURLResult is a reference to a hash where the following keys are defined:
 	is_valid has a value which is an UIService.Boolean
 	error has a value which is an UIService.CheckError
@@ -1416,10 +1418,12 @@ $result is an UIService.CheckImageURLResult
 $error is an UIService.Error
 CheckImageURLParams is a reference to a hash where the following keys are defined:
 	url has a value which is a string
+	timeout has a value which is an int
+	verify_ssl has a value which is an UIService.Boolean
+Boolean is an int
 CheckImageURLResult is a reference to a hash where the following keys are defined:
 	is_valid has a value which is an UIService.Boolean
 	error has a value which is an UIService.CheckError
-Boolean is an int
 CheckError is a reference to a hash where the following keys are defined:
 	code has a value which is a string
 	info has a value which is an UnspecifiedObject, which can hold any non-null object
@@ -1440,10 +1444,12 @@ $result is an UIService.CheckImageURLResult
 $error is an UIService.Error
 CheckImageURLParams is a reference to a hash where the following keys are defined:
 	url has a value which is a string
+	timeout has a value which is an int
+	verify_ssl has a value which is an UIService.Boolean
+Boolean is an int
 CheckImageURLResult is a reference to a hash where the following keys are defined:
 	is_valid has a value which is an UIService.Boolean
 	error has a value which is an UIService.CheckError
-Boolean is an int
 CheckError is a reference to a hash where the following keys are defined:
 	code has a value which is a string
 	info has a value which is an UnspecifiedObject, which can hold any non-null object
@@ -2316,6 +2322,7 @@ Check html url
 <pre>
 a reference to a hash where the following keys are defined:
 url has a value which is a string
+timeout has a value which is an int
 
 </pre>
 
@@ -2325,6 +2332,7 @@ url has a value which is a string
 
 a reference to a hash where the following keys are defined:
 url has a value which is a string
+timeout has a value which is an int
 
 
 =end text
@@ -2383,6 +2391,8 @@ Check image url
 <pre>
 a reference to a hash where the following keys are defined:
 url has a value which is a string
+timeout has a value which is an int
+verify_ssl has a value which is an UIService.Boolean
 
 </pre>
 
@@ -2392,6 +2402,8 @@ url has a value which is a string
 
 a reference to a hash where the following keys are defined:
 url has a value which is a string
+timeout has a value which is an int
+verify_ssl has a value which is an UIService.Boolean
 
 
 =end text

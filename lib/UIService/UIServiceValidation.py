@@ -171,6 +171,16 @@ class Validation(object):
         if error is not None:
             return None, error
 
+        verify_ssl, error = cls.check_param(parameter, 'verify_ssl', False, int)
+        if error is not None:
+            return None, error
+        if verify_ssl is None:
+            verify_ssl = True
+        elif verify_ssl == 0:
+            verify_ssl = False
+        else:
+            verify_ssl = True
+
         url, error = cls.check_url(url, True)
         if error is not None:
             error['info']['key'] = 'url'
@@ -212,7 +222,8 @@ class Validation(object):
 
         return [{
             'url': url,
-            'timeout': timeout
+            'timeout': timeout,
+            'verify_ssl': verify_ssl
         }, None]
 
     @classmethod

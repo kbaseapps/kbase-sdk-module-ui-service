@@ -213,6 +213,7 @@ module UIService {
     typedef structure {
         string url;
         int timeout;
+        Boolean verify_ssl;
         /* int max_size; */
         /* todo: image types */
     } CheckImageURLParams;

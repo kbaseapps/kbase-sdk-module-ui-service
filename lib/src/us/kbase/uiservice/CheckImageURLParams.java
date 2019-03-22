@@ -21,12 +21,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
-    "url"
+    "url",
+    "timeout",
+    "verify_ssl"
 })
 public class CheckImageURLParams {
 
     @JsonProperty("url")
     private String url;
+    @JsonProperty("timeout")
+    private Long timeout;
+    @JsonProperty("verify_ssl")
+    private Long verifySsl;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("url")
@@ -44,6 +50,36 @@ public class CheckImageURLParams {
         return this;
     }
 
+    @JsonProperty("timeout")
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    @JsonProperty("timeout")
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
+    }
+
+    public CheckImageURLParams withTimeout(Long timeout) {
+        this.timeout = timeout;
+        return this;
+    }
+
+    @JsonProperty("verify_ssl")
+    public Long getVerifySsl() {
+        return verifySsl;
+    }
+
+    @JsonProperty("verify_ssl")
+    public void setVerifySsl(Long verifySsl) {
+        this.verifySsl = verifySsl;
+    }
+
+    public CheckImageURLParams withVerifySsl(Long verifySsl) {
+        this.verifySsl = verifySsl;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -56,7 +92,7 @@ public class CheckImageURLParams {
 
     @Override
     public String toString() {
-        return ((((("CheckImageURLParams"+" [url=")+ url)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("CheckImageURLParams"+" [url=")+ url)+", timeout=")+ timeout)+", verifySsl=")+ verifySsl)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

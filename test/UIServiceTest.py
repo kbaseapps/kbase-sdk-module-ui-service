@@ -7,6 +7,7 @@ import requests
 import string
 import random
 
+
 from os import environ
 try:
     from configparser import ConfigParser as _ConfigParser  # py 3
@@ -58,8 +59,63 @@ class UIServiceTest(unittest.TestCase):
         cls.scratch = cls.cfg['scratch']
         cls.callback_url = os.environ['SDK_CALLBACK_URL']
 
+        # # Start a little web server for testing against for the url methods.
+        # http_server_port = 8002
+        # # handler = http.server
+        # cls.inst_id = uuid.uuid4()
+        # class TestServer(socketserver.TCPServer):
+        #     allow_reuse_address = True
+        # print("STARTING", cls.inst_id)
+        # test_content = os.path.dirname(__file__) + "/test_content"
+        # print("TEST CONTENT", test_content, "\n")
+        # class MyHandler(http.server.SimpleHTTPRequestHandler):
+        #     directory = test_content
+        #     def do_HEAD(self): 
+        #         print('HEAD???', self.path, "\n")
+        #         if self.path == '/test1.html':
+        #             self.send_response(200, 'OK')
+        #             self.send_header('Content-Type', 'text/html')
+        #             self.send_header('Content-Length', 100)
+        #             self.end_headers()
+        #         if self.path == '/test1.css':
+        #             self.send_response(200, 'OK')
+        #             self.send_header('Content-Type', 'text/css')
+        #             self.send_header('Content-Length', 100)
+        #             self.end_headers()
+        #         if self.path == '/respond-400':
+        #             self.send_response(400, 'OK')
+        #             self.send_header('Content-Type', 'text/plain')
+        #             self.send_header('Content-Length', 100)
+        #             self.end_headers()
+        #         else:
+        #             self.send_response(404, 'Not Found')
+        #             self.send_header('Content-Type', 'text/plain')
+        #             self.end_headers()
+                
+
+
+            # def translate_path(self, path):
+            #     path = http.server.SimpleHTTPRequestHandler.translate_path(self, path)
+            #     relpath = os.path.relpath(path, os.getcwd())
+            #     fullpath = os.path.join(test_content, relpath)
+            #     print("FULL PATH", fullpath)
+            #     return fullpath
+
+        # handler = http.server.SimpleHTTPRequestHandler(directory="test_content")
+        # cls.httpd = TestServer(("localhost", http_server_port), MyHandler)
+        # cls.httpd_thread = threading.Thread(target=cls.httpd.serve_forever)
+        # cls.httpd_thread.setDaemon(True)
+        # cls.httpd_thread.start()
+        
+        # print('STARTED', cls.inst_id)
+
     @classmethod
     def tearDownClass(cls):
+        # print('SHUTTING DOWN??', cls.inst_id)
+        # cls.httpd.shutdown()
+        # cls.httpd.server_close()
+        # print('FINISHING THREAD?', cls.inst_id)
+        # cls.httpd_thread.join()
         pass
         
     def getImpl(self):
