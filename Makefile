@@ -16,7 +16,7 @@ MODULE_USER = kbmodule
 
 default: compile
 
-install: compile build build-startup-script build-executable-script build-test-script
+install: build build-startup-script build-executable-script build-test-script
 
 all: build build-startup-script build-executable-script build-test-script
 

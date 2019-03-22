@@ -3,18 +3,77 @@
 from UIServiceTest import UIServiceTest
 
 from UIService.UIServiceValidation import Validation
+from TestWebServer import TestWebServer
+
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+urlBase = 'https://localhost:8002'
+
 
 class UIServiceTest_check_image_url(UIServiceTest):
+    def setUp(self):
+        routes = {
+            '/test1.png': {
+                'status': {
+                    'code': 200,
+                    'message': 'OK'
+                },
+                'header': {
+                    'Content-Type': 'image/png',
+                    'Content-Length': 100
+                }
+            },
+            '/test1.css': {
+                'status': {
+                    'code': 200,
+                    'message': 'OK'
+                },
+                'header': {
+                    'Content-Type': 'text/css',
+                    'Content-Length': 100
+                }
+            },
+            '/respond-400':  {
+                'status': {
+                    'code': 400,
+                    'message': 'Client Error'
+                },
+                'header': {
+                    'Content-Type': 'text/plain',
+                    'Content-Length': 100
+                }
+            },
+            '/respond-404':  {
+                'status': {
+                    'code': 404,
+                    'message': 'Not Found'
+                },
+                'header': {
+                    'Content-Type': 'text/plain',
+                    'Content-Length': 100
+                }
+            },
+        }
+        w = TestWebServer(routes, ssl_cert_file='/kb/module/work/test-ssl.crt', ssl_key_file='/kb/module/work/test-ssl.key')
+        w.start()
+        self.web_server = w
+
+    def tearDown(self):
+        self.web_server.stop()
+
     # TESTS
     def test_validation_image_url_good_url(self):
         try:
             param1 = {
-                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.png',
-                'timeout': 1000
+                'url': urlBase + '/test1.png',
+                'timeout': 1000,
+                'verify_ssl': 0
             }
             expected1 = {
-                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.png',
-                'timeout': 1000
+                'url': urlBase + '/test1.png',
+                'timeout': 1000,
+                'verify_ssl': False
             }
             result1, err = Validation.validate_check_image_url_param(param1, None)
             self.assertIsNone(err, 'Good url failed: %s' % (str(err)))
@@ -30,8 +89,9 @@ class UIServiceTest_check_image_url(UIServiceTest):
     def test_check_image_url_good_url(self):
         try:
             param = {
-                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.png',
-                'timeout': 1000
+                'url': urlBase + '/test1.png',
+                'timeout': 1000,
+                'verify_ssl': 0
             }
             expected = {
                 'is_valid': True
@@ -48,8 +108,9 @@ class UIServiceTest_check_image_url(UIServiceTest):
     def test_check_image_url_not_found(self):
         try:
             param = {
-                'url': 'https://kbase.us/wp-content/uploads/2014/11/kbase-logo-web.pngx',
-                'timeout': 1000
+                'url': urlBase + '/respond-404',
+                'timeout': 1000,
+                'verify_ssl': 0
             }
 
             expected = {
@@ -73,8 +134,9 @@ class UIServiceTest_check_image_url(UIServiceTest):
     def test_check_image_url_not_image_type(self):
         try:
             param = {
-                'url': 'https://kbase.us/wp-content/themes/kbase-wordpress-theme/style.css',
-                'timeout': 1000
+                'url': urlBase + '/test1.css',
+                'timeout': 1000,
+                'verify_ssl': 0
             }
 
             expected = {

@@ -26,8 +26,8 @@ class UIService:
     # the latter method is running.
     ######################################### noqa
     VERSION = "0.0.1"
-    GIT_URL = "ssh://git@github.com/eapearson/kbase-sdk-module-ui-service"
-    GIT_COMMIT_HASH = "049c3ed8023a01cccc80170ab8c0776b0598d214"
+    GIT_URL = "https://github.com/kbaseapps/kbase-sdk-module-ui-service"
+    GIT_COMMIT_HASH = "05b95a25b2bba5e6f2afa7050011e6ad2d32e77a"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -83,14 +83,14 @@ class UIService:
         return [alert, error]
         #END get_alert
 
-        # # At some point might do deeper type checking...
+        # At some point might do deeper type checking...
         # if not isinstance(alert, dict):
         #     raise ValueError('Method get_alert return value ' +
         #                      'alert is not type dict as required.')
         # if not isinstance(error, dict):
         #     raise ValueError('Method get_alert return value ' +
         #                      'error is not type dict as required.')
-        # # return the results
+        # return the results
         # return [alert, error]
 
     def get_active_alerts(self, ctx):
@@ -255,7 +255,7 @@ class UIService:
         return [is_admin, None]
         #END am_admin_user
 
-        # # At some point might do deeper type checking...
+        # At some point might do deeper type checking...
         # if not isinstance(is_admin, int):
         #     raise ValueError('Method am_admin_user return value ' +
         #                      'is_admin is not type int as required.')
@@ -331,7 +331,7 @@ class UIService:
         return [result, None]
         #END delete_alert
 
-        # # At some point might do deeper type checking...
+        # At some point might do deeper type checking...
         # if not isinstance(result, dict):
         #     raise ValueError('Method delete_alert return value ' +
         #                      'result is not type dict as required.')
@@ -368,7 +368,7 @@ class UIService:
         return [is_admin, None]
         #END is_admin_user
 
-        # # At some point might do deeper type checking...
+        # At some point might do deeper type checking...
         # if not isinstance(is_admin, int):
         #     raise ValueError('Method is_admin_user return value ' +
         #                      'is_admin is not type int as required.')
@@ -409,7 +409,7 @@ class UIService:
         return [success, None]
         #END update_alert
 
-        # # At some point might do deeper type checking...
+        # At some point might do deeper type checking...
         # if not isinstance(success, int):
         #     raise ValueError('Method update_alert return value ' +
         #                      'success is not type int as required.')
@@ -450,7 +450,7 @@ class UIService:
         return [success, None]
         #END set_alert
 
-        # # At some point might do deeper type checking...
+        # At some point might do deeper type checking...
         # if not isinstance(success, int):
         #     raise ValueError('Method set_alert return value ' +
         #                      'success is not type int as required.')
@@ -463,7 +463,8 @@ class UIService:
     def check_html_url(self, ctx, param):
         """
         :param param: instance of type "CheckHTMLURLParams" (Check html url)
-           -> structure: parameter "url" of String
+           -> structure: parameter "url" of String, parameter "timeout" of
+           Long
         :returns: multiple set - (1) parameter "result" of type
            "CheckHTMLURLResult" -> structure: parameter "is_valid" of type
            "Boolean", parameter "error" of type "CheckError" (Validations) ->
@@ -556,7 +557,8 @@ class UIService:
     def check_image_url(self, ctx, param):
         """
         :param param: instance of type "CheckImageURLParams" (Check image
-           url) -> structure: parameter "url" of String
+           url) -> structure: parameter "url" of String, parameter "timeout"
+           of Long, parameter "verify_ssl" of type "Boolean"
         :returns: multiple set - (1) parameter "result" of type
            "CheckImageURLResult" -> structure: parameter "is_valid" of type
            "Boolean", parameter "error" of type "CheckError" (Validations) ->
@@ -574,7 +576,7 @@ class UIService:
             return [None, error]
 
         try:
-            response = requests.head(url=param['url'], timeout=param['timeout']/1000)
+            response = requests.head(url=param['url'], timeout=param['timeout']/1000, verify=param['verify_ssl'])
             if response.status_code == 404:
                 return [{
                     'is_valid': False,
@@ -633,15 +635,15 @@ class UIService:
             }]
         #END check_image_url
 
-        # # At some point might do deeper type checking...
+        # At some point might do deeper type checking...
         # if not isinstance(result, dict):
         #     raise ValueError('Method check_image_url return value ' +
         #                      'result is not type dict as required.')
         # if not isinstance(error, dict):
         #     raise ValueError('Method check_image_url return value ' +
         #                      'error is not type dict as required.')
-        # # return the results
-        # return [result, error]
+        # return the results
+        return [result, error]
     def status(self, ctx):
         #BEGIN_STATUS
         returnVal = {'state': "OK",

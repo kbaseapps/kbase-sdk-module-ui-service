@@ -216,7 +216,8 @@ class UIService(object):
     def check_html_url(self, param, context=None):
         """
         :param param: instance of type "CheckHTMLURLParams" (Check html url)
-           -> structure: parameter "url" of String
+           -> structure: parameter "url" of String, parameter "timeout" of
+           Long
         :returns: multiple set - (1) parameter "result" of type
            "CheckHTMLURLResult" -> structure: parameter "is_valid" of type
            "Boolean", parameter "error" of type "CheckError" (Validations) ->
@@ -232,7 +233,8 @@ class UIService(object):
     def check_image_url(self, param, context=None):
         """
         :param param: instance of type "CheckImageURLParams" (Check image
-           url) -> structure: parameter "url" of String
+           url) -> structure: parameter "url" of String, parameter "timeout"
+           of Long, parameter "verify_ssl" of type "Boolean"
         :returns: multiple set - (1) parameter "result" of type
            "CheckImageURLResult" -> structure: parameter "is_valid" of type
            "Boolean", parameter "error" of type "CheckError" (Validations) ->

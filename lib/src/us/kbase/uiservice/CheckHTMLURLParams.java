@@ -21,12 +21,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
-    "url"
+    "url",
+    "timeout"
 })
 public class CheckHTMLURLParams {
 
     @JsonProperty("url")
     private String url;
+    @JsonProperty("timeout")
+    private Long timeout;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("url")
@@ -44,6 +47,21 @@ public class CheckHTMLURLParams {
         return this;
     }
 
+    @JsonProperty("timeout")
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    @JsonProperty("timeout")
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
+    }
+
+    public CheckHTMLURLParams withTimeout(Long timeout) {
+        this.timeout = timeout;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -56,7 +74,7 @@ public class CheckHTMLURLParams {
 
     @Override
     public String toString() {
-        return ((((("CheckHTMLURLParams"+" [url=")+ url)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((("CheckHTMLURLParams"+" [url=")+ url)+", timeout=")+ timeout)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
