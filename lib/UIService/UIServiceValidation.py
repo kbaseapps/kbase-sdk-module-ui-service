@@ -232,47 +232,37 @@ class Validation(object):
             raise(ValueError('"auth-url" configuration property not provided'))
         auth_url = config['auth-url']
 
-        # Import and validate the connection timeout
-        # if 'jgi-connection-timeout' not in config:
-        #     raise(ValueError('"jgi-connection-timeout" configuration property not provided'))
-        # try:
-        #     connection_timeout = int(config['jgi-connection-timeout'])
-        # except ValueError as ex:
-        #     raise(ValueError('"jgi-connection-timeout" configuration property is not a float: ' + str(ex)))
-        # if not (config['jgi-connection-timeout'] > 0):
-        #     raise(ValueError('"jgi-connection-timeout" configuration property must be > 0'))
-
         # connection_timeout = float(connection_timeout) /float(1000)
         # print('connection timeout %f sec' % (connection_timeout) )
 
         # Import and validate the mongo db settings
-        if 'mongo-host' not in config:
-            raise(ValueError('"mongo-host" configuration property not provided')) 
-        mongo_host = config['mongo-host']
+        # if 'mongo-host' not in config:
+        #     raise(ValueError('"mongo-host" configuration property not provided')) 
+        # mongo_host = config['mongo-host']
 
-        if 'mongo-port' not in config:
-            raise(ValueError('"mongo-port" configuration property not provided')) 
-        mongo_port = int(config['mongo-port'])
+        # if 'mongo-port' not in config:
+        #     raise(ValueError('"mongo-port" configuration property not provided')) 
+        # mongo_port = int(config['mongo-port'])
 
-        if 'mongo-db' not in config:
-            raise(ValueError('"mongo-db" configuration property not provided'))
-        mongo_db = config['mongo-db']
+        # if 'mongo-db' not in config:
+        #     raise(ValueError('"mongo-db" configuration property not provided'))
+        # mongo_db = config['mongo-db']
 
-        if 'mongo-user' not in config:
-            raise(ValueError('"mongo-user" configuration property not provided'))
-        mongo_user = config['mongo-user']
+        # if 'mongo-user' not in config:
+        #     raise(ValueError('"mongo-user" configuration property not provided'))
+        # mongo_user = config['mongo-user']
 
-        if 'mongo-pwd' not in config:
-            raise(ValueError('"mongo-pwd" configuration property not provided'))
-        mongo_pwd = config['mongo-pwd']
+        # if 'mongo-pwd' not in config:
+        #     raise(ValueError('"mongo-pwd" configuration property not provided'))
+        # mongo_pwd = config['mongo-pwd']
 
         return {
-            'mongo': {
-                'host': mongo_host,
-                'port': mongo_port,
-                'db': mongo_db,
-                'user': mongo_user,
-                'password': mongo_pwd
-            },
+            # 'mongo': {
+            #     'host': mongo_host,
+            #     'port': mongo_port,
+            #     'db': mongo_db,
+            #     'user': mongo_user,
+            #     'password': mongo_pwd
+            # },
             'auth-url': auth_url
         }

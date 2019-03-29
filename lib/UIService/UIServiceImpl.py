@@ -41,8 +41,6 @@ class UIService:
 
         config = Validation.validate_config(config)
 
-        self.db_config = config['mongo']
-
         self.auth_url = config['auth-url']
 
         #END_CONSTRUCTOR
