@@ -64,7 +64,8 @@ RUN pip install --upgrade pip && \
 RUN addgroup --system kbmodule && \
     adduser --system --ingroup kbmodule kbmodule
 
-COPY --from=builder --chown=kbmodule:kbmodule /kb/module /kb/module
+COPY --from=builder /kb/module /kb/module
+RUN chown -R kbmodule:kbmodule /kb/module
 
 WORKDIR /kb/module
 
