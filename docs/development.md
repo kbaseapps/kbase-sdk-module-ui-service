@@ -188,25 +188,6 @@ auth_service_url=https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Log
 
 > If you are testing against different deployment environments, you will want to change both the token and the kbase endpoint to be accommodate that environment.
 
-### Rest of the settings
-
-At the bottom of the file, add these properties to `test.cfg`:
-
-```
-secure.mongo_db=ui_service
-secure.mongo_host=mongo
-secure.mongo_port=27017
-secure.mongo_user=ui_service
-secure.mongo_pwd=ui_service
-secure.admin_users=USERNAME
-```
-
-where
-
-`USERNAME` is either your username, or some username you wish to use for the admin functions test
-
-> TODO: clarify this!!!
-
 ## Tweak the test runner script
 
 Currently the tests must be run in the custom network "kbase-dev". This is a simplification to ensure that the test container and mongo are operating on the same docker network. It is also necessary in order to develop and test the service alongside kbase-ui.

@@ -1,8 +1,0 @@
-{
-    "params":[        
-        {"query": {}}
-    ],
-    "method":"UIService.search_alerts",
-    "version":"1.1",
-    "id":"3842725324374603"
-}

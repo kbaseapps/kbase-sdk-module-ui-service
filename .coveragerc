@@ -1,0 +1,13 @@
+[run]
+omit = 
+    # omit code not under our control
+    UIService/UIServiceServer.py
+    UIService/authclient.py
+    UIService/__init__.py
+
+[report]
+omit = 
+    # omit code not under our control
+    UIService/UIServiceServer.py
+    UIService/authclient.py
+    UIService/__init__.py

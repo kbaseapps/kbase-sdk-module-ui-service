@@ -28,9 +28,7 @@ public class CheckHTMLURLResult {
     private Long isValid;
     /**
      * <p>Original spec-file type: CheckError</p>
-     * <pre>
-     * Validations
-     * </pre>
+     * 
      * 
      */
     @JsonProperty("error")
@@ -54,9 +52,7 @@ public class CheckHTMLURLResult {
 
     /**
      * <p>Original spec-file type: CheckError</p>
-     * <pre>
-     * Validations
-     * </pre>
+     * 
      * 
      */
     @JsonProperty("error")
@@ -66,9 +62,7 @@ public class CheckHTMLURLResult {
 
     /**
      * <p>Original spec-file type: CheckError</p>
-     * <pre>
-     * Validations
-     * </pre>
+     * 
      * 
      */
     @JsonProperty("error")
