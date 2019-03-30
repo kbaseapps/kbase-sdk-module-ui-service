@@ -37,7 +37,27 @@ class UIServiceTest_check_home_url(UIServiceTest):
                 },
                 'header': {
                     'Content-Type': 'text/plain',
-                    'Content-Length': 100
+                    'Content-Length': 0
+                }
+            },
+             '/respond-301':  {
+                'status': {
+                    'code': 301,
+                    'message': 'Redirect'
+                },
+                'header': {
+                    'Content-Length': 0,
+                    'Location': '/test1.html'
+                }
+            },
+             '/respond-302':  {
+                'status': {
+                    'code': 302,
+                    'message': 'Redirect'
+                },
+                'header': {
+                    'Content-Length': 0,
+                    'Location': '/test1.html'
                 }
             },
             '/missing-content-type': {
@@ -129,6 +149,46 @@ class UIServiceTest_check_home_url(UIServiceTest):
         try:
             param = {
                 'url': urlBase + '/test1.html',
+                'timeout': 1000
+            }
+
+            expected = {
+                'is_valid': True
+            }
+
+            ret, err = self.getImpl().check_html_url(self.getContext(), param)
+
+            self.assertIsNone(err)
+            self.assertIsNotNone(ret)
+            self.assertIsInstance(ret, dict) 
+            self.assertDictEqual(ret, expected)
+        except Exception as ex:
+            self.assertTrue(False, 'Unexpected exception: %s' % str(ex))
+
+    def test_validation_home_url_301_is_fine(self):
+        try:
+            param = {
+                'url': urlBase + '/respond-301',
+                'timeout': 1000
+            }
+
+            expected = {
+                'is_valid': True
+            }
+
+            ret, err = self.getImpl().check_html_url(self.getContext(), param)
+
+            self.assertIsNone(err)
+            self.assertIsNotNone(ret)
+            self.assertIsInstance(ret, dict) 
+            self.assertDictEqual(ret, expected)
+        except Exception as ex:
+            self.assertTrue(False, 'Unexpected exception: %s' % str(ex))
+
+    def test_validation_home_url_302_is_fine(self):
+        try:
+            param = {
+                'url': urlBase + '/respond-302',
                 'timeout': 1000
             }
 
