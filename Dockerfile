@@ -54,8 +54,7 @@ RUN pip install --upgrade pip && \
     jinja2==2.10 \
     jsonrpcbase==0.2.0 \
     ndg-httpsclient==0.5.1 \
-    nose==1.3.7 \
-    pymongo===3.7.2 \
+    git+https://github.com/nose-devs/nose@master \
     python-dateutil==2.8.0 \
     pytz==2018.9 \
     requests==2.21.0 \

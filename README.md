@@ -14,18 +14,6 @@ See [Developer Docs](docs/development.md)
 
 ## Tests
 
-### Get a mongo container running
-
-Click the X button to return to the front of the card.
-
-Now click the "Create" button.
-
-This will download the image, and set up a container.
-
-#### Set up the container
-
-The
-
 ## Local development with kbase-ui
 
 To make the image locally:
@@ -66,33 +54,9 @@ docker build --rm -t test/ui-service:dev
 
 If you are starting from a cold docker cache the initial build may take several minutes: the kbase base image is rather huge.
 
-## Actually...
+## Testing
 
-## Work in Progress Instructions
+After running `kb-sdk test` the first time, which generates `test_local`:
 
-In the current incarnation, when the service starts it creates the sqlite database schema, and populates initial data therein. This includes the admin user, ui_service_admin. A token for this user may be used to add alerts.
-
-See the scripts `test/manual`. Running the script 'send.sh' with an argument set to the base name for an accompanying json file will send the associated json-rpc payload.
-
-E.g.
-
-```bash
-KB_TOKEN=XXXMYTOKENXXX bash send.sh add-alert
-```
-
-## Development
-
-### install mongo image
-
-I use Kitematic to get the latest in the 3 series (currently 3.7.9) - the 2 series which kbase uses is not supported in the official distribution.
-
-Change these settings:
-
--   enable kbase-dev network
--   map directories to SPRINT/mongo/db and SPRINT/mongo/configdb
-
-### Add ui_service user and database
-
-mongo localhost:PORT
-
-where port is the port reported in Kitematic (it changes with every container startup)
+-   For test_local/test.cfg set the test_token to a valid login token.
+-   Generate an ssl self signed certificate and place into test_local/workdir: `test-ssl.cr` and `test-ssl.key`.

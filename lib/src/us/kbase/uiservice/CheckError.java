@@ -14,9 +14,7 @@ import us.kbase.common.service.UObject;
 
 /**
  * <p>Original spec-file type: CheckError</p>
- * <pre>
- * Validations
- * </pre>
+ * 
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

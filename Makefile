@@ -52,7 +52,9 @@ build-test-script:
 	@echo 'export KB_AUTH_TOKEN=`cat /kb/module/work/token`' >> $(TEST_DIR)/$(TEST_SCRIPT_NAME)
 	@echo 'export PYTHONPATH=$$script_dir/../$(LIB_DIR):$$PATH:$$PYTHONPATH' >> $(TEST_DIR)/$(TEST_SCRIPT_NAME)
 	@echo 'cd $$script_dir/../$(TEST_DIR)' >> $(TEST_DIR)/$(TEST_SCRIPT_NAME)
-	@echo 'python -m nose --with-coverage --cover-package=$(SERVICE_CAPS) --cover-html --cover-html-dir=/kb/module/work/test_coverage --nocapture  --nologcapture .' >> $(TEST_DIR)/$(TEST_SCRIPT_NAME)
+	@echo 'echo "Running tests"' >> $(TEST_DIR)/$(TEST_SCRIPT_NAME)
+	@echo 'echo `pwd`' >> $(TEST_DIR)/$(TEST_SCRIPT_NAME)
+	@echo 'python -m nose --with-coverage --cover-package=$(SERVICE_CAPS) --cover-html --cover-html-dir=/kb/module/work/test_coverage --nocapture  --nologcapture --cover-config-file=$$script_dir/../$(TEST_DIR)/coverage.cfg .' >> $(TEST_DIR)/$(TEST_SCRIPT_NAME)
 	@chmod +x $(TEST_DIR)/$(TEST_SCRIPT_NAME)
 
 docker-image-dev:
