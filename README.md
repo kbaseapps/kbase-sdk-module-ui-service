@@ -40,7 +40,9 @@ kbase-ui start-dev env=dev build=dev build-image=f dynamic-services="ui-service"
 
 kb_sdk's ModuleTester.java contains the code to build the docker image. All it does, as far as building goes, is construct a simple docker build bash command string. (It also manages images, etc.)
 
+```
 docker build --rm -t TARGET_IMAGE_NAME REPO_PATH
+```
 
 where TARGET_IMAGE_NAME is test/MODULE:latest
 
