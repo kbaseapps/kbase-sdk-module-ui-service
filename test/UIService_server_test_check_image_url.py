@@ -35,6 +35,26 @@ class UIServiceTest_check_image_url(UIServiceTest):
                     'Content-Length': 100
                 }
             },
+             '/respond-301':  {
+                'status': {
+                    'code': 301,
+                    'message': 'Redirect'
+                },
+                'header': {
+                    'Content-Length': 0,
+                    'Location': '/test1.png'
+                }
+            },
+             '/respond-302':  {
+                'status': {
+                    'code': 302,
+                    'message': 'Redirect'
+                },
+                'header': {
+                    'Content-Length': 0,
+                    'Location': '/test1.png'
+                }
+            },
             '/respond-400':  {
                 'status': {
                     'code': 400,

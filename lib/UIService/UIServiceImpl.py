@@ -63,7 +63,7 @@ class UIService:
             return [None, error]
 
         try:
-            response = requests.head(url=param['url'], timeout=param['timeout']/1000)
+            response = requests.head(url=param['url'], allow_redirects=True, timeout=param['timeout']/1000)
             if response.status_code == 404:
                 return [{
                     'is_valid': False,
@@ -73,7 +73,7 @@ class UIService:
                     
                 }, None]
 
-            if response.status_code != 200:
+            if response.status_code not in [200, 301, 302]:
                 return [{
                     'is_valid': False,
                     'error': {
@@ -155,7 +155,7 @@ class UIService:
             return [None, error]
 
         try:
-            response = requests.head(url=param['url'], timeout=param['timeout']/1000, verify=param['verify_ssl'])
+            response = requests.head(url=param['url'], allow_redirects=True, timeout=param['timeout']/1000, verify=param['verify_ssl'])
             if response.status_code == 404:
                 return [{
                     'is_valid': False,
@@ -164,7 +164,7 @@ class UIService:
                     }
                 }, None]
 
-            if response.status_code != 200:
+            if response.status_code not in [200, 301, 302]:
                 return [{
                     'is_valid': False,
                     'error': {
