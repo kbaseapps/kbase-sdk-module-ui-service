@@ -1,4 +1,4 @@
-FROM alpine:3.9 as builder
+FROM alpine:3.12 as builder
 MAINTAINER KBase Developer
 
 # The build stage needs just enough to run the KBase SDK tools.
@@ -30,7 +30,7 @@ RUN mkdir -p /kb/module/work/cache && \
 
 # Final image
 
-FROM alpine:3.9
+FROM alpine:3.12
 MAINTAINER KBase Developer
 
 # update system and system dependencies
@@ -49,16 +49,16 @@ RUN apk add --no-cache python3 python3-dev py3-setuptools && \
 # install python dependencies for the service runtime.
 RUN pip install --upgrade pip && \
     pip install \
-    cffi==1.12.0 \
-    coverage==4.5.2 \
-    jinja2==2.10 \
+    cffi==1.14.3 \
+    coverage==4.5.4 \
+    jinja2==2.11.2 \
     jsonrpcbase==0.2.0 \
     ndg-httpsclient==0.5.1 \
     git+https://github.com/nose-devs/nose@master \
-    python-dateutil==2.8.0 \
-    pytz==2018.9 \
-    requests==2.21.0 \
-    uwsgi==2.0.18
+    python-dateutil==2.8.1 \
+    pytz==2020.1 \
+    requests==2.24.0 \
+    uwsgi==2.0.19.1
 
 RUN addgroup --system kbmodule && \
     adduser --system --ingroup kbmodule kbmodule
