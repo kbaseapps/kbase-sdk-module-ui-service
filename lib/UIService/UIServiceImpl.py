@@ -6,7 +6,10 @@ import string
 import traceback
 import re
 import requests
+import platform
+from importlib.metadata import version
 #END_HEADER
+
 
 
 class UIService:
@@ -29,6 +32,9 @@ class UIService:
     GIT_COMMIT_HASH = "99ca5d12835dc68a8795bb75bbb21c26d4d5fd72"
 
     #BEGIN_CLASS_HEADER
+    python_version = platform.python_version()
+    requests_version = version('requests')
+    USER_AGENT_STRING = f'kbase-ui-module-ui-service (https://github.com/kbaseapps/kbase-ui-module-ui-service) requests/{requests_version} Python/{python_version} {platform.system()}/{platform.release()}'
     #END_CLASS_HEADER
 
     # config contains contents of config file in a hash or None if it couldn't
@@ -40,7 +46,6 @@ class UIService:
         self.auth_url = config['auth-url']
         #END_CONSTRUCTOR
         pass
-
 
     def check_html_url(self, ctx, param):
         """
@@ -63,7 +68,15 @@ class UIService:
             return [None, error]
 
         try:
-            response = requests.head(url=param['url'], allow_redirects=True, timeout=param['timeout']/1000)
+            header = {
+                'User-Agent': self.USER_AGENT_STRING
+            }
+            # header = {
+            #     'User-Agent': ''
+            # }
+            timeout = param['timeout']/1000
+            response = requests.head(url=param['url'], allow_redirects=True, timeout=timeout, 
+                                     headers=header)
             if response.status_code == 404:
                 return [{
                     'is_valid': False,
@@ -155,7 +168,15 @@ class UIService:
             return [None, error]
 
         try:
-            response = requests.head(url=param['url'], allow_redirects=True, timeout=param['timeout']/1000, verify=param['verify_ssl'])
+            header = {
+                'User-Agent': self.USER_AGENT_STRING
+            }
+            # header = {
+            #     'User-Agent': ''
+            # }
+            timeout = param['timeout']/1000
+            response = requests.head(url=param['url'], allow_redirects=True, timeout=timeout, 
+                                     verify=param['verify_ssl'], headers=header)
             if response.status_code == 404:
                 return [{
                     'is_valid': False,
