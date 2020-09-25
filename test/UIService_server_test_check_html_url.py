@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from UIServiceTest import UIServiceTest
-
 from UIService.UIServiceValidation import Validation
 from TestWebServer import TestWebServer
 
 urlBase = 'http://localhost:8002'
 bad_url_base = 'http://fakehost'
+
 
 class UIServiceTest_check_home_url(UIServiceTest):
     def setUp(self):
@@ -40,7 +40,7 @@ class UIServiceTest_check_home_url(UIServiceTest):
                     'Content-Length': 0
                 }
             },
-             '/respond-301':  {
+            '/respond-301':  {
                 'status': {
                     'code': 301,
                     'message': 'Redirect'
@@ -50,7 +50,7 @@ class UIServiceTest_check_home_url(UIServiceTest):
                     'Location': '/test1.html'
                 }
             },
-             '/respond-302':  {
+            '/respond-302':  {
                 'status': {
                     'code': 302,
                     'message': 'Redirect'
@@ -95,16 +95,15 @@ class UIServiceTest_check_home_url(UIServiceTest):
             self.assertIsInstance(result, dict)
             self.assertDictEqual(result, expected)
 
-
         except Exception as ex:
-            self.assertTrue(False)
+            self.assertTrue(False, 'Unexpected exception: %s' % str(ex))
 
     def test_validation_home_url_missing_timeout_param(self):
         try:
             param = {
                 'url': urlBase + '/test1.html'
             }
-            expected =  { 
+            expected = { 
                 'message': 'the required parameter "timeout" was not provided', 
                 'type': 'input', 
                 'code': 'missing', 
@@ -120,14 +119,14 @@ class UIServiceTest_check_home_url(UIServiceTest):
             self.assertDictEqual(err, expected)
 
         except Exception as ex:
-            self.assertTrue(False)
+            self.assertTrue(False, 'Unexpected exception: %s' % str(ex))
 
     def test_validation_home_url_missing_url_param(self):
         try:
             param = {
                 'timeout': 1000
             }
-            expected =  { 
+            expected = { 
                 'message': 'the required parameter "url" was not provided', 
                 'type': 'input', 
                 'code': 'missing', 
@@ -143,7 +142,7 @@ class UIServiceTest_check_home_url(UIServiceTest):
             self.assertDictEqual(err, expected)
 
         except Exception as ex:
-            self.assertTrue(False)
+            self.assertTrue(False, 'Unexpected exception: %s' % str(ex))
 
     def test_validation_home_url_good_url(self):
         try:
@@ -205,7 +204,6 @@ class UIServiceTest_check_home_url(UIServiceTest):
         except Exception as ex:
             self.assertTrue(False, 'Unexpected exception: %s' % str(ex))
             
-
     def test_validation_home_url_bad_params(self):
         try:
             bad_params = [{
@@ -216,8 +214,7 @@ class UIServiceTest_check_home_url(UIServiceTest):
                 'expected': {
                     'error': True
                 }
-            },
-            {
+            }, {
                 'input': {
                     'url': urlBase + '/test1.html',
                     'timeout': 'abc'
@@ -225,8 +222,7 @@ class UIServiceTest_check_home_url(UIServiceTest):
                 'expected': {
                     'error': True
                 }
-            },
-            {
+            }, {
                 'input': {
                     'url': 'x',
                     'timeout': 1000
@@ -234,8 +230,7 @@ class UIServiceTest_check_home_url(UIServiceTest):
                 'expected': {
                     'error': True
                 }
-            },
-            {
+            }, {
                 'input': {
                     'url': urlBase + '/test1.html',
                     'timeout': 60000 + 1
@@ -249,8 +244,7 @@ class UIServiceTest_check_home_url(UIServiceTest):
                         'max': 60000 
                     } 
                 } 
-            },
-            {
+            }, {
                 'input': {
                     'url': urlBase + '/test1.html',
                     'timeout': -1
